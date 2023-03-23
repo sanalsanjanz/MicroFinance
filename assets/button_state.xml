@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_enabled="false"
+        android:color="#c2c1c1"/>
+
+    <!-- Enabled background -->
+    <item android:color="#09ab15"/>
+
+</shape>
