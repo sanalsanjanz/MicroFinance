@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sacco_management">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="sacco_management"
+        android:label="MicroFinance"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

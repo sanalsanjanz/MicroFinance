@@ -133,16 +133,34 @@ class LoanPaymentInfo extends StatelessWidget {
                                   child: ListTile(
                                     title: Text(data['membername']),
                                     subtitle: Text(data['pay_date']),
-                                    trailing: SizedBox(
-                                        width: 100,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            const Icon(Icons.currency_rupee),
-                                            Text(data['paid'] ?? 'loading'),
-                                          ],
-                                        )),
+                                    trailing: Column(
+                                      children: [
+                                        SizedBox(
+                                            width: 100,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                const Icon(
+                                                    Icons.currency_rupee),
+                                                Text(data['paid'] ?? 'loading'),
+                                              ],
+                                            )),
+                                        const SizedBox(
+                                          height: 3,
+                                        ),
+                                        SizedBox(
+                                            width: 100,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text("(${data['loan_amt']})" ??
+                                                    'loading'),
+                                              ],
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },

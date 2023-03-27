@@ -160,8 +160,11 @@ class _AutheticationState extends State<Authetication> {
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      Visibility(
+                        visible: value.shg && value.newuser,
+                        child: const SizedBox(
+                          height: 10,
+                        ),
                       ),
                       Visibility(
                         visible: value.shg && value.newuser,
@@ -174,8 +177,11 @@ class _AutheticationState extends State<Authetication> {
                           },
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      Visibility(
+                        visible: value.newuser,
+                        child: const SizedBox(
+                          height: 20,
+                        ),
                       ),
                       Visibility(
                         visible: value.newuser,
@@ -185,8 +191,11 @@ class _AutheticationState extends State<Authetication> {
                               const InputDecoration(hintText: 'Group Name'),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      Visibility(
+                        visible: value.shg && value.newuser,
+                        child: const SizedBox(
+                          height: 10,
+                        ),
                       ),
                       Visibility(
                         visible: value.shg && value.newuser,

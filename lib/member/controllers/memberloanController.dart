@@ -23,6 +23,36 @@ class MemberLoanController with ChangeNotifier {
     }
   }
 
+  Future showMemberBankLoan({String? unitid, String? memberid}) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid ?? sharedPreferences.getString('unitid');
+    map['memberid'] = memberid ?? sharedPreferences.getString('memberid');
+    http.Response response =
+        await http.post(AuthLinks.bankloanpayments, body: map);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      return data;
+    } else {
+      return null;
+    }
+  }
+
+  Future showMemberBankLoanBorrows({String? unitid, String? memberid}) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid ?? sharedPreferences.getString('unitid');
+    map['memberid'] = memberid ?? sharedPreferences.getString('memberid');
+    http.Response response =
+        await http.post(AuthLinks.bankloanborrowers, body: map);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      return data;
+    } else {
+      return null;
+    }
+  }
+
   Future showInterest({String? unitid, String? memberid}) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var map = <String, dynamic>{};

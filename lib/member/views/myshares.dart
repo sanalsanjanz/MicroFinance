@@ -10,7 +10,7 @@ class MyShares extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: primaryColor,
+        backgroundColor: memberPrimary,
         title: const Text('Shares'),
       ),
       body: Padding(
@@ -22,7 +22,7 @@ class MyShares extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 4,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: shadeprimaryColor,
+                color: memberPrimary,
                 borderRadius: BorderRadius.circular(20),
               ),
             )

@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:sacco_management/constants/styles.dart';
+import 'package:sacco_management/member/views/memberBankLoanDetails.dart';
+import 'package:sacco_management/member/views/memberBankLoanPayment.dart';
 
-import 'loanDetails.dart';
-import 'loanpaymentinfo.dart';
-
-class MemberLoan extends StatelessWidget {
-  MemberLoan({required this.unitid, required this.memberid});
+class MemberBankLoan extends StatelessWidget {
+  MemberBankLoan({required this.unitid, required this.memberid});
   String unitid;
   String memberid;
   @override
@@ -16,7 +15,7 @@ class MemberLoan extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-            title: const Text('Internal Loan'),
+            title: const Text('Bank Loan'),
             centerTitle: true,
             automaticallyImplyLeading: false,
             backgroundColor: memberPrimary,
@@ -31,8 +30,8 @@ class MemberLoan extends StatelessWidget {
         body: TabBarView(
           physics: const BouncingScrollPhysics(),
           children: [
-            LoanDetails(unitid: unitid, memberid: memberid),
-            const LoanPaymentInfo(),
+            MemberBankLoanDetails(unitid: unitid, memberid: memberid),
+            MemberBankLoanPayment(unitid: unitid, memberid: memberid),
           ],
         ),
       ),

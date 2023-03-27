@@ -5,12 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/member/controllers/memberConfigController.dart';
 import 'package:sacco_management/member/views/mOtherFeatures.dart';
+import 'package:sacco_management/member/views/memberBankLoan.dart';
+import 'package:sacco_management/member/views/memerList.dart';
 
 import '../controllers/memberController.dart';
 import 'memberReport.dart';
 import 'memberloan.dart';
 import 'membersearchgroup.dart';
-import 'myshares.dart';
 
 class MemberHome extends StatefulWidget {
   const MemberHome({super.key});
@@ -41,13 +42,13 @@ class _MemberHomeState extends State<MemberHome> {
             Container(
               decoration: BoxDecoration(
                 boxShadow: const [BoxShadow(blurRadius: 10, spreadRadius: 0)],
-                color: primaryColor,
+                color: memberPrimary,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
               ),
-              height: 150, // MediaQuery.of(context).size.height / 3,
+              height: 220, // MediaQuery.of(context).size.height / 3,
               child: Row(
                 children: [
                   Expanded(
@@ -57,11 +58,23 @@ class _MemberHomeState extends State<MemberHome> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          value.membername != ''
+                              ? Text(
+                                  value.membername.toString().toUpperCase(),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : const SizedBox(),
+                          const Divider(height: 8),
                           value.groupname != ''
                               ? Text(
                                   value.groupname.toString().toUpperCase(),
                                   style: const TextStyle(
-                                      color: Colors.white, fontSize: 20),
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 )
                               : InkWell(
                                   onTap: () {
@@ -78,7 +91,7 @@ class _MemberHomeState extends State<MemberHome> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                          const Divider(),
+                          /*   const Divider(height: 8),
                           Text(
                             value.unitid == ''
                                 ? ''
@@ -86,7 +99,7 @@ class _MemberHomeState extends State<MemberHome> {
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
-                          )
+                          ) */
                         ],
                       ),
                     ),
@@ -108,144 +121,134 @@ class _MemberHomeState extends State<MemberHome> {
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [
                           Expanded(
-                            child: SizedBox(
+                            child: Container(
+                              decoration: containerStyle,
                               height: MediaQuery.of(context).size.height / 7,
                               //   color: Colors.pink[300],
-                              child: Card(
-                                color: shadeprimaryColor,
-                                child: Column(
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'My Savings',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontWeight: FontWeight.bold),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('My Savings', style: title),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      color: Colors.grey[300],
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const Icon(Icons.currency_rupee),
+                                          Text(
+                                              value.viewSavings
+                                                  ? value.savings
+                                                  : '*****',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                  letterSpacing: 1)),
+                                          IconButton(
+                                            onPressed: () {
+                                              value.showsavings();
+                                            },
+                                            icon: Icon(value.viewSavings
+                                                ? Icons.visibility_off
+                                                : Icons.visibility),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        color: Colors.grey[300],
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const Icon(Icons.currency_rupee),
-                                            Text(
-                                                value.viewSavings
-                                                    ? value.savings
-                                                    : '*****',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15,
-                                                    letterSpacing: 1)),
-                                            IconButton(
-                                              onPressed: () {
-                                                value.showsavings();
-                                              },
-                                              icon: Icon(value.viewSavings
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          const VerticalDivider(),
+                          const VerticalDivider(width: 8),
                           Expanded(
-                            child: SizedBox(
+                            child: Container(
+                              decoration: containerStyle,
                               height: MediaQuery.of(context).size.height / 7,
-                              //   color: Colors.pink[300],
-                              child: Card(
-                                color: shadeprimaryColor,
-                                child: Column(
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Monthly Collection',
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontWeight: FontWeight.bold),
+                              // color: memberPrimary,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Monthly Collection',
+                                        style: title),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      color: Colors.grey[300],
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(Icons.currency_rupee),
+                                          Text(value.mothlycollection)
+                                          /*  IconButton(
+                                            onPressed: () {},
+                                            icon:
+                                                const Icon(Icons.visibility),
+                                          ), */
+                                        ],
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        color: Colors.grey[300],
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(Icons.currency_rupee),
-                                            Text(value.mothlycollection)
-                                            /*  IconButton(
-                                              onPressed: () {},
-                                              icon:
-                                                  const Icon(Icons.visibility),
-                                            ), */
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const Divider(),
+                      const Divider(height: 8),
                       Row(
                         children: [
                           Expanded(
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                  context,
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (ctx) => const MyShares(),
-                                  ),
+                                      builder: (ctx) => const MemberList()),
                                 );
                               },
                               child: Container(
-                                margin: const EdgeInsets.all(5),
-                                padding: const EdgeInsets.all(8),
                                 height:
                                     MediaQuery.of(context).size.height / 3.5,
-                                color: primaryColor,
+                                decoration: containerStyle,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Image(
-                                      height: 70,
-                                      image: AssetImage('assets/income.png'),
-                                      color: Color.fromRGBO(0, 0, 0, 1),
+                                  children: [
+                                    const Image(
+                                      height: 100,
+                                      image: AssetImage('assets/users.png'),
                                     ),
-                                    Divider(),
-                                    Text('Manage'),
-                                    Text('Shares')
+                                    const Divider(),
+                                    Center(
+                                      child: Text(
+                                        'Members'.toUpperCase(),
+                                        style: title,
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                          const VerticalDivider(),
+                          const VerticalDivider(width: 8),
                           Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
+                            child: SizedBox(
+                              // padding: const EdgeInsets.all(5),
                               height: MediaQuery.of(context).size.height / 3.5,
                               // color: primaryColor,
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
@@ -261,81 +264,145 @@ class _MemberHomeState extends State<MemberHome> {
                                         );
                                       },
                                       child: Container(
-                                        color: primaryColor,
-                                        child: const Center(
-                                          child: Text('Loans'),
+                                        decoration: containerStyle,
+                                        child: Center(
+                                          child: Text(
+                                            'Internal Loans'.toUpperCase(),
+                                            style: title,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  const Divider(),
+                                  const Divider(height: 10),
                                   Expanded(
-                                    child: Container(
-                                      color: primaryColor,
-                                      child: const Center(
-                                          child: Text('Check fines')),
-                                    ),
-                                  ),
-                                  const Divider(),
-                                  Expanded(
-                                    child: Container(
-                                      color: primaryColor,
-                                      child: const Center(
-                                        child: Text('Collections'),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (ctx) => MemberBankLoan(
+                                              unitid: value.unitid.toString(),
+                                              memberid:
+                                                  value.memberid.toString(),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: containerStyle,
+                                        child: Center(
+                                          child: Text(
+                                            'Bank Loans'.toUpperCase(),
+                                            style: title,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  )
+                                  ),
+                                  const Divider(height: 10),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (ctx) =>
+                                                const MOtherFetures(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: containerStyle,
+                                        child: Center(
+                                          child: Text(
+                                            'Others'.toUpperCase(),
+                                            style: title,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const Divider(),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => const MOtherFetures(),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          //elevation: 5,
-                          color: shadeprimaryColor,
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            height: 85,
-                            // color: shadeprimaryColor,
-                            child: const Center(
-                              child: Text('Other Features'),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Divider(),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => MemberReport(
-                                presid: value.unitid.toString(),
+                      const Divider(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => const ReportsMem(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: containerStyle,
+                                height: 85,
+                                // color: shadeprimaryColor,
+                                child: Center(
+                                  child: Text(
+                                    'Reports'.toUpperCase(),
+                                    style: title,
+                                  ),
+                                ),
                               ),
                             ),
-                          );
-                        },
-                        child: Card(
-                          //elevation: 5,
-                          color: shadeprimaryColor,
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            height: 85,
-                            // color: shadeprimaryColor,
-                            child: const Center(
-                              child: Text('Reports'),
+                          ),
+                          const VerticalDivider(width: 8),
+                          InkWell(
+                            onTap: () async {
+                              return showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text('Do you want to Logout ?'),
+                                      const Divider(
+                                        color: Colors.transparent,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('NO'),
+                                          ),
+                                          const VerticalDivider(),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await value.meberLogout(context);
+                                            },
+                                            child: const Text('YES'),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: containerStyle,
+                              padding: const EdgeInsets.all(15),
+                              // color: primaryColor,
+                              height: 85,
+                              // color: shadeprimaryColor,
+                              child: const Center(
+                                child: Center(
+                                  child: Icon(Icons.power_settings_new),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),

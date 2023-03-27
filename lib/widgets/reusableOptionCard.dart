@@ -1,10 +1,12 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:sacco_management/constants/styles.dart';
 
 class PresidentOptionalCard extends StatelessWidget {
   bool visibility;
   String titile;
   String subtitle;
+  Color? color;
   void Function()? onTap;
   String letter;
 
@@ -15,6 +17,7 @@ class PresidentOptionalCard extends StatelessWidget {
     required this.subtitle,
     required this.letter,
     required this.onTap,
+    required this.color,
   });
 
   @override
@@ -26,7 +29,7 @@ class PresidentOptionalCard extends StatelessWidget {
           child: Card(
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: primaryColor,
+                backgroundColor: color,
                 child: Text(
                   letter,
                   style: const TextStyle(

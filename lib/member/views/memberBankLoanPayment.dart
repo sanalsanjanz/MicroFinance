@@ -6,15 +6,15 @@ import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/member/controllers/memberloanController.dart';
 import 'package:sacco_management/widgets/itemsCard.dart';
 
-class LoanDetails extends StatefulWidget {
-  LoanDetails({required this.unitid, required this.memberid});
+class MemberBankLoanPayment extends StatefulWidget {
+  MemberBankLoanPayment({required this.unitid, required this.memberid});
   String unitid;
   String memberid;
   @override
-  State<LoanDetails> createState() => _LoanDetailsState();
+  State<MemberBankLoanPayment> createState() => _MemberBankLoanPaymentState();
 }
 
-class _LoanDetailsState extends State<LoanDetails> {
+class _MemberBankLoanPaymentState extends State<MemberBankLoanPayment> {
   @override
   void initState() {
     super.initState();
@@ -31,10 +31,11 @@ class _LoanDetailsState extends State<LoanDetails> {
       body: Consumer<MemberLoanController>(
         builder: (context, value, child) {
           return FutureBuilder(
-            future: value.showmemberloan(),
+            future: value.showMemberBankLoan(
+                unitid: widget.unitid, memberid: widget.memberid),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                if (snapshot.data[0]['message'] != 'empty') {
+                if (snapshot.data[0]['loandata'] != 'empty') {
                   return ListView.builder(
                       itemBuilder: (context, index) {
                         var data = snapshot.data[0]['loandata'][index];
@@ -50,38 +51,24 @@ class _LoanDetailsState extends State<LoanDetails> {
                                   Text(data['membername']
                                       .toString()
                                       .toUpperCase()),
-                                  space,
-                                  Items(
-                                      value: data['ldate'],
-                                      titile: 'Loan Date'),
+                                  const Divider(),
+                                  Items(value: data['loanid'], titile: 'Id'),
                                   space,
                                   Items(
                                       titile: 'Loan Amount',
-                                      value: data['amount']),
+                                      value: data['loan_amt']),
                                   space,
                                   Items(
-                                      value: data['bal'],
-                                      titile: 'Loan Balance'),
+                                      value: data['paid_loan_amt'],
+                                      titile: 'Paid'),
                                   space,
                                   Items(
-                                      value: data['interest'] + '%',
+                                      value: data['interest_amt'],
                                       titile: 'Loan Interest'),
                                   space,
                                   Items(
-                                      value: data['period'] + '/months',
-                                      titile: 'Loan Period'),
+                                      value: data['pay_date'], titile: 'Date'),
                                   space,
-                                  Items(
-                                      value: data['installment'],
-                                      titile: 'Loan Installment'),
-                                  space,
-                                  Items(
-                                      value: data['monthly_interest_amt'],
-                                      titile: 'Monthly Interest'),
-                                  space,
-                                  Items(
-                                      value: data['total_interest_amt'],
-                                      titile: 'Toatal Interest')
                                 ],
                               ),
                             ),

@@ -18,7 +18,20 @@ class AuthLinks {
   static var signinpresident = Uri.parse('${baseUrl}Register/signinpresident');
   //Members
   static var unitsearch = Uri.parse('${baseUrl}Member/unitsearch');
+  static var memberMonthlyCollection =
+      Uri.parse('${baseUrl}Member/searchmonthlycollection');
+  static var memberMlist = Uri.parse('${baseUrl}Member/memberlist');
+  static var bankloanborrowers =
+      Uri.parse('${baseUrl}Member/bankloanborrowers');
+  static var bankloanpayments = Uri.parse('${baseUrl}Member/bankloanpayments');
+  static var memberMExpense = Uri.parse('${baseUrl}Member/expensedates');
+  static var memberMAttendance = Uri.parse('${baseUrl}Member/attendance');
+  static var memberBanklinkage = Uri.parse('${baseUrl}Member/viewbanklinkage');
+  static var membinsurance = Uri.parse('${baseUrl}Member/insurancereport');
+  static var viewMembergrant = Uri.parse('${baseUrl}Member/viewgrant');
   static var festivalFund = Uri.parse('${baseUrl}Member/searchfestivalfund');
+  static var sessFund = Uri.parse('${baseUrl}Member/searchsessfund');
+  static var viewsessfund = Uri.parse('${baseUrl}Member/viewsessfund');
   static var unitrequest = Uri.parse('${baseUrl}Member/requestunit');
   static var searchsambhadyam = Uri.parse('${baseUrl}Member/searchsambhadyam');
   static var memberloan = Uri.parse('${baseUrl}Member/unitloanborrowers');

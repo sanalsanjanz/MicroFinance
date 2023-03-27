@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
-import 'package:sacco_management/member/views/loanDetails.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
+import 'package:sacco_management/widgets/itemsCard.dart';
 
 import 'unitloanReport.dart';
 import 'unitloanborrowers.dart';

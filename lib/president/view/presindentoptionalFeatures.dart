@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -38,6 +40,7 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
         return ListView(
           children: [
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.fest == 'true' ? true : false,
                 titile: 'Festival Fund',
                 subtitle: 'view festival fund',
@@ -50,6 +53,7 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                   );
                 }),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.sess == 'true' ? true : false,
                 titile: 'Sess Fund',
                 subtitle: 'view Sess fund',
@@ -62,6 +66,7 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                   );
                 }),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.medi == 'true' ? true : false,
                 titile: 'Medical Aid',
                 subtitle: 'medical aid details',
@@ -74,6 +79,7 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                   );
                 }),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.insu == 'true' ? true : false,
                 titile: 'Insurance',
                 subtitle: 'insurance details',
@@ -86,6 +92,7 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                   );
                 }),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.gra == 'true' ? true : false,
                 titile: 'Grants',
                 subtitle: 'view grants',
@@ -98,18 +105,21 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                   );
                 }),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.bank == 'true' ? true : false,
                 titile: 'Bank Linkage',
                 subtitle: 'bank linkage',
                 letter: 'B',
                 onTap: () {}),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.shar == 'true' ? true : false,
                 titile: 'Shares',
                 subtitle: 'view shares',
                 letter: 'S',
                 onTap: () {}),
             PresidentOptionalCard(
+                color: primaryColor,
                 visibility: val.profit,
                 titile: 'Profit',
                 subtitle: 'view profit',

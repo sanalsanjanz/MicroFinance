@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
+import 'package:sacco_management/splashScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -143,17 +144,51 @@ class MemberHomeController with ChangeNotifier {
     //print(response.body);
   }
 
-  Future getFestivalFund(
-      {required String presid,
-      required String date1,
-      required String date2}) async {
+  Future getFestivalFund({required String date1, required String date2}) async {
     var map = <String, dynamic>{};
-    map['presidentid'] = unitid;
+    map['unitid'] = unitid;
+    map['memberid'] = memberid;
     map['date1'] = date1;
     map['date2'] = date2;
     try {
       http.Response response =
           await http.post(AuthLinks.festivalFund, body: map);
+      if (response.body.contains('Empty')) {
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future getSessFund({required String date1, required String date2}) async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid;
+    map['memberid'] = memberid;
+    map['date1'] = date1;
+    map['date2'] = date2;
+    try {
+      http.Response response = await http.post(AuthLinks.sessFund, body: map);
+      if (response.body.contains('Empty')) {
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future viewSess() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.viewsessfund, body: map);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return data;
@@ -163,4 +198,200 @@ class MemberHomeController with ChangeNotifier {
     }
     //print(response.body);
   }
+
+  Future viewgrant() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno; //'70100101'; //passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.viewMembergrant, body: map);
+      if (response.body.contains('Failed')) {
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future memberBankLinkage() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    //'70100102';
+    try {
+      http.Response response =
+          await http.post(AuthLinks.memberBanklinkage, body: map);
+      if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(
+          msg: 'No Bank Linkage',
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future viewInsurance({required String date1, required String date2}) async {
+    var map = <String, dynamic>{};
+    map['memberid'] = memberid; //115
+    map['date1'] = date1;
+    map['date2'] = date2;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.membinsurance, body: map);
+      if (response.body.contains('empty')) {
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future getMembers() async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid;
+    //'70100102';
+    try {
+      http.Response response =
+          await http.post(AuthLinks.memberMlist, body: map);
+      if (response.body.contains('Empty')) {
+        Fluttertoast.showToast(
+          msg: 'No members',
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+    //print(response.body);
+  }
+
+  Future getMothlyCollection(
+      {required String date1, required String date2}) async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid;
+    map['memberid'] = memberid;
+    map['date1'] = date1;
+    map['date2'] = date2;
+    //'70100102';
+    try {
+      http.Response response =
+          await http.post(AuthLinks.memberMonthlyCollection, body: map);
+      if (response.body.contains('Empty')) {
+        Fluttertoast.showToast(
+          msg: 'No Collection',
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+  }
+
+  Future getExpense({required String date1, required String date2}) async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid;
+    // map['memberid'] = memberid;
+    map['date1'] = date1;
+    map['date2'] = date2;
+    //'70100102';
+    try {
+      http.Response response =
+          await http.post(AuthLinks.memberMExpense, body: map);
+      if (response.body.contains('empty')) {
+        Fluttertoast.showToast(
+          msg: 'No Collection',
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+  }
+
+  Future getAttendance({required String date1, required String date2}) async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitid;
+    map['memberid'] = memberid;
+    map['date1'] = date1;
+    map['date2'] = date2;
+    //'70100102';
+    try {
+      http.Response response =
+          await http.post(AuthLinks.memberMAttendance, body: map);
+      if (response.body.contains('Empty')) {
+        Fluttertoast.showToast(
+          msg: 'No Collection',
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
+  }
+
+  meberLogout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    Fluttertoast.showToast(msg: 'Yahooo !!!');
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (ctx) => const SplashScreen(),
+        ),
+        (route) => false);
+  }
+
+  /*  Container(
+                                  // color: primaryUnitColor,
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text('Do you want to Logout ?'),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('NO'),
+                                          ),
+                                          const VerticalDivider(),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await value.meberLogout(context);
+                                            },
+                                            child: const Text('YES'),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ), */
 }
