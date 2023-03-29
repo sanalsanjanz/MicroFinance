@@ -3,18 +3,20 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
 import 'package:sacco_management/president/view/addMember.dart';
+import 'package:sacco_management/president/view/changePresident.dart';
+import 'package:sacco_management/president/view/memeberExplore.dart';
 import 'package:sacco_management/president/view/presidentConfiguration.dart';
 import 'package:sacco_management/president/view/presidentExpense.dart';
+import 'package:sacco_management/president/view/presidentMonthlyCollection.dart';
+import 'package:sacco_management/president/view/presidentSavings.dart';
 import 'package:sacco_management/president/view/presidentattendance.dart';
 import 'package:sacco_management/president/view/presidentloan.dart';
 import 'package:sacco_management/president/view/presindentoptionalFeatures.dart';
-import 'package:sacco_management/widgets/itemsCard.dart';
 import '../controller/presidentConfigController.dart';
 import 'loantoNonMember.dart';
 import 'loantoothergroups.dart';
 import 'pBankLoan.dart';
 import 'presidentReports.dart';
-import 'presidentSavings.dart';
 import 'presidentchatpage.dart';
 import 'presidentmom.dart';
 
@@ -31,12 +33,13 @@ class _PresidentHomeState extends State<PresidentHome> {
   @override
   void initState() {
     super.initState();
-    Provider.of<PresidentController>(context, listen: false).getDataa();
+    Provider.of<PresidentController>(context, listen: false).getDataa(context);
     Provider.of<PresidentConfigController>(context, listen: false)
         .getPresidentConfig();
   }
 
   bool loan = false;
+  bool savings = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +53,14 @@ class _PresidentHomeState extends State<PresidentHome> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: primaryColor,
-                      boxShadow: const [
-                        BoxShadow(spreadRadius: 2, blurRadius: 10)
-                      ]),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    color: primaryColor,
+                  ),
                   // margin: const EdgeInsets.only(5),
-                  height: 180, // MediaQuery.of(context).size.height * 0.20,
+                  height: 220, // MediaQuery.of(context).size.height * 0.20,
                   width: double.maxFinite,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -77,11 +82,10 @@ class _PresidentHomeState extends State<PresidentHome> {
                                   fontSize: 20),
                             ),
                             const Divider(),
-                            Items(value: val.presidentid, titile: 'UNIT ID'),
-                            const SizedBox(
-                              height: 5,
+                            Text(
+                              val.name,
+                              style: title,
                             ),
-                            Items(value: val.name, titile: 'NAME'),
                           ],
                         ),
                       )
@@ -133,9 +137,46 @@ class _PresidentHomeState extends State<PresidentHome> {
                     ),
                   ),
                 ),
+                Positioned(
+                    right: 20,
+                    bottom: 5,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const ChangePresident(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: containerStyle,
+                        padding: const EdgeInsets.all(8),
+                        // color: Colors.white,
+                        child: Center(
+                          child: Row(
+                            children: const [
+                              Text(
+                                'Change President',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                              SizedBox(width: 2),
+                              Icon(
+                                Icons.link,
+                                size: 18,
+                                color: Colors.blue,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ))
               ],
             ),
-            const Divider(),
+            const Divider(
+              color: Colors.transparent,
+              height: 8,
+            ),
             Row(
               children: [
                 Expanded(
@@ -154,7 +195,7 @@ class _PresidentHomeState extends State<PresidentHome> {
                           // bottomRight: Radius.elliptical(20, 80),
                         ),
                       ),
-                      color: shadeprimaryColor,
+                      color: primaryColor,
                       child: Container(
                         // height: 150,
                         padding: const EdgeInsets.all(20),
@@ -163,21 +204,16 @@ class _PresidentHomeState extends State<PresidentHome> {
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
+                                children: [
+                                  const Icon(
                                     Icons.message,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     size: 30,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
-                                  Text(
-                                    'CHATS',
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  Text('CHATS', style: title),
                                 ],
                               ),
                               Positioned(
@@ -213,7 +249,7 @@ class _PresidentHomeState extends State<PresidentHome> {
                       );
                     },
                     child: Card(
-                      color: shadeprimaryColor,
+                      color: primaryColor,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topRight: Radius.elliptical(20, 20),
@@ -225,21 +261,16 @@ class _PresidentHomeState extends State<PresidentHome> {
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               Icons.insights_outlined,
-                              color: Colors.white,
+                              color: Colors.black,
                               size: 30,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
-                            Text(
-                              'MOM',
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                            Text('MOM', style: title),
                           ],
                         ),
                       ),
@@ -248,59 +279,59 @@ class _PresidentHomeState extends State<PresidentHome> {
                 ),
               ],
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => const PresidentAttendance(),
-                  ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10
-                      // bottomRight: Radius.elliptical(20, 80),
-                      ),
-                ),
-                // margin: const EdgeInsets.all(5),
-                // padding: const EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      color: Colors.transparent,
-                      child: const Image(
-                        height: 55,
-                        image: AssetImage('assets/edit.png'),
-                      ),
-                    ),
-                    Expanded(
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const PresidentAttendance(),
+                          ),
+                        );
+                      },
                       child: Container(
                         height: 80,
                         margin: const EdgeInsets.all(5),
                         padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: shadeprimaryColor,
-                          borderRadius: BorderRadius.circular(10
-                              // bottomRight: Radius.elliptical(20, 80),
-                              ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'MARK ATTENDANCE',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold),
-                          ),
+                        decoration: containerStylePresident,
+                        child: Center(
+                          child: Text('MARK ATTENDANCE', style: title),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const MemberExplore(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 80,
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
+                        decoration: containerStylePresident,
+                        child: Center(
+                          child: Text('EXPLORE', style: title),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               padding: const EdgeInsets.all(2),
               height: MediaQuery.of(context).size.width / 4,
               child: Row(
@@ -310,88 +341,98 @@ class _PresidentHomeState extends State<PresidentHome> {
                       onTap: () {
                         setState(() {
                           loan = !loan;
+                          savings = false;
                         });
                       },
                       child: Container(
-                        color: primaryColor,
+                        decoration: containerStylePresident,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.description_outlined),
-                            Text("Loan"),
+                          children: [
+                            const Icon(Icons.description_outlined),
+                            const SizedBox(height: 5),
+                            Text(
+                              "LOAN",
+                              style: title,
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: 3),
                   Expanded(
                     child: Container(
-                      color: shadeprimaryColor,
+                      decoration: containerStylePresident,
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => const AddMember()));
                         },
                         child: Container(
-                          color: primaryColor,
+                          decoration: containerStylePresident,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.group_add_rounded),
-                              Text("Members"),
+                            children: [
+                              const Icon(Icons.group_add_rounded),
+                              const SizedBox(height: 5),
+                              Text(
+                                "MEMBER",
+                                style: title,
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: 3),
                   Expanded(
-                    child: Container(
-                      color: primaryColor,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => UnitSavings(),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          loan = false;
+                          savings = !savings;
+                        });
+                      },
+                      child: Container(
+                        decoration: containerStylePresident,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.monetization_on),
+                            const SizedBox(
+                              height: 5,
                             ),
-                          );
-                        },
-                        child: Container(
-                          color: primaryColor,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.monetization_on),
-                              Text("Savings"),
-                            ],
-                          ),
+                            Text("SAVINGS", style: title),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: 3),
                   Expanded(
-                    child: Container(
-                      color: shadeprimaryColor,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => const PresidentExpense(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          color: primaryColor,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.mode_standby_outlined),
-                              Text("Expense"),
-                            ],
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const PresidentExpense(),
                           ),
+                        );
+                      },
+                      child: Container(
+                        decoration: containerStylePresident,
+                        // color: primaryColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.mode_standby_outlined),
+                            const SizedBox(height: 5),
+                            Text(
+                              "EXPENSE",
+                              style: title,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -399,68 +440,125 @@ class _PresidentHomeState extends State<PresidentHome> {
                 ],
               ),
             ),
+            //  Navigator.of(context).push(
+            //               MaterialPageRoute(
+            //                 builder: (ctx) => UnitSavings(),
+            //               ),
+            //             );
+            Visibility(
+              visible: savings,
+              child: AnimatedContainer(
+                color: shadeprimaryColor,
+                duration: const Duration(seconds: 3),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => UnitSavings(),
+                            ),
+                          );
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('SAVINGS')),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => PresientMonthlyCollection(),
+                            ),
+                          );
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('MONTHLY COLLECTION')),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Visibility(
               visible: loan,
               child: AnimatedContainer(
                 color: shadeprimaryColor,
                 duration: const Duration(seconds: 3),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => PLoanToOtherGroups()));
-                      },
-                      child: const SizedBox(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Card(
-                          child: Center(child: Text('GROUP LOAN')),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => PLoanToOtherGroups()));
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('GROUP LOAN')),
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => PresidentBankLoan()));
-                      },
-                      child: const SizedBox(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Card(
-                          child: Center(child: Text('BANK LOAN')),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => PresidentBankLoan()));
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('BANK LOAN')),
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => PresidentLoan()));
-                      },
-                      child: const SizedBox(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Card(
-                          child: Center(child: Text('MICRO FINANCE LOAN')),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => PresidentLoan()));
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('MICRO FINANCE LOAN')),
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => const LoanToNonMember()));
-                      },
-                      child: const SizedBox(
-                        width: double.maxFinite,
-                        height: 45,
-                        child: Card(
-                          child: Center(child: Text('NON-MEMBER LOAN')),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => const LoanToNonMember()));
+                        },
+                        child: const SizedBox(
+                          width: double.maxFinite,
+                          height: 45,
+                          child: Card(
+                            child: Center(child: Text('NON-MEMBER LOAN')),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
+            ),
+            const SizedBox(
+              height: 5,
             ),
             Row(
               children: [
@@ -474,20 +572,23 @@ class _PresidentHomeState extends State<PresidentHome> {
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.all(5),
-                      color: primaryColor,
+                      margin: const EdgeInsets.only(left: 5),
+                      decoration: containerStylePresident,
                       padding: const EdgeInsets.all(30),
                       child: const Center(
                         child: Text(
-                          "Other Features",
+                          "OTHERS",
                           style: TextStyle(
                               fontSize: 16,
-                              color: Color.fromARGB(255, 33, 32, 32),
+                              color: Color.fromARGB(255, 249, 246, 246),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  width: 5,
                 ),
                 Expanded(
                   child: InkWell(
@@ -499,20 +600,23 @@ class _PresidentHomeState extends State<PresidentHome> {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(30),
-                      margin: const EdgeInsets.all(5),
-                      color: primaryColor,
-                      child: const Center(
+                      margin: const EdgeInsets.only(right: 5),
+                      decoration: containerStylePresident,
+                      child: Center(
                           child: Text(
-                        'Configuration',
-                        style: TextStyle(
+                        'Configuration'.toUpperCase(),
+                        style: const TextStyle(
                             fontSize: 16,
-                            color: Color.fromARGB(255, 33, 32, 32),
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontWeight: FontWeight.bold),
                       )),
                     ),
                   ),
                 )
               ],
+            ),
+            const SizedBox(
+              height: 5,
             ),
             InkWell(
               onTap: () {
@@ -523,8 +627,9 @@ class _PresidentHomeState extends State<PresidentHome> {
                 );
               },
               child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 width: double.maxFinite,
-                color: primaryColor,
+                decoration: containerStylePresident,
                 child: Row(
                   children: [
                     const Image(
@@ -540,10 +645,10 @@ class _PresidentHomeState extends State<PresidentHome> {
                             height: 5,
                           ),
                           Text(
-                            "Reports",
+                            "REPORTS",
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Color.fromARGB(255, 96, 92, 92),
+                                color: Color.fromARGB(255, 250, 249, 249),
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

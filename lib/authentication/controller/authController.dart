@@ -108,7 +108,7 @@ class AuthController extends ChangeNotifier {
         userStatus('member');
         var data = await jsonDecode(response.body);
         await saveLogin(data);
-        print(response.body);
+        // print(response.body);
         Fluttertoast.showToast(msg: 'Success');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (ctx) => const MemberHome()),
@@ -170,7 +170,7 @@ class AuthController extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.signupmember, body: map);
-      print(response.body);
+      // print(response.body);
       if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(
@@ -195,7 +195,7 @@ class AuthController extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.changepassword, body: map);
-      print(response.body);
+      // print(response.body);
       if (response.body.contains('success')) {
         Fluttertoast.showToast(msg: "Password Changed");
         Navigator.of(context).pushAndRemoveUntil(
@@ -212,7 +212,7 @@ class AuthController extends ChangeNotifier {
   Future getunits() async {
     try {
       http.Response response = await http.get(AuthLinks.getunits);
-      print(response.body);
+      // print(response.body);
     } catch (e) {
       print(e);
     }
@@ -232,7 +232,7 @@ class AuthController extends ChangeNotifier {
   }
 
   String presidentid = '';
-  savePresidentDetails({required List<dynamic> value}) async {
+  Future savePresidentDetails({required List<dynamic> value}) async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     presidentid = value[1]['logdata']['presidentid'].toString();
@@ -317,7 +317,7 @@ class AuthController extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.signuppresident, body: map);
-      print(response.body);
+      // print(response.body);
       if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         // var value = jsonDecode(response.body);
@@ -350,7 +350,7 @@ class AuthController extends ChangeNotifier {
       if (response.body.contains('Success')) {
         List<dynamic> data = jsonDecode(response.body);
         saveUnitDetails(value: data);
-        await savePresidentDetails(value: data);
+        // await savePresidentDetails(value: data);
         Fluttertoast.showToast(msg: 'Success');
         ProgressDialog.hide(context);
 
@@ -431,8 +431,8 @@ class AuthController extends ChangeNotifier {
 
   setunitid(va) {
     unitid = va;
-    print(unitid);
-    print(unitname);
+    // print(unitid);
+    // print(unitname);
     notifyListeners();
   }
 }

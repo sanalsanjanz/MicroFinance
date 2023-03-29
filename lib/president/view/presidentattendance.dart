@@ -23,8 +23,9 @@ class _PresidentAttendanceState extends State<PresidentAttendance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Attendance'),
         backgroundColor: primaryColor,
-        toolbarHeight: 10,
+        // toolbarHeight: 10,
       ),
       body: Consumer<PresidentController>(builder: (context, val, chi) {
         return Column(
@@ -91,12 +92,18 @@ class _PresidentAttendanceState extends State<PresidentAttendance> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await val.attendancelist(context);
-              },
-              child: const Text("Save Attendance"),
-            )
+            SizedBox(
+              height: 40,
+              width: MediaQuery.of(context).size.width / 2,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+                onPressed: () async {
+                  await val.attendancelist(context);
+                },
+                child: const Text('SAVE'),
+              ),
+            ),
+            const SizedBox(height: 15)
           ],
         );
       }),

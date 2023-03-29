@@ -43,12 +43,17 @@ class AuthLinks {
   static var getreport = Uri.parse('${baseUrl}Unit/unit_memberreport');
   static var unitaddexpense = Uri.parse('${baseUrl}Unit/addexpense');
   static var addexternalmember = Uri.parse('${baseUrl}Unit/addexternalmember');
-  static var getaccountinghead = Uri.parse('${baseUrl}Unit/getaccountinghead');
+  static var getUnitaccountinghead =
+      Uri.parse('${baseUrl}Unit/getaccountinghead');
   static var addotherincome = Uri.parse('${baseUrl}Unit/addotherincome');
-  //Presidentgetaccountinghead
   static var attendancelist = Uri.parse('${baseUrl}President/attendancelist');
+  static var getPresidentaccountinghead =
+      Uri.parse('${baseUrl}President/getaccountinghead');
   static var attendance = Uri.parse('${baseUrl}President/attendance');
+  static var addaccountingheadPres =
+      Uri.parse('${baseUrl}President/addaccountinghead');
   static var sambhadyam = Uri.parse('${baseUrl}President/sambhadyam');
+  static var changePresident = Uri.parse('${baseUrl}President/changepresident');
 
   static var addsambhadyam = Uri.parse('${baseUrl}President/addsambhadyam');
   static var closeunitloan = Uri.parse('${baseUrl}President/closeunitloan');

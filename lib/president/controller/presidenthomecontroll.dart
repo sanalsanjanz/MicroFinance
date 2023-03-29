@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
+import 'package:sacco_management/authentication/controller/authController.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
 import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
@@ -45,7 +47,7 @@ class PresidentController extends ChangeNotifier {
 
     messagecount = preferences.getString('pmessagecount').toString();
     phone = preferences.getString('pphno').toString();
-    password = preferences.getString('ppasswords').toString();
+    password = preferences.getString('ppassword').toString();
     notifyListeners();
   }
 
@@ -107,17 +109,20 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getDataa() async {
+  Future getDataa(BuildContext context) async {
+    await getsaved();
     var map = <String, dynamic>{};
-    map['uphone'] = '9995959595'; //phone;
-    map['password'] = '012'; // password;
+    map['uphone'] = phone;
+    map['password'] = password;
 
     try {
       http.Response response =
           await http.post(AuthLinks.signinpresident, body: map);
       if (response.body.contains('Success')) {
-        await getsaved();
         var data = jsonDecode(response.body);
+        await Provider.of<AuthController>(context, listen: false)
+            .savePresidentDetails(value: data)
+            .then((value) => getsaved());
         return data;
         // return result;
       } else if (response.body.contains('invalid password')) {
@@ -133,7 +138,7 @@ class PresidentController extends ChangeNotifier {
     for (int i = 0; i <= memmbers.length; i++) {
       attend.insert(i, false);
     }
-    print(attend);
+    // print(attend);
   }
 
   List<bool> attend = [];
@@ -613,12 +618,12 @@ class PresidentController extends ChangeNotifier {
         var data = jsonDecode(response.body);
         var length = data[0]['memberdata'].length;
         for (int i = 0; i < length; i++) {
-          print(data[0]['memberdata'][i]);
+          // print(data[0]['memberdata'][i]);
           memmbers.add(DropDownValueModel(
               name: data[0]['memberdata'][i]['membername'],
               value: data[0]['memberdata'][i]['memberid']));
         }
-        print(memmbers);
+        // print(memmbers);
 
         // return result;
       } else {}
@@ -640,12 +645,12 @@ class PresidentController extends ChangeNotifier {
         var data = jsonDecode(response.body);
         var length = data[0]['memberdata'].length;
         for (int i = 0; i < length; i++) {
-          print(data[0]['memberdata'][i]);
+          // print(data[0]['memberdata'][i]);
           memmbpassbook.add(DropDownValueModel(
               name: data[0]['memberdata'][i]['membername'],
               value: data[0]['memberdata'][i]['passbookno']));
         }
-        print(memmbers);
+        // print(memmbers);
 
         // return result;
       } else {}
@@ -690,6 +695,12 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  String monthlyCollectionAmount = '0';
+  setmonthlyCollectionAmount(value) {
+    monthlyCollectionAmount = value;
+    notifyListeners();
+  }
+
   addsavingsdata({required String id}) {
     /* 
     Map<String, dynamic> maps = <String, dynamic>{};
@@ -702,7 +713,7 @@ class PresidentController extends ChangeNotifier {
       savingsdata.add(savingsAmount);
     }
 
-    print(savingsdata);
+    // print(savingsdata);
 
     notifyListeners();
   }
@@ -1154,6 +1165,31 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getPresidentAccountingHead() async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.getPresidentaccountinghead, body: map);
+      if (response.body.contains('expensedata') ||
+          response.body.contains('incomedata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
   String externalLoanamount = '0';
   String externalLoanperiod = '0';
   String externalLoaninterest = '0';
@@ -1213,6 +1249,66 @@ class PresidentController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'something went wrong');
       }
     } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future changePresident(BuildContext context, String? memberid) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['presidentid'] = presidentid;
+    map['memberid'] = memberid;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.changePresident, body: map);
+      if (response.body.contains('Success')) {
+        Fluttertoast.showToast(msg: 'successfully changed president');
+        await getDataa(context);
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future addAccountingHead(
+      BuildContext context, String? type, String? accountinghead) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.addaccountingheadPres, body: map);
+      if (response.body.contains('Accounting head added')) {
+        Fluttertoast.showToast(msg: 'successfully changed president');
+        await getPresidentAccountingHead();
+        ProgressDialog.hide(context);
+        /*  Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false); */
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
       print(e);
     }
     notifyListeners();

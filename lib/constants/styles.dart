@@ -9,5 +9,9 @@ BoxDecoration containerStyle = BoxDecoration(
   color: memberPrimary,
   borderRadius: BorderRadius.circular(10),
 );
+BoxDecoration containerStylePresident = BoxDecoration(
+  color: primaryColor,
+  borderRadius: BorderRadius.circular(10),
+);
 TextStyle title =
     const TextStyle(color: Colors.white, fontWeight: FontWeight.bold);

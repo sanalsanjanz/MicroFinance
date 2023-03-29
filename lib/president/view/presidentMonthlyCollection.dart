@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
 
-class UnitSavings extends StatelessWidget {
-  UnitSavings({super.key});
+class PresientMonthlyCollection extends StatelessWidget {
+  PresientMonthlyCollection({super.key});
   TextEditingController amoutController = TextEditingController();
 
   @override
@@ -15,7 +15,7 @@ class UnitSavings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: const Text('Savings'),
+        title: const Text('Monthly Collection'),
       ),
       body: Column(
         children: [
@@ -49,7 +49,7 @@ class UnitSavings extends StatelessWidget {
                                   Expanded(
                                       child: TextField(
                                     onChanged: (va) {
-                                      value.setSavingsAmount(va);
+                                      value.setmonthlyCollectionAmount(va);
                                     },
                                     // controller: amoutController,
                                     keyboardType: TextInputType.number,
@@ -58,10 +58,7 @@ class UnitSavings extends StatelessWidget {
                                   )),
                                   CupertinoButton(
                                     child: const Text("Add"),
-                                    onPressed: () async {
-                                      await value
-                                          .demoaddSavings(data['memberid']);
-                                    },
+                                    onPressed: () async {},
                                   )
                                 ],
                               ),
@@ -80,14 +77,12 @@ class UnitSavings extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 45,
+                      height: 55,
                       width: MediaQuery.of(context).size.width / 2,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor),
-                        onPressed: () {
-                          value.addsambhadyam(context);
-                        },
+                        onPressed: () {},
                         child: const Text('SAVE'),
                       ),
                     ),

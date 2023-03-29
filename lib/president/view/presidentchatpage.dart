@@ -21,7 +21,7 @@ class _PresidentChatState extends State<PresidentChat> {
       ),
       body: Consumer<PresidentController>(builder: (context, val, child) {
         return FutureBuilder(
-            future: val.getDataa(),
+            future: val.getDataa(context),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
