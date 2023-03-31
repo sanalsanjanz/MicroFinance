@@ -20,10 +20,10 @@ class PresidentController extends ChangeNotifier {
   String presidentid = '';
   String phone = '';
   String password = '';
-
   String name = '';
   String messagecount = '';
   String passbookno = '';
+  String memberid = '';
   var date = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   String formatted = '';
@@ -46,6 +46,7 @@ class PresidentController extends ChangeNotifier {
     passbookno = preferences.getString('ppassbookNo').toString();
 
     messagecount = preferences.getString('pmessagecount').toString();
+    memberid = preferences.getString('pmemberid').toString();
     phone = preferences.getString('pphno').toString();
     password = preferences.getString('ppassword').toString();
     notifyListeners();
@@ -330,6 +331,7 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  double payunitAmount = 0;
   Future sambhadyam() async {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
@@ -337,6 +339,9 @@ class PresidentController extends ChangeNotifier {
       http.Response response = await http.post(AuthLinks.sambhadyam, body: map);
       if (response.body.contains('memberdata')) {
         var data = jsonDecode(response.body);
+        var savings = data[1]['sambhadyam'];
+        payunitAmount = int.parse(savings) * (15 / 100);
+        notifyListeners();
         return data;
       } else {}
     } catch (e) {
@@ -721,6 +726,7 @@ class PresidentController extends ChangeNotifier {
   addExpense(
       {required String reason,
       required String amount,
+      required String accountinghead,
       required String date,
       required BuildContext context}) async {
     ProgressDialog.show(context: context, status: 'Adding Expense');
@@ -729,7 +735,7 @@ class PresidentController extends ChangeNotifier {
     map['date'] = date;
     map['reason'] = reason;
     map['amount'] = amount;
-    map['acchead'] = 'Sambadhyam';
+    map['acchead'] = accountinghead;
 
     try {
       http.Response response = await http.post(AuthLinks.expense, body: map);
@@ -745,6 +751,86 @@ class PresidentController extends ChangeNotifier {
         ProgressDialog.hide(context);
 
         Fluttertoast.showToast(msg: 'Failed to add expense');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+
+    notifyListeners();
+  }
+
+  payUnit({required String date, required BuildContext context}) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['date'] = date;
+    map['amount'] = payunitAmount.toString();
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presunitpay, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'Failed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+
+    notifyListeners();
+  }
+
+  updatePresidentPassword(
+      {required String newpassword, required BuildContext context}) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['npass'] = newpassword;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.updatePressidentPassword, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'Failed');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const PresidentHome(),
@@ -1165,6 +1251,8 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<DropDownValueModel> income = [];
+  List<DropDownValueModel> expense = [];
   Future getPresidentAccountingHead() async {
     var map = <String, dynamic>{};
 
@@ -1175,6 +1263,25 @@ class PresidentController extends ChangeNotifier {
       if (response.body.contains('expensedata') ||
           response.body.contains('incomedata')) {
         var data = jsonDecode(response.body);
+        if (response.body.contains('expensedata')) {
+          var length = data[0]['expensedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            expense.add(DropDownValueModel(
+                name: data[0]['expensedata'][i]['head'],
+                value: data[0]['expensedata'][i]['head']));
+          }
+          notifyListeners();
+        } else if (response.body.contains('incomedata')) {
+          var length = data[1]['incomedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            income.add(DropDownValueModel(
+                name: data[1]['incomedata'][i]['head'],
+                value: data[1]['incomedata'][i]['head']));
+          }
+          notifyListeners();
+        }
 
         return data;
         // return result;
@@ -1295,7 +1402,7 @@ class PresidentController extends ChangeNotifier {
       http.Response response =
           await http.post(AuthLinks.addaccountingheadPres, body: map);
       if (response.body.contains('Accounting head added')) {
-        Fluttertoast.showToast(msg: 'successfully changed president');
+        Fluttertoast.showToast(msg: 'successfully added');
         await getPresidentAccountingHead();
         ProgressDialog.hide(context);
         /*  Navigator.of(context).pushAndRemoveUntil(
@@ -1309,6 +1416,178 @@ class PresidentController extends ChangeNotifier {
       }
     } catch (e) {
       ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future getSHGLoanDetails() async {
+    var map = <String, dynamic>{};
+
+    map['presidentid'] = presidentid;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presshgloandata, body: map);
+      if (response.body.contains('loandata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future presidentshgloanIntpaymentdet() async {
+    var map = <String, dynamic>{};
+
+    map['memberid'] = memberid; //'178'; //
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presshgloanIntPaymentdet, body: map);
+      if (response.body.contains('loandata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  bool intresest = true;
+  bool amount = false;
+  setinterestclicked() {
+    amount = false;
+    intresest = true;
+
+    notifyListeners();
+  }
+
+  setamountclicked() {
+    intresest = false;
+    amount = true;
+
+    notifyListeners();
+  }
+
+  Future getPresidentShgloanPaymentDet() async {
+    var map = <String, dynamic>{};
+
+    map['memberid'] = memberid; // '178'; // memberid;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.shgloanamountpaymentdetails, body: map);
+      if (response.body.contains('loanid')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future getPresidentUnitLoanData() async {
+    var map = <String, dynamic>{};
+
+    map['presidentid'] = presidentid;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.shgunitloandata, body: map);
+      if (response.body.contains('loandata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future presidentunitLoanInterestPaymentData() async {
+    var map = <String, dynamic>{};
+
+    map['presidentid'] = presidentid;
+    try {
+      http.Response response = await http
+          .post(AuthLinks.presidentunitloaninterestpayment, body: map);
+      if (response.body.contains('loandata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  bool isintresest = true;
+  bool isamount = false;
+  issetinterestclicked() {
+    isamount = false;
+    isintresest = true;
+
+    notifyListeners();
+  }
+
+  issetamountclicked() {
+    isintresest = false;
+    isamount = true;
+
+    notifyListeners();
+  }
+
+  Future presidentunitLoanPayment() async {
+    var map = <String, dynamic>{};
+
+    map['presidentid'] = presidentid;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presunitloanpaymentdata, body: map);
+      if (response.body.contains('loanid')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
       print(e);
     }
     notifyListeners();

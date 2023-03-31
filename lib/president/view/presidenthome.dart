@@ -4,7 +4,7 @@ import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
 import 'package:sacco_management/president/view/addMember.dart';
 import 'package:sacco_management/president/view/changePresident.dart';
-import 'package:sacco_management/president/view/memeberExplore.dart';
+import 'package:sacco_management/president/view/presidentExplore.dart';
 import 'package:sacco_management/president/view/presidentConfiguration.dart';
 import 'package:sacco_management/president/view/presidentExpense.dart';
 import 'package:sacco_management/president/view/presidentMonthlyCollection.dart';
@@ -312,7 +312,7 @@ class _PresidentHomeState extends State<PresidentHome> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (ctx) => const MemberExplore(),
+                            builder: (ctx) => const PresientExplore(),
                           ),
                         );
                       },

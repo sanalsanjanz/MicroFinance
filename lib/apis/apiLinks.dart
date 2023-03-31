@@ -40,21 +40,39 @@ class AuthLinks {
       Uri.parse('${baseUrl}Member/unitloaninterestpayment');
   static var unitloanpayment = Uri.parse('${baseUrl}Member/unitloanpayment');
   //Unit
+
   static var getreport = Uri.parse('${baseUrl}Unit/unit_memberreport');
   static var unitaddexpense = Uri.parse('${baseUrl}Unit/addexpense');
   static var addexternalmember = Uri.parse('${baseUrl}Unit/addexternalmember');
   static var getUnitaccountinghead =
       Uri.parse('${baseUrl}Unit/getaccountinghead');
   static var addotherincome = Uri.parse('${baseUrl}Unit/addotherincome');
+
+  //pressident//unitloanpayment
+  static var presunitpay = Uri.parse('${baseUrl}President/payunit');
+  static var presunitloanpaymentdata =
+      Uri.parse('${baseUrl}President/shgunitloanpaymentdata');
+  static var shgunitloandata = Uri.parse('${baseUrl}President/shgunitloandata');
+  static var presidentunitloaninterestpayment =
+      Uri.parse('${baseUrl}President/unitloaninterestpayment');
+  static var presunitloanpayment =
+      Uri.parse('${baseUrl}President/unitloanpayment');
   static var attendancelist = Uri.parse('${baseUrl}President/attendancelist');
   static var getPresidentaccountinghead =
       Uri.parse('${baseUrl}President/getaccountinghead');
   static var attendance = Uri.parse('${baseUrl}President/attendance');
+  static var presshgloandata = Uri.parse('${baseUrl}President/shgloandata');
+  static var presshgloanIntPaymentdet =
+      Uri.parse('${baseUrl}President/shgloaninterestpaymentdetails');
+  static var shgloanamountpaymentdetails =
+      Uri.parse('${baseUrl}President/shgloanamountpaymentdetails');
   static var addaccountingheadPres =
       Uri.parse('${baseUrl}President/addaccountinghead');
   static var sambhadyam = Uri.parse('${baseUrl}President/sambhadyam');
   static var changePresident = Uri.parse('${baseUrl}President/changepresident');
 
+  static var updatePressidentPassword =
+      Uri.parse('${baseUrl}President/changepassword');
   static var addsambhadyam = Uri.parse('${baseUrl}President/addsambhadyam');
   static var closeunitloan = Uri.parse('${baseUrl}President/closeunitloan');
   static var momrecord = Uri.parse('${baseUrl}President/addmomrecord');

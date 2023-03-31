@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +15,21 @@ class PresidentExpense extends StatefulWidget {
 }
 
 class _PresidentExpenseState extends State<PresidentExpense> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<PresidentController>(context, listen: false).expense.isEmpty
+        ? Provider.of<PresidentController>(context, listen: false)
+            .getPresidentAccountingHead()
+        : '';
+  }
+
   TextEditingController amoutController = TextEditingController();
 
   TextEditingController date2 = TextEditingController();
 
   TextEditingController reasonController = TextEditingController();
+  String accountingHeader = '';
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +57,26 @@ class _PresidentExpenseState extends State<PresidentExpense> {
                   Expanded(
                     child: TextField(
                       decoration: const InputDecoration(
-                          hintText: 'Add Expense resaon here...'),
+                          hintText: 'Add Expense reason here...'),
                       maxLines: 3,
                       controller: reasonController,
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  const Text('Accounting head'),
+                  const VerticalDivider(),
+                  Expanded(
+                    child: DropDownTextField(
+                      dropDownList: value.expense,
+                      onChanged: (item) {
+                        setState(() {
+                          accountingHeader = item.value;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -100,8 +128,9 @@ class _PresidentExpenseState extends State<PresidentExpense> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  value.addExpense(
+                onPressed: () async {
+                  await value.addExpense(
+                      accountinghead: accountingHeader,
                       context: context,
                       reason: reasonController.text,
                       amount: amoutController.text,
