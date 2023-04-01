@@ -332,6 +332,7 @@ class PresidentController extends ChangeNotifier {
   }
 
   double payunitAmount = 0;
+  String paysessAmount = '0';
   Future sambhadyam() async {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
@@ -340,6 +341,7 @@ class PresidentController extends ChangeNotifier {
       if (response.body.contains('memberdata')) {
         var data = jsonDecode(response.body);
         var savings = data[1]['sambhadyam'];
+        paysessAmount = data[6]['sessfund'];
         payunitAmount = int.parse(savings) * (15 / 100);
         notifyListeners();
         return data;
@@ -809,8 +811,49 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  paySessToUnit({required String date, required BuildContext context}) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['date'] = date;
+    map['amount'] = paysessAmount.toString();
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentPaysessfund, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'Failed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+
+    notifyListeners();
+  }
+
   updatePresidentPassword(
       {required String newpassword, required BuildContext context}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     ProgressDialog.show(context: context, status: 'Please wait');
     var map = <String, dynamic>{};
     map['passbookno'] = passbookno;
@@ -819,9 +862,12 @@ class PresidentController extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.updatePressidentPassword, body: map);
-      if (response.body.contains('Success')) {
+      if (response.body
+          .contains("You have successfully changed your password!!!!")) {
+        await prefs.setString('ppassword', newpassword);
         ProgressDialog.hide(context);
-        Fluttertoast.showToast(msg: 'success');
+        Fluttertoast.showToast(
+            msg: "You have successfully changed your password!!!!");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const PresidentHome(),

@@ -4,6 +4,7 @@ import 'package:sacco_management/president/view/memberAddAccountingHead.dart';
 import 'package:sacco_management/president/view/presidentProfit.dart';
 import 'package:sacco_management/president/view/presidentShgPayments.dart';
 import 'package:sacco_management/president/view/presidentUnitLoans.dart';
+import 'package:sacco_management/president/view/presidentUpdatePassword.dart';
 
 class PresientExplore extends StatefulWidget {
   const PresientExplore({super.key});
@@ -133,10 +134,17 @@ class _PresientExploreState extends State<PresientExplore> {
                 title: const Text('Profit'),
               ),
             ),
-            const Card(
+            Card(
               child: ListTile(
-                subtitle: Text('update your password'),
-                title: Text('Update Password'),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const PresidentUpdatePassword(),
+                    ),
+                  );
+                },
+                subtitle: const Text('update your password'),
+                title: const Text('Update Password'),
               ),
             ),
           ],

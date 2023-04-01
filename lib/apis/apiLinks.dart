@@ -50,6 +50,8 @@ class AuthLinks {
 
   //pressident//unitloanpayment
   static var presunitpay = Uri.parse('${baseUrl}President/payunit');
+  static var presidentPaysessfund =
+      Uri.parse('${baseUrl}President/paysessfund');
   static var presunitloanpaymentdata =
       Uri.parse('${baseUrl}President/shgunitloanpaymentdata');
   static var shgunitloandata = Uri.parse('${baseUrl}President/shgunitloandata');

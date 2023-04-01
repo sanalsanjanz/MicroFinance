@@ -9,6 +9,7 @@ import 'package:sacco_management/president/view/pInsurance.dart';
 import 'package:sacco_management/president/view/pMedicalAid.dart';
 import 'package:sacco_management/president/view/pSessFund.dart';
 import 'package:sacco_management/president/view/presidentFestivalfund.dart';
+import 'package:sacco_management/president/view/presidentGiveSessToUnit.dart';
 import 'package:sacco_management/widgets/reusableOptionCard.dart';
 
 class PresidentOptionalFeatures extends StatefulWidget {
@@ -26,6 +27,8 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
     Provider.of<PresidentConfigController>(context, listen: false)
         .getPresidentConfig();
   }
+
+  bool sessClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +62,92 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                 subtitle: 'view Sess fund',
                 letter: 'S',
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => PSessFund(),
-                    ),
-                  );
+                  setState(() {
+                    sessClicked = true;
+                  });
                 }),
+            Visibility(
+              visible: sessClicked,
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                // color: shadeprimaryColor,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => PSessFund(),
+                          ),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('ADD SESS FUND'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const PresidentGiveSessToUnit(),
+                          ),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('GIVE SESS TO UNIT'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        /*   Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const PresidentUnitLoans(),
+                          ),
+                        ); */
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('VIEW SESS FUND'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        /*      Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const PresidentGiveSessToUnit(),
+                          ),
+                        ); */
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('PAY SESS FUND'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             PresidentOptionalCard(
                 color: primaryColor,
                 visibility: val.medi == 'true' ? true : false,
