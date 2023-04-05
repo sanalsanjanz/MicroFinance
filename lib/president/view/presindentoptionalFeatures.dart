@@ -9,7 +9,10 @@ import 'package:sacco_management/president/view/pInsurance.dart';
 import 'package:sacco_management/president/view/pMedicalAid.dart';
 import 'package:sacco_management/president/view/pSessFund.dart';
 import 'package:sacco_management/president/view/presidentFestivalfund.dart';
+import 'package:sacco_management/president/view/presidentGiveMeddicalAidToUnit.dart';
 import 'package:sacco_management/president/view/presidentGiveSessToUnit.dart';
+import 'package:sacco_management/president/view/presidentViewSessFund.dart';
+import 'package:sacco_management/president/view/presidentpaysess.dart';
 import 'package:sacco_management/widgets/reusableOptionCard.dart';
 
 class PresidentOptionalFeatures extends StatefulWidget {
@@ -63,12 +66,14 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                 letter: 'S',
                 onTap: () {
                   setState(() {
-                    sessClicked = true;
+                    sessClicked = !sessClicked;
                   });
                 }),
             Visibility(
               visible: sessClicked,
-              child: Container(
+              child: AnimatedContainer(
+                color: shadeprimaryColor,
+                duration: const Duration(seconds: 3),
                 margin: const EdgeInsets.all(10),
                 // color: shadeprimaryColor,
                 child: Column(
@@ -112,11 +117,11 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                     ),
                     InkWell(
                       onTap: () {
-                        /*   Navigator.of(context).push(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => const PresidentUnitLoans(),
+                            builder: (ctx) => PresidentViewSessFund(),
                           ),
-                        ); */
+                        );
                       },
                       child: const Card(
                         child: Padding(
@@ -129,11 +134,11 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                     ),
                     InkWell(
                       onTap: () {
-                        /*      Navigator.of(context).push(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => const PresidentGiveSessToUnit(),
+                            builder: (ctx) => PresidentPaySessFund(),
                           ),
-                        ); */
+                        );
                       },
                       child: const Card(
                         child: Padding(
@@ -161,6 +166,57 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                     ),
                   );
                 }),
+            Visibility(
+              visible: sessClicked,
+              child: AnimatedContainer(
+                color: shadeprimaryColor,
+                duration: const Duration(seconds: 3),
+                margin: const EdgeInsets.all(10),
+                // color: shadeprimaryColor,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => PMedicalAid(),
+                          ),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('ADD MEDICAL AID'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) =>
+                                const PresidentGiveMedicalAidToUnit(),
+                          ),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('GIVE MEDICAL AID TO UNIT'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             PresidentOptionalCard(
                 color: primaryColor,
                 visibility: val.insu == 'true' ? true : false,

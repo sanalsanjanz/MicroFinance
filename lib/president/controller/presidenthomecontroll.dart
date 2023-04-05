@@ -333,6 +333,7 @@ class PresidentController extends ChangeNotifier {
 
   double payunitAmount = 0;
   String paysessAmount = '0';
+  String paymedicalaid = '0';
   Future sambhadyam() async {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
@@ -342,6 +343,7 @@ class PresidentController extends ChangeNotifier {
         var data = jsonDecode(response.body);
         var savings = data[1]['sambhadyam'];
         paysessAmount = data[6]['sessfund'];
+        paymedicalaid = data[5]['medicalaid'];
         payunitAmount = int.parse(savings) * (15 / 100);
         notifyListeners();
         return data;
@@ -841,6 +843,47 @@ class PresidentController extends ChangeNotifier {
       } else {
         ProgressDialog.hide(context);
 
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+
+    notifyListeners();
+  }
+
+  payMedicalAidToUnit(
+      {required String date, required BuildContext context}) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['date'] = date;
+    map['amount'] = paysessAmount.toString();
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentPaymedicalaid, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body
+          .contains('There is no medical aid to pay unit')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'There is no medical aid to pay unit');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'something went wrong');
       }
     } catch (e) {
@@ -1407,6 +1450,90 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future transferSesstoMember(
+      {required String sessid,
+      required String membpassbook,
+      required String amounts,
+      required String sessdate,
+      required String periods,
+      required String shgpassbook,
+      required BuildContext context}) async {
+    DateTime today = DateTime.now();
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['memberpassbookno'] = membpassbook;
+    map['sessfunddate'] = sessdate;
+    map['amount'] = amounts;
+    map['period'] = periods;
+    map['shgpassbookno'] = shgpassbook;
+    map['transferdate'] = date;
+    map['sessid'] = sessid;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.transfersessfundmemberpres, body: map);
+      if (response.body.contains("SESS Fund Transfered")) {
+        Fluttertoast.showToast(msg: 'SESS Fund Transfered');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(msg: 'failed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'connection timeout');
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future transferSesstoUnit(
+      {required String shgpassbook, required BuildContext context}) async {
+    DateTime today = DateTime.now();
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgpassbook;
+    map['transferdate'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.transfersessfundpresident, body: map);
+      if (response.body.contains("SESS Fund Transfered")) {
+        Fluttertoast.showToast(msg: 'SESS Fund Transfered');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(msg: 'failed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'connection timeout');
+      print(e);
+    }
+    notifyListeners();
+  }
+
   Future changePresident(BuildContext context, String? memberid) async {
     ProgressDialog.show(context: context, status: 'Please Wait');
     var map = <String, dynamic>{};
@@ -1475,6 +1602,50 @@ class PresidentController extends ChangeNotifier {
       http.Response response =
           await http.post(AuthLinks.presshgloandata, body: map);
       if (response.body.contains('loandata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future presidentViewSess() async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentViewsessfund, body: map);
+      if (response.body.contains('sessdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future presidentSessfundPayment() async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presisessfundpayment, body: map);
+      if (response.body.contains('sessdata')) {
         var data = jsonDecode(response.body);
         return data;
       } else {
