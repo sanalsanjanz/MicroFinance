@@ -12,6 +12,7 @@ import 'package:sacco_management/president/view/presidentFestivalfund.dart';
 import 'package:sacco_management/president/view/presidentGiveMeddicalAidToUnit.dart';
 import 'package:sacco_management/president/view/presidentGiveSessToUnit.dart';
 import 'package:sacco_management/president/view/presidentViewSessFund.dart';
+import 'package:sacco_management/president/view/presidentgiveinsurancetounit.dart';
 import 'package:sacco_management/president/view/presidentpaysess.dart';
 import 'package:sacco_management/widgets/reusableOptionCard.dart';
 
@@ -32,6 +33,8 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
   }
 
   bool sessClicked = false;
+  bool medicalaidClicked = false;
+  bool insuranceClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,9 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                 letter: 'S',
                 onTap: () {
                   setState(() {
+                    insuranceClicked = false;
                     sessClicked = !sessClicked;
+                    medicalaidClicked = false;
                   });
                 }),
             Visibility(
@@ -160,14 +165,14 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                 subtitle: 'medical aid details',
                 letter: 'M',
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => PMedicalAid(),
-                    ),
-                  );
+                  setState(() {
+                    sessClicked = false;
+                    insuranceClicked = false;
+                    medicalaidClicked = !medicalaidClicked;
+                  });
                 }),
             Visibility(
-              visible: sessClicked,
+              visible: medicalaidClicked,
               child: AnimatedContainer(
                 color: shadeprimaryColor,
                 duration: const Duration(seconds: 3),
@@ -224,12 +229,62 @@ class _PresidentOptionalFeaturesState extends State<PresidentOptionalFeatures> {
                 subtitle: 'insurance details',
                 letter: 'I',
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => PInsurance(),
-                    ),
-                  );
+                  setState(() {
+                    insuranceClicked = !insuranceClicked;
+                    sessClicked = false;
+                    medicalaidClicked = false;
+                  });
                 }),
+            Visibility(
+              visible: insuranceClicked,
+              child: AnimatedContainer(
+                color: shadeprimaryColor,
+                duration: const Duration(seconds: 3),
+                margin: const EdgeInsets.all(10),
+                // color: shadeprimaryColor,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => PInsurance(),
+                          ),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('ADD INSURANCE'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 1,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (ctx) =>
+                                  const PresidentGiveInsuranceToUnit()),
+                        );
+                      },
+                      child: const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                            child: Text('GIVE INSURANCE TO UNIT'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             PresidentOptionalCard(
                 color: primaryColor,
                 visibility: val.gra == 'true' ? true : false,

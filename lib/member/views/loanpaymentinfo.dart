@@ -155,8 +155,7 @@ class LoanPaymentInfo extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
                                               children: [
-                                                Text("(${data['loan_amt']})" ??
-                                                    'loading'),
+                                                Text("(${data['loan_amt']})"),
                                               ],
                                             )),
                                       ],

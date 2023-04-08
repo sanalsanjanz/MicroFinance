@@ -10,6 +10,7 @@ import 'package:sacco_management/apis/apiLinks.dart';
 import 'package:sacco_management/authentication/views/authentication.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
+import 'package:sacco_management/unit/views/unitHome.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -350,13 +351,14 @@ class AuthController extends ChangeNotifier {
       if (response.body.contains('Success')) {
         List<dynamic> data = jsonDecode(response.body);
         saveUnitDetails(value: data);
+        userStatus('unit');
         // await savePresidentDetails(value: data);
         Fluttertoast.showToast(msg: 'Success');
         ProgressDialog.hide(context);
 
-        /*   Navigator.of(context).pushAndRemoveUntil(
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (ctx) => const UnitHome()),
-            (route) => false); */
+            (route) => false);
         // return result;
       } else if (response.body.contains('invalid password')) {
         ProgressDialog.hide(context);

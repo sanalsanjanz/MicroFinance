@@ -334,6 +334,7 @@ class PresidentController extends ChangeNotifier {
   double payunitAmount = 0;
   String paysessAmount = '0';
   String paymedicalaid = '0';
+  String payinsurance = '0';
   Future sambhadyam() async {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
@@ -344,6 +345,7 @@ class PresidentController extends ChangeNotifier {
         var savings = data[1]['sambhadyam'];
         paysessAmount = data[6]['sessfund'];
         paymedicalaid = data[5]['medicalaid'];
+        // payinsurance = data[4]['insurance'];
         payunitAmount = int.parse(savings) * (15 / 100);
         notifyListeners();
         return data;
@@ -859,11 +861,52 @@ class PresidentController extends ChangeNotifier {
     var map = <String, dynamic>{};
     map['passbookno'] = passbookno;
     map['date'] = date;
-    map['amount'] = paysessAmount.toString();
+    map['amount'] = paymedicalaid.toString();
 
     try {
       http.Response response =
           await http.post(AuthLinks.presidentPaymedicalaid, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body
+          .contains('There is no medical aid to pay unit')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'There is no medical aid to pay unit');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+
+    notifyListeners();
+  }
+
+  payInsuranceToUnit(
+      {required String date, required BuildContext context}) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['date'] = date;
+    map['amount'] = payinsurance.toString();
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentTransferinsurance, body: map);
       if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'success');

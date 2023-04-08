@@ -9,6 +9,7 @@ import 'package:sacco_management/authentication/views/authentication.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
+import 'package:sacco_management/unit/views/unitHome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -55,6 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(builder: (ctx) => const PresidentHome()),
           (route) => false);
     } else if (user == 'unit') {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (ctx) => const UnitHome()),
+          (route) => false);
     } else if (user == 'reginal') {
     } else if (user == 'head') {
     } else {

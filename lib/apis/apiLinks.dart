@@ -49,6 +49,9 @@ class AuthLinks {
   static var addotherincome = Uri.parse('${baseUrl}Unit/addotherincome');
 
   //pressident//unitloanpayment
+  /* transferinsurance */
+  static var presidentTransferinsurance =
+      Uri.parse('${baseUrl}President/transferinsurance');
   static var presunitpay = Uri.parse('${baseUrl}President/payunit');
   static var presidentPaymedicalaid =
       Uri.parse('${baseUrl}President/paymedicalaid');
