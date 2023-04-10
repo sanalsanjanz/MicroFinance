@@ -45,7 +45,9 @@ class UnitControll extends ChangeNotifier {
         // return result;
       } else if (response.body.contains('invalid password')) {
       } else {}
-    } catch (e) {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Connection Timeout');
+    }
     notifyListeners();
   }
 
@@ -54,7 +56,7 @@ class UnitControll extends ChangeNotifier {
   Future getAccountingHead({required String type}) async {
     var map = <String, dynamic>{};
 
-    map['passbookno'] = passbookNo; // password;
+    map['passbookno'] = passbookNo;
 
     try {
       http.Response response =
@@ -159,6 +161,30 @@ class UnitControll extends ChangeNotifier {
       Fluttertoast.showToast(msg: e.toString());
 
       print(e);
+    }
+    notifyListeners();
+  }
+
+  Future getallSHG({
+    required BuildContext context,
+  }) async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookNo; // password;
+    map['unitid'] = unitId; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.getAllshgUnit, body: map);
+      if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
     notifyListeners();
   }

@@ -6,6 +6,7 @@ import 'package:sacco_management/unit/controllers/unitController.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
+import 'package:sacco_management/unit/views/unitSessfund.dart';
 import 'package:sacco_management/widgets/unitHomeCard.dart';
 
 class UnitHome extends StatefulWidget {
@@ -185,11 +186,11 @@ class _UnitHomeState extends State<UnitHome> {
                         ),
                         UnitHomeCard(
                             onTap: () {
-                              /*  Navigator.of(context).push(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (ctx) => const UnitExpense(),
+                                  builder: (ctx) => const UnitSessFund(),
                                 ),
-                              ); */
+                              );
                             },
                             title: 'SESS FUND',
                             description: 'Check your Sess activities',
