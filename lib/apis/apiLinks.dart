@@ -42,6 +42,16 @@ class AuthLinks {
   //Unit
 
   static var getreport = Uri.parse('${baseUrl}Unit/unit_memberreport');
+  static var unitFetchSessTotal =
+      Uri.parse('${baseUrl}Unit/paymentsessfundtransfer');
+  static var unitsessfundtransferRegion =
+      Uri.parse('${baseUrl}Unit/sessfundtransfer');
+  static var unitViewSessFund = Uri.parse('${baseUrl}Unit/viewsessfund');
+  static var transfersessfundunit =
+      Uri.parse('${baseUrl}Unit/transfersessfundunit');
+  static var unitpaySessFund = Uri.parse('${baseUrl}Unit/transfersessfund');
+  static var shgsessfundtransferRegion =
+      Uri.parse('${baseUrl}Unit/shgsessfundtransfer');
   static var getAllshgUnit = Uri.parse('${baseUrl}Unit/getallshg');
   static var unitaddexpense = Uri.parse('${baseUrl}Unit/addexpense');
   static var addexternalmember = Uri.parse('${baseUrl}Unit/addexternalmember');

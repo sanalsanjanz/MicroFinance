@@ -165,6 +165,8 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<DropDownValueModel> shglist = [];
+
   Future getallSHG({
     required BuildContext context,
   }) async {
@@ -178,6 +180,14 @@ class UnitControll extends ChangeNotifier {
           await http.post(AuthLinks.getAllshgUnit, body: map);
       if (response.body.contains('sdata')) {
         var data = jsonDecode(response.body);
+
+        var length = data[0]['sdata'].length;
+        for (int i = 0; i < length; i++) {
+          // print(data[0]['memberdata'][i]);
+          shglist.add(DropDownValueModel(
+              name: data[0]['sdata'][i]['shgname'],
+              value: data[0]['sdata'][i]['passbookno']));
+        }
         return data;
       } else {
         var data = [];
@@ -186,6 +196,190 @@ class UnitControll extends ChangeNotifier {
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
+    notifyListeners();
+  }
+
+  String unitsessAmount = '0';
+  Future tranfersesstoShg({
+    required BuildContext context,
+    required String shgPassbookno,
+  }) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgPassbookno;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.shgsessfundtransferRegion, body: map);
+      if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future unitViewSessFund({required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitViewSessFund, body: map);
+      if (response.body.contains('sessdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future fetchtotalSess() async {
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitFetchSessTotal, body: map);
+      if (response.body.contains('datas')) {
+        var data = jsonDecode(response.body);
+        unitsessAmount = data[0]['totalamt'].toString();
+        notifyListeners();
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future unitTransferSesstoShg(
+      {required BuildContext context,
+      required String sessid,
+      required String amount,
+      required String sessfunddate,
+      required String shgpassbookno,
+      required String transferdate,
+      required String period}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['sessid'] = sessid;
+    map['transferdate'] = transferdate;
+    map['period'] = period;
+    map['amount'] = amount;
+    map['sessfunddate'] = sessfunddate;
+    map['shgpassbookno'] = shgpassbookno;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.transfersessfundunit, body: map);
+      if (response.body.contains('SESSFund Transfered')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unittransferSesstoRegion(
+      {required BuildContext context, required String sessid}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['mid'] = sessid;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitsessfundtransferRegion, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitPaySessFund(
+      {required BuildContext context, required String sessid}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['mid'] = sessid;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitpaySessFund, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
     notifyListeners();
   }
 }
