@@ -35,8 +35,7 @@ class _UnitPaySessFundState extends State<UnitPaySessFund> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Items(
-                    value: Provider.of<UnitControll>(context, listen: false)
-                        .unitsessAmount,
+                    value: Provider.of<UnitControll>(context).unitsessAmount,
                     titile: 'Payment Amount'),
                 const Divider(color: Colors.transparent),
                 const Divider(color: Colors.transparent),

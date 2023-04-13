@@ -225,6 +225,31 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future unitshgmedicalAidTransfer({
+    required BuildContext context,
+    required String shgPassbookno,
+  }) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgPassbookno;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitshgmedicalaidtransfer, body: map);
+      if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
   Future unitViewSessFund({required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['unitpassbookno'] = passbookNo;
@@ -309,6 +334,59 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future addMedicalAidIndividual({
+    required BuildContext context,
+    required String name,
+    required String amount,
+    required String mobile,
+    required String place,
+  }) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['name'] = name;
+    map['amount'] = amount;
+    map['place'] = place;
+    map['mobile'] = mobile;
+    map['passbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitAddmedicalaidindividual, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added');
+      } else if (response.body.contains('Insufficient Medical Aid')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Insufficient Medical Aid');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
   Future unittransferSesstoRegion(
       {required BuildContext context, required String sessid}) async {
     var map = <String, dynamic>{};
@@ -346,16 +424,53 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future unitTransferMedicalAid(
+      {required BuildContext context, required String mid}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['mid'] = mid;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitmedicalaidtransfer, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
   Future unitPaySessFund(
       {required BuildContext context, required String sessid}) async {
     var map = <String, dynamic>{};
     ProgressDialog.show(context: context, status: 'Please wait');
 
-    map['mid'] = sessid;
+    map['amount'] = unitsessAmount;
     map['unitpassbookno'] = passbookNo;
     try {
       http.Response response =
-          await http.post(AuthLinks.unitpaySessFund, body: map);
+          await http.post(AuthLinks.transferUnitPayment, body: map);
       if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         Navigator.of(context).pushAndRemoveUntil(
