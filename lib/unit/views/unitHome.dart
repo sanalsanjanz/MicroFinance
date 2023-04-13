@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
+import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
@@ -157,11 +158,11 @@ class _UnitHomeState extends State<UnitHome> {
                         ),
                         UnitHomeCard(
                             onTap: () {
-                              /*  Navigator.of(context).push(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (ctx) => const UnitExpense(),
+                                  builder: (ctx) => const UnitBankLinkage(),
                                 ),
-                              ); */
+                              );
                             },
                             title: 'BANK LINKAGE',
                             description: 'Check your Bank activities',

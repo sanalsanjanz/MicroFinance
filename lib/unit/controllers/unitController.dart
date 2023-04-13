@@ -250,6 +250,28 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future viewUnitBankLinkageFromRegion({
+    required BuildContext context,
+  }) async {
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitViewbanklinkage, body: map);
+      if (response.body.contains('Success')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
   Future unitViewSessFund({required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['unitpassbookno'] = passbookNo;
@@ -308,6 +330,47 @@ class UnitControll extends ChangeNotifier {
       http.Response response =
           await http.post(AuthLinks.transfersessfundunit, body: map);
       if (response.body.contains('SESSFund Transfered')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future payBankLinkageRegion({
+    required BuildContext context,
+    required String loanid,
+    required String paydate,
+  }) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['loanid'] = loanid;
+    map['pdate'] = paydate;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitBanklinkagepayment, body: map);
+      if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
