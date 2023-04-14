@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
 import 'package:sacco_management/unit/views/unitBankLinkageFromRegion.dart';
+import 'package:sacco_management/unit/views/unitGiveBankLinkage.dart';
 
 class UnitBankLinkage extends StatelessWidget {
   const UnitBankLinkage({super.key});
@@ -49,9 +50,7 @@ class UnitBankLinkage extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => UnitBankLinkageFromRegion(
-                                shgpass: data['passbookno'],
-                              ),
+                              builder: (ctx) => UnitGiveBankLinkageMember(),
                             ),
                           );
                         },
