@@ -291,6 +291,25 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future unitViewGrants({required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = '701'; //passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitViewGrants, body: map);
+      if (response.body.contains('grantdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
   Future fetchtotalSess() async {
     var map = <String, dynamic>{};
     map['unitpassbookno'] = passbookNo;
@@ -370,6 +389,43 @@ class UnitControll extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.unitBanklinkagepayment, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitTransferGrant(
+      {required BuildContext context, required String grantid}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['grandit'] = grantid;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitTransferGrant, body: map);
       if (response.body.contains('Success')) {
         ProgressDialog.hide(context);
         Navigator.of(context).pushAndRemoveUntil(

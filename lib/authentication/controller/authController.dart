@@ -343,8 +343,8 @@ class AuthController extends ChangeNotifier {
     ProgressDialog.show(context: context, status: 'Please Wait');
 
     var map = <String, dynamic>{};
-    map['mobile'] = '9999699996'; //'9995959595'; //phone;
-    map['password'] = '1234'; // password;
+    map['mobile'] = phone; //'9995959595'; //phone;
+    map['password'] = password; // password;
 
     try {
       http.Response response = await http.post(AuthLinks.signinunit, body: map);

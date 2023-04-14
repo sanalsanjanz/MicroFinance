@@ -5,6 +5,7 @@ import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
 import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
+import 'package:sacco_management/unit/views/unitGrants.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
@@ -144,11 +145,11 @@ class _UnitHomeState extends State<UnitHome> {
                       children: [
                         UnitHomeCard(
                             onTap: () {
-                              /*  Navigator.of(context).push(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (ctx) => const UnitIncome(),
+                                  builder: (ctx) => const UnitGrants(),
                                 ),
-                              ); */
+                              );
                             },
                             title: 'GRANT',
                             description: 'Check your Grant activities',
