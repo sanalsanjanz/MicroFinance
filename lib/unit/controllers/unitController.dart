@@ -19,7 +19,7 @@ class UnitControll extends ChangeNotifier {
   String? messages = '';
   String? password = '';
   String? passbookNo = '';
-
+  // List<DropDownValueModel> shgList = [];
   void getdatas() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     unitName = sharedPreferences.getString('unit');
@@ -187,6 +187,7 @@ class UnitControll extends ChangeNotifier {
           shglist.add(DropDownValueModel(
               name: data[0]['sdata'][i]['shgname'],
               value: data[0]['sdata'][i]['passbookno']));
+          notifyListeners();
         }
         return data;
       } else {
@@ -416,24 +417,38 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future unitTransferGrant(
-      {required BuildContext context, required String grantid}) async {
+  Future transfergrantunit({
+    required BuildContext context,
+    required String grantid,
+    required String shgname,
+    required String type,
+    required String transdate,
+    required String amount,
+    required String gdate,
+    required String shgpassbook,
+  }) async {
     var map = <String, dynamic>{};
-    ProgressDialog.show(context: context, status: 'Please wait');
+    ProgressDialog.show(
+        context: context, status: 'Transfering Grant to $shgname');
 
-    map['grandit'] = grantid;
+    map['grantid'] = grantid;
+    map['transferdate'] = transdate;
+    map['type'] = type;
+    map['amount'] = amount;
+    map['grantdate'] = gdate;
+    map['shgpassbookno'] = shgpassbook;
     map['unitpassbookno'] = passbookNo;
     try {
       http.Response response =
-          await http.post(AuthLinks.unitTransferGrant, body: map);
-      if (response.body.contains('Success')) {
+          await http.post(AuthLinks.unitTransferGranttoShg, body: map);
+      if (response.body.contains('Grant Transfered')) {
         ProgressDialog.hide(context);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const UnitHome(),
             ),
             (route) => false);
-        Fluttertoast.showToast(msg: 'Transfered');
+        Fluttertoast.showToast(msg: 'Grant Transfered To $shgname');
       } else {
         ProgressDialog.hide(context);
 

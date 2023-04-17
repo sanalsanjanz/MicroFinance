@@ -42,6 +42,8 @@ class AuthLinks {
   //Unit
 
   static var getreport = Uri.parse('${baseUrl}Unit/unit_memberreport');
+  static var unitTransferGranttoShg =
+      Uri.parse('${baseUrl}Unit/transfergrantunit');
   static var unitTransferGrant = Uri.parse('${baseUrl}Unit/transfergrant');
   static var unitViewGrants = Uri.parse('${baseUrl}Unit/viewgrant');
   static var unitBanklinkagepayment =
