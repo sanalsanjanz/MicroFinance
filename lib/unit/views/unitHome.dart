@@ -9,6 +9,7 @@ import 'package:sacco_management/unit/views/unitGrants.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
+import 'package:sacco_management/unit/views/unitSavings.dart';
 import 'package:sacco_management/unit/views/unitSessfund.dart';
 import 'package:sacco_management/widgets/unitHomeCard.dart';
 
@@ -26,29 +27,113 @@ class _UnitHomeState extends State<UnitHome> {
     Provider.of<UnitControll>(context, listen: false).getdatas();
   }
 
+  Widget trasnsDivider = const Divider(
+    height: 5,
+    color: Colors.transparent,
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
+        // backgroundColor: shadeUnitColor,
         child: Consumer<UnitControll>(builder: (context, value, child) {
-          return ListView(
+          return Column(
             children: [
               DrawerHeader(
+                curve: Curves.easeInOutCirc,
                 padding: const EdgeInsets.all(0),
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   // height: 100,
                   color: primaryUnitColor,
-                  child: Row(children: [
+                  child: Column(children: [
+                    //  const Divider(),
                     const CircleAvatar(
-                      backgroundImage: AssetImage('assets/users.png'),
+                      backgroundColor: Colors.blueGrey,
+                      radius: 45,
+                      child: Image(
+                        image: AssetImage('assets/users.png'),
+                        color: Colors.white,
+                      ),
                     ),
-                    const VerticalDivider(),
-                    Text(value.unitName.toString())
+                    const Divider(),
+                    Flexible(
+                      child: Center(
+                        child: Text(
+                          value.unitName.toString().toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                              color: Colors.white,
+                              fontSize: 16),
+                        ),
+                      ),
+                    )
                   ]),
                 ),
               ),
-              const Card(child: ListTile())
+              Expanded(
+                  child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  DrawerItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const UnitUnitSavings(),
+                          ),
+                        );
+                      },
+                      image: 'assets/sambadyam.png',
+                      title: 'SAVINGS',
+                      option: true),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/msg.png',
+                      title: 'SEND MESSAGE',
+                      option: false),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/bank.png', title: 'BANK', option: true),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/insurance.png',
+                      title: 'INSURANCE',
+                      option: false),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/accounting.png',
+                      title: 'ACCOUNTING HEAD',
+                      option: true),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/adduser.png',
+                      title: 'NON MEMBER',
+                      option: false),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/loan.png',
+                      title: 'UNIT LOAN',
+                      option: true),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/reporticon.png',
+                      title: 'REPORT',
+                      option: false),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/profit.png',
+                      title: 'PROFIT',
+                      option: true),
+                  trasnsDivider,
+                  DrawerItem(
+                      image: 'assets/logout.png',
+                      title: 'LOGOUT',
+                      option: false),
+                  trasnsDivider,
+                ],
+              ))
             ],
           );
         }),
@@ -238,6 +323,48 @@ class _UnitHomeState extends State<UnitHome> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  DrawerItem({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.option,
+    this.onTap,
+  });
+  String title;
+  String image;
+  bool option;
+  void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: option ? itemlightColor : itemlightColor,
+        child: ListTile(
+          trailing:
+              const Icon(Icons.fast_forward_outlined, color: Colors.white),
+          leading: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: Image(
+              image: AssetImage(
+                image,
+              ),
+              color: Colors.white,
+            ),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 13),
+          ),
         ),
       ),
     );

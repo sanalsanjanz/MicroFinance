@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
@@ -254,7 +255,8 @@ class _AddMemberState extends State<AddMember> {
                                   );
                                 });
                           } else {
-                            return const Text('no data');
+                            return Center(
+                                child: Lottie.asset('assets/notfound.json'));
                           }
                         },
                       );

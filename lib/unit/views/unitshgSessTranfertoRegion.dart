@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
@@ -79,9 +80,7 @@ class UnitShgSessTransferToRegion extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(
-                  child: Text('No Data Found'),
-                );
+                return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
               return Center(

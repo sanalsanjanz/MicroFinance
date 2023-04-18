@@ -29,7 +29,7 @@ class _UnitTranferGrantToShgState extends State<UnitTranferGrantToShg> {
     super.initState();
     Provider.of<UnitControll>(context, listen: false).shglist.isEmpty
         ? Provider.of<UnitControll>(context, listen: false)
-            .getallSHG(context: context)
+            .getallSHG(context: context, opt: 0)
         : '';
   }
 

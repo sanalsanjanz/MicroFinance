@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
@@ -105,9 +106,7 @@ class _UnitBankLinkageFromRegionState extends State<UnitBankLinkageFromRegion> {
                   },
                 );
               } else {
-                return const Center(
-                  child: Text('No Data Found'),
-                );
+                return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
               return Center(

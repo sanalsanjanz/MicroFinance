@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/member/controllers/memberloanController.dart';
@@ -91,9 +92,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                       //   separatorBuilder: (context, index) => const Divider(),
                       itemCount: snapshot.data[0]['loandata'].length);
                 } else {
-                  return const Center(
-                    child: Text('No data found'),
-                  );
+                  return Center(child: Lottie.asset('assets/notfound.json'));
                 }
               } else {
                 return Center(

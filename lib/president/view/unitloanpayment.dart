@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
@@ -336,9 +337,7 @@ class UnitLoanPayment extends StatelessWidget {
                       },
                     );
                   } else {
-                    return const Center(
-                      child: Text('no data found'),
-                    );
+                    return Center(child: Lottie.asset('assets/notfound.json'));
                   }
                 },
               ),

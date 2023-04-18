@@ -167,9 +167,7 @@ class UnitControll extends ChangeNotifier {
 
   List<DropDownValueModel> shglist = [];
 
-  Future getallSHG({
-    required BuildContext context,
-  }) async {
+  Future getallSHG({required BuildContext context, int? opt = 1}) async {
     var map = <String, dynamic>{};
 
     map['passbookno'] = passbookNo; // password;
@@ -181,14 +179,41 @@ class UnitControll extends ChangeNotifier {
       if (response.body.contains('sdata')) {
         var data = jsonDecode(response.body);
 
-        var length = data[0]['sdata'].length;
-        for (int i = 0; i < length; i++) {
-          // print(data[0]['memberdata'][i]);
-          shglist.add(DropDownValueModel(
-              name: data[0]['sdata'][i]['shgname'],
-              value: data[0]['sdata'][i]['passbookno']));
+        if (opt == 1) {
+        } else {
+          var length = data[0]['sdata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            shglist.add(DropDownValueModel(
+                name: data[0]['sdata'][i]['shgname'],
+                value: data[0]['sdata'][i]['passbookno']));
+          }
           notifyListeners();
         }
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future unitTrackshgsambadhyam(
+      {required BuildContext context, required String shgpassbookno}) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgpassbookno; // password;
+    map['unitpassbookno'] = passbookNo; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitTrackshgsambadhyam, body: map);
+      if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+
         return data;
       } else {
         var data = [];
@@ -398,6 +423,10 @@ class UnitControll extends ChangeNotifier {
             ),
             (route) => false);
         Fluttertoast.showToast(msg: 'Transfered');
+      } else if (response.body
+          .contains('There is no bank linkage from member to pay the region')) {
+        Fluttertoast.showToast(
+            msg: 'There is no bank linkage from member to pay the region');
       } else {
         ProgressDialog.hide(context);
 

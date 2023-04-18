@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
@@ -20,7 +21,7 @@ class UnitGrants extends StatelessWidget {
           future: val.unitViewGrants(context: context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data != []) {
+              if (snapshot.data.isNotEmpty) {
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data[0]['grantdata'].length,
@@ -67,9 +68,7 @@ class UnitGrants extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(
-                  child: Text('no data found'),
-                );
+                return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
               return const Center(
