@@ -1,6 +1,7 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -109,9 +110,7 @@ class _UnitBankLinkageFromRegionState extends State<UnitBankLinkageFromRegion> {
                 return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
-              return Center(
-                child: CircularProgressIndicator(color: primaryUnitColor),
-              );
+              return Center(child: SpinKitFadingCircle(color: primaryColor));
             }
           },
         );

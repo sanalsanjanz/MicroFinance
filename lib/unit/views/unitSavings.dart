@@ -1,9 +1,11 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
+import 'package:sacco_management/unit/views/unitSavingsYearlyInterest.dart';
 import 'package:sacco_management/unit/views/unitTrackSavings.dart';
 
 class UnitUnitSavings extends StatelessWidget {
@@ -13,6 +15,24 @@ class UnitUnitSavings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) =>
+                              const UnitUnitSavingYearlyInterest(),
+                        ),
+                      );
+                    },
+                    child: const Text('Yearly Interest')),
+              ),
+            ],
+          ),
+        ],
         title: const Text('Savings'),
         backgroundColor: primaryUnitColor,
       ),
@@ -58,8 +78,8 @@ class UnitUnitSavings extends StatelessWidget {
                 );
               }
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: SpinKitFadingCircle(color: primaryColor),
               );
             }
           },

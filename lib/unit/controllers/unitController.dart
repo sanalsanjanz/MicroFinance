@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, file_names, empty_catches
 
 import 'dart:convert';
 
@@ -79,9 +79,7 @@ class UnitControll extends ChangeNotifier {
           }
         }
       } else {}
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     notifyListeners();
   }
 
@@ -119,8 +117,7 @@ class UnitControll extends ChangeNotifier {
     } catch (e) {
       ProgressDialog.hide(context);
       Fluttertoast.showToast(msg: e.toString());
-
-      print(e);
+      Fluttertoast.showToast(msg: 'connection timeout');
     }
     notifyListeners();
   }
@@ -159,8 +156,6 @@ class UnitControll extends ChangeNotifier {
     } catch (e) {
       ProgressDialog.hide(context);
       Fluttertoast.showToast(msg: e.toString());
-
-      print(e);
     }
     notifyListeners();
   }
@@ -217,6 +212,30 @@ class UnitControll extends ChangeNotifier {
         return data;
       } else {
         var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future fetchYearlyInterestUnit(
+      {required BuildContext context, required String shgpassbookno}) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgpassbookno; // password;
+    map['unitpassbookno'] = passbookNo; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitShgyearlyinterest, body: map);
+      if (response.body.contains('Failed')) {
+        var data = [];
+        return data;
+      } else {
+        var data = jsonDecode(response.body);
+
         return data;
       }
     } catch (e) {
@@ -436,6 +455,52 @@ class UnitControll extends ChangeNotifier {
             ),
             (route) => false);
         Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitpaySavingsInterestToRegion({
+    required BuildContext context,
+    required String date,
+    required String amount,
+    required String passbookno,
+  }) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Please wait');
+
+    map['date'] = date;
+    map['amount'] = amount;
+    map['shgpassbookno'] = passbookno;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitShgyearlyinterestPay, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Success');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        Fluttertoast.showToast(msg: 'Something went wrong');
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
       }
     } catch (e) {
       ProgressDialog.hide(context);

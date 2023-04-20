@@ -1,4 +1,7 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -163,8 +166,8 @@ class _MemberAddAccountingHeadState extends State<MemberAddAccountingHead> {
                         ),
                       ]);
                     } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: SpinKitFadingCircle(color: primaryColor),
                       );
                     }
                   },

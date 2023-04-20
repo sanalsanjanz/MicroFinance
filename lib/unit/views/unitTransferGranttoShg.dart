@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, file_names
+
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +103,6 @@ class _UnitTranferGrantToShgState extends State<UnitTranferGrantToShg> {
                                       shgname = va.name;
                                       shgpassbookno = va.value;
                                     });
-                                    print(shgname + shgpassbookno);
                                   },
                                 );
                               }),

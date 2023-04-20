@@ -1,6 +1,7 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -84,8 +85,7 @@ class UnitShgSessTransferToRegion extends StatelessWidget {
               }
             } else {
               return Center(
-                child: CircularProgressIndicator(color: primaryUnitColor),
-              );
+                  child: SpinKitFadingCircle(color: primaryUnitColor));
             }
           },
         );

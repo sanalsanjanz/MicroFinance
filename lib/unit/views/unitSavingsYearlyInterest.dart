@@ -1,54 +1,20 @@
-// ignore: file_names
-// ignore_for_file: file_names, duplicate_ignore
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
-import 'package:sacco_management/unit/views/unitPaySessFund.dart';
-import 'package:sacco_management/unit/views/unitViewSessFund.dart';
-import 'package:sacco_management/unit/views/unitshgSessTranfertoRegion.dart';
+import 'package:sacco_management/unit/views/unitpaySavingsYearlyInterest.dart';
 
-class UnitSessFund extends StatelessWidget {
-  const UnitSessFund({super.key});
+class UnitUnitSavingYearlyInterest extends StatelessWidget {
+  const UnitUnitSavingYearlyInterest({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const UnitViewSessFund(),
-                      ),
-                    );
-                  },
-                  child: const Text('View Sess Fund'),
-                ),
-              ),
-              PopupMenuItem(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const UnitPaySessFund(),
-                      ),
-                    );
-                  },
-                  child: const Text('Pay Sess Fund'),
-                ),
-              ),
-            ],
-          ),
-        ],
-        title: const Text('Sess Fund'),
+        title: const Text('Yearly Interest'),
         backgroundColor: primaryUnitColor,
       ),
       body: Consumer<UnitControll>(builder: (context, val, child) {
@@ -56,8 +22,9 @@ class UnitSessFund extends StatelessWidget {
           future: val.getallSHG(context: context),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data != []) {
+              if (snapshot.data.isNotEmpty) {
                 return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data[0]['sdata'].length,
                   itemBuilder: (context, index) {
                     var data = snapshot.data[0]['sdata'][index];
@@ -66,14 +33,14 @@ class UnitSessFund extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => UnitShgSessTransferToRegion(
-                                shgPassbookno: data['passbookno'],
+                              builder: (ctx) => UnitPaySavingsInterest(
+                                passbook: data['passbookno'],
                               ),
                             ),
                           );
                         },
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        subtitle: const Text('Tap to select'),
+                        subtitle: const Text('Track Savings'),
                         leading: const CircleAvatar(
                           backgroundColor: Colors.grey,
                           child: Icon(
@@ -87,7 +54,9 @@ class UnitSessFund extends StatelessWidget {
                   },
                 );
               } else {
-                return Center(child: Lottie.asset('assets/notfound.json'));
+                return const Center(
+                  child: Text('No SHG Found'),
+                );
               }
             } else {
               return Center(

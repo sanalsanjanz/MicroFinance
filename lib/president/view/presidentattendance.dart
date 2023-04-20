@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
@@ -85,8 +86,8 @@ class _PresidentAttendanceState extends State<PresidentAttendance> {
                       },
                     );
                   } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: SpinKitFadingCircle(color: primaryColor),
                     );
                   }
                 },

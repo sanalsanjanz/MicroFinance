@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -57,8 +58,8 @@ class UnitTrackSavings extends StatelessWidget {
                 return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: SpinKitFadingCircle(color: primaryColor),
               );
             }
           },

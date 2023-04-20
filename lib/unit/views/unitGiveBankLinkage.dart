@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:sacco_management/constants/styles.dart';
 
@@ -71,9 +73,7 @@ class UnitGiveBankLinkageMember extends StatelessWidget {
               const Divider(color: Colors.transparent),
               ElevatedButton(
                 onPressed: () {
-                  if (_formkey.currentState!.validate()) {
-                    print('valid');
-                  }
+                  if (_formkey.currentState!.validate()) {}
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryUnitColor,

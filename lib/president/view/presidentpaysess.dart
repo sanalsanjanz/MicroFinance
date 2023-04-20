@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/widgets/itemsCard.dart';
@@ -116,8 +117,8 @@ class PresidentPaySessFund extends StatelessWidget {
                 );
               }
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: SpinKitFadingCircle(color: primaryColor),
               );
             }
           },

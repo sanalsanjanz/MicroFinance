@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:sacco_management/constants/styles.dart';
 
 import '../controllers/memberController.dart';
 
@@ -80,7 +82,8 @@ class SearchGroup extends StatelessWidget {
                         },
                       );
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                          child: SpinKitFadingCircle(color: primaryColor));
                     }
                   } else {
                     return const Center(

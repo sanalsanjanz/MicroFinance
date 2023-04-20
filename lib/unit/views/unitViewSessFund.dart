@@ -1,5 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -206,8 +209,8 @@ class _UnitViewSessFundState extends State<UnitViewSessFund> {
                 return Center(child: Lottie.asset('assets/notfound.json'));
               }
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: SpinKitFadingCircle(color: primaryColor),
               );
             }
           },

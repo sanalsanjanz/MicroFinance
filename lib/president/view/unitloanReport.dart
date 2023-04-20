@@ -1,9 +1,11 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
 import 'package:sacco_management/widgets/itemsCard.dart';
 
@@ -240,8 +242,9 @@ class _UnitLoanReportState extends State<UnitLoanReport> {
                                 );
                               }
                             } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return Center(
+                                  child:
+                                      SpinKitFadingCircle(color: primaryColor));
                             }
                           })),
                 ],
