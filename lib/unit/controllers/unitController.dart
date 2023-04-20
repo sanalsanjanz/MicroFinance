@@ -725,4 +725,78 @@ class UnitControll extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future unitSendMessagetoShg(
+      {required BuildContext context,
+      required String message,
+      required String name,
+      required String shgpassbook}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Sending message to $name');
+
+    map['message'] = message;
+    map['shgpassbookno'] = shgpassbook;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitSendMessageShg, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pop();
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitSendMessagetoAllShg(
+      {required BuildContext context,
+      required String message,
+      required String name,
+      required String shgpassbook}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Sending message to $name');
+
+    map['message'] = message;
+    // map['shgpassbookno'] = shgpassbook;
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitSendMessageAllShg, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pop();
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }

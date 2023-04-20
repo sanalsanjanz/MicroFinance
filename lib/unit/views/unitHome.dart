@@ -12,6 +12,7 @@ import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
 import 'package:sacco_management/unit/views/unitSavings.dart';
+import 'package:sacco_management/unit/views/unitSendMessages.dart';
 import 'package:sacco_management/unit/views/unitSessfund.dart';
 import 'package:sacco_management/widgets/unitHomeCard.dart';
 
@@ -92,6 +93,13 @@ class _UnitHomeState extends State<UnitHome> {
                       option: true),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const UnitSendMessages(),
+                          ),
+                        );
+                      },
                       image: 'assets/msg.png',
                       title: 'SEND MESSAGE',
                       option: false),
