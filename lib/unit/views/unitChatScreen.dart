@@ -70,11 +70,17 @@ class UnitChatScreen extends StatelessWidget {
                           backgroundColor: shadeUnitColor),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await val.unitSendMessagetoShg(
-                              context: context,
-                              message: _messageController.text,
-                              name: name,
-                              shgpassbook: passbook);
+                          option == 1
+                              ? await val.unitSendMessagetoShg(
+                                  context: context,
+                                  message: _messageController.text,
+                                  name: name,
+                                  shgpassbook: passbook)
+                              : await val.unitSendMessagetoAllShg(
+                                  context: context,
+                                  message: _messageController.text,
+                                  name: name,
+                                  shgpassbook: passbook);
                         }
                       },
                       child:
