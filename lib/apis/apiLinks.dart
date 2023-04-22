@@ -41,6 +41,11 @@ class AuthLinks {
   static var unitloanpayment = Uri.parse('${baseUrl}Member/unitloanpayment');
   //Unit
 
+  static var getUnitdata = Uri.parse('${baseUrl}Unit/unitdata');
+  static var unitBankyearlyinterestpayment =
+      Uri.parse('${baseUrl}Unit/bankyearlyinterestdetails');
+  static var unitGetAllBanks = Uri.parse('${baseUrl}Unit/bankyearlyinterest');
+  static var unitPaybankAmount = Uri.parse('${baseUrl}Unit/paybank');
   static var getreport = Uri.parse('${baseUrl}Unit/unit_memberreport');
   static var unitSendMessageAllShg = Uri.parse('${baseUrl}Unit/sendmessageall');
   static var unitSendMessageShg = Uri.parse('${baseUrl}Unit/sendmessage');

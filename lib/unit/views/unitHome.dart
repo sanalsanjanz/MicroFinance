@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
+import 'package:sacco_management/unit/views/unitBankBalancePay.dart';
 import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
 import 'package:sacco_management/unit/views/unitGrants.dart';
@@ -105,7 +106,16 @@ class _UnitHomeState extends State<UnitHome> {
                       option: false),
                   trasnsDivider,
                   DrawerItem(
-                      image: 'assets/bank.png', title: 'BANK', option: true),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => UnitBankPayment(),
+                          ),
+                        );
+                      },
+                      image: 'assets/bank.png',
+                      title: 'BANK',
+                      option: true),
                   trasnsDivider,
                   DrawerItem(
                       image: 'assets/insurance.png',

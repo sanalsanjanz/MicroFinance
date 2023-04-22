@@ -51,6 +51,29 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<DropDownValueModel> banks = [];
+
+  Future getAllBanks() async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetAllBanks, body: map);
+      if (response.body.contains('bankdata')) {
+        var data = jsonDecode(response.body);
+        var length = data[0]['bankdata'].length;
+        for (int i = 0; i < length; i++) {
+          banks.add(DropDownValueModel(
+              name: data[0]['bankdata'][i]['bank'],
+              value: data[0]['bankdata'][i]['bank']));
+        }
+      }
+    } catch (e) {}
+    notifyListeners();
+  }
+
   List<DropDownValueModel> accountingHeadExpense = [];
   List<DropDownValueModel> accountingHeadIncome = [];
   Future getAccountingHead({required String type}) async {
@@ -326,6 +349,27 @@ class UnitControll extends ChangeNotifier {
       if (response.body.contains('sessdata')) {
         var data = jsonDecode(response.body);
         return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  String savings = '';
+  Future unitgetAlldata({required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.getUnitdata, body: map);
+      if (response.body.contains('unitdata')) {
+        var data = jsonDecode(response.body);
+        savings = data[0]['unitdata'][0]['sambadhyam'].toString();
+        notifyListeners();
       } else {
         var data = [];
         return data;
@@ -791,6 +835,110 @@ class UnitControll extends ChangeNotifier {
             (route) => false);
         Fluttertoast.showToast(msg: 'Failed');
       }
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  bool isintresest = true;
+  bool isamount = false;
+  issetinterestclicked() {
+    isamount = false;
+    isintresest = true;
+
+    notifyListeners();
+  }
+
+  issetamountclicked() {
+    isintresest = false;
+    isamount = true;
+
+    notifyListeners();
+  }
+
+  Future unitsendBankPayment(
+      {required BuildContext context,
+      required String bank,
+      required String interest,
+      required String amount,
+      required String date}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Sending message to $bank');
+
+    map['bank'] = bank;
+    map['interest'] = interest;
+    map['amount'] = amount;
+    map['passbookno'] = passbookNo;
+    map['date'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitPaybankAmount, body: map);
+      if (response.body.contains('Yearly Balance paid to Bank')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else if (response.body.contains('Yearly Balance Failed to pay')) {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed to pay');
+      } else {}
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitsendBankInterestrPayment(
+      {required BuildContext context,
+      required String bank,
+      required String interest,
+      required String date}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Sending message to $bank');
+
+    map['bank'] = bank;
+    map['interest'] = interest;
+    map['passbookno'] = passbookNo;
+    map['date'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitPaybankAmount, body: map);
+      if (response.body.contains('Yearly Interest paid to Bank')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else if (response.body
+          .contains('Already given Yearly Balance for this year')) {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(
+            msg: 'Already given Yearly Balance for this year');
+      } else {}
     } catch (e) {
       ProgressDialog.hide(context);
 
