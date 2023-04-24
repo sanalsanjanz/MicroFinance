@@ -6,6 +6,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
+import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/unit/views/unitHome.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -360,6 +361,7 @@ class UnitControll extends ChangeNotifier {
   }
 
   String savings = '';
+  String insurance = '';
   Future unitgetAlldata({required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['passbookno'] = passbookNo;
@@ -369,6 +371,7 @@ class UnitControll extends ChangeNotifier {
       if (response.body.contains('unitdata')) {
         var data = jsonDecode(response.body);
         savings = data[0]['unitdata'][0]['sambadhyam'].toString();
+        insurance = data[0]['unitdata'][0]['insurance'].toString();
         notifyListeners();
       } else {
         var data = [];
@@ -945,6 +948,60 @@ class UnitControll extends ChangeNotifier {
       Fluttertoast.showToast(msg: e.toString());
     }
     ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future unitTranferInsurance(
+      {required BuildContext context,
+      required String amount,
+      required String date}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Tranfering Insurance');
+
+    map['unitpassbookno'] = passbookNo;
+    map['amount'] = amount;
+    map['date'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitTransferinsurance, body: map);
+      if (response.body.contains('Transfer sucessfull')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else if (response.body
+          .contains('There is no insurance amount to transfer!!')) {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'There is no insurance');
+      } else {}
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(msg: 'Faied');
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences
+        .clear()
+        .then((value) => Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false));
     notifyListeners();
   }
 }

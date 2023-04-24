@@ -10,6 +10,7 @@ import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
 import 'package:sacco_management/unit/views/unitGrants.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
+import 'package:sacco_management/unit/views/unitInsuranceTransfer.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
 import 'package:sacco_management/unit/views/unitSavings.dart';
@@ -109,7 +110,7 @@ class _UnitHomeState extends State<UnitHome> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (ctx) => UnitBankPayment(),
+                            builder: (ctx) => const UnitBankPayment(),
                           ),
                         );
                       },
@@ -118,6 +119,13 @@ class _UnitHomeState extends State<UnitHome> {
                       option: true),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const UnitTransferInsurance(),
+                          ),
+                        );
+                      },
                       image: 'assets/insurance.png',
                       title: 'INSURANCE',
                       option: false),
@@ -148,6 +156,9 @@ class _UnitHomeState extends State<UnitHome> {
                       option: true),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () async {
+                        await value.logout(context);
+                      },
                       image: 'assets/logout.png',
                       title: 'LOGOUT',
                       option: false),

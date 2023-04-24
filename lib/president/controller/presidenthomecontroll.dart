@@ -1072,7 +1072,8 @@ class PresidentController extends ChangeNotifier {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
     map['date'] = date;
-    map['memberdata'] = {'id': '40', 'amt': '200'}.toString(); // ab.toString();
+    map['memberdata'] = {'id': '40', 'amt': '200'}
+        .toString(); // [{"memberid":"39","amount":"1000","status":"no"}]
     try {
       http.Response response =
           await http.post(AuthLinks.addsambhadyam, body: map);

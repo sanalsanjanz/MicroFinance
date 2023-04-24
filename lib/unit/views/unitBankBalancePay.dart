@@ -39,12 +39,13 @@ class _UnitBankPaymentState extends State<UnitBankPayment> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (ctx) => const UnitHome()),
-                  (route) => false);
-            },
-            icon: const Icon(Icons.back_hand)),
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (ctx) => const UnitHome()),
+                (route) => false);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         backgroundColor: primaryUnitColor,
         title: const Text('Bank Payment'),
       ),
