@@ -59,7 +59,10 @@ class PresientMonthlyCollection extends StatelessWidget {
                                   )),
                                   CupertinoButton(
                                     child: const Text("Add"),
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                      value.addMonthlyCollection(
+                                          data['memberid']);
+                                    },
                                   )
                                 ],
                               ),
@@ -78,12 +81,16 @@ class PresientMonthlyCollection extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 55,
+                      height: 40,
                       width: MediaQuery.of(context).size.width / 2,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor),
-                        onPressed: () {},
+                        onPressed: () async {
+                          value.mothlyCollections != []
+                              ? await value.sendMonthlyCollection(context)
+                              : '';
+                        },
                         child: const Text('SAVE'),
                       ),
                     ),

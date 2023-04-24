@@ -51,7 +51,7 @@ class PMedicalAid extends StatelessWidget {
                                     Expanded(
                                         child: TextField(
                                       onChanged: (va) {
-                                        value.setSavingsAmount(va);
+                                        value.setMedicalaidAmount(va);
                                       },
                                       // controller: amoutController,
                                       keyboardType: TextInputType.number,
@@ -61,8 +61,9 @@ class PMedicalAid extends StatelessWidget {
                                     CupertinoButton(
                                       child: const Text("Add"),
                                       onPressed: () async {
-                                        await value
-                                            .demoaddSavings(data['memberid']);
+                                        value.addMedicalAid(context);
+                                        /*   await value
+                                            .demoaddSavings(data['memberid']); */
                                       },
                                     )
                                   ],
@@ -82,8 +83,10 @@ class PMedicalAid extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          // value.addsambhadyam(context);
+                        onPressed: () async {
+                          value.medicalaid != []
+                              ? await value.addMedicalAid(context)
+                              : ' ';
                         },
                         child: const Text('Save Medical Aid'),
                       ),

@@ -699,7 +699,7 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<String> savingsdata = [];
+  // List<String> savingsdata = [];
   String savingsAmount = '0';
   setSavingsAmount(value) {
     savingsAmount = value;
@@ -712,7 +712,13 @@ class PresidentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  addsavingsdata({required String id}) {
+  String festivalfundamount = '0';
+  setfestivalfundamount(value) {
+    festivalfundamount = value;
+    notifyListeners();
+  }
+
+  /* addsavingsdata({required String id}) {
     /* 
     Map<String, dynamic> maps = <String, dynamic>{};
     maps['id'] = id; */
@@ -727,7 +733,7 @@ class PresidentController extends ChangeNotifier {
     // print(savingsdata);
 
     notifyListeners();
-  }
+  } */
 
   addExpense(
       {required String reason,
@@ -1055,16 +1061,17 @@ class PresidentController extends ChangeNotifier {
   }
 
 //sambadhyam savigs not working
-  List<Map<String, dynamic>> abc = [];
-  demoaddSavings(String id) {
+  List<Map<String, dynamic>> savingsdata = [];
+  addSavings(String id) {
     var map = <String, dynamic>{};
-    map['id'] = id;
-    map['amt'] = savingsAmount;
-    abc.add(map);
+    map['memeberid'] = id;
+    map['amount'] = savingsAmount;
+    map['status'] = 'no';
+    savingsdata.add(map);
   }
 
-  List<String> ab = ['150', '200', '0', '400', '400', '50', '0'];
   Future addsambhadyam(BuildContext context) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
     DateTime today = DateTime.now();
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -1072,7 +1079,7 @@ class PresidentController extends ChangeNotifier {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
     map['date'] = date;
-    map['memberdata'] = {'id': '40', 'amt': '200'}
+    map['memberdata'] = savingsdata
         .toString(); // [{"memberid":"39","amount":"1000","status":"no"}]
     try {
       http.Response response =
@@ -1085,6 +1092,7 @@ class PresidentController extends ChangeNotifier {
             ),
             (route) => false);
       } else if (response.body.contains('Already added')) {
+        ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Already added');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -1092,15 +1100,18 @@ class PresidentController extends ChangeNotifier {
             ),
             (route) => false);
       } else {
+        ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'something went wrong');
       }
     } catch (e) {
+      ProgressDialog.hide(context);
       print(e);
     }
     notifyListeners();
   }
 
-  Future addfestivalfund(BuildContext context) async {
+  Future sendMonthlyCollection(BuildContext context) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
     DateTime today = DateTime.now();
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -1108,18 +1119,21 @@ class PresidentController extends ChangeNotifier {
     var map = <String, dynamic>{};
     map['presidentid'] = presidentid;
     map['date'] = date;
-    map['memberdata'] = {'id': '40', 'amt': '200'}.toString(); // ab.toString();
+    map['memberdata'] = savingsdata
+        .toString(); // [{"memberid":"39","amount":"1000","status":"no"}]
     try {
       http.Response response =
-          await http.post(AuthLinks.addPFestivalfund, body: map);
+          await http.post(AuthLinks.presidentaddmonthlycollection, body: map);
       if (response.body.contains('Success')) {
-        Fluttertoast.showToast(msg: 'added successfully');
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Added successfully');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const PresidentHome(),
             ),
             (route) => false);
       } else if (response.body.contains('Already added')) {
+        ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Already added');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -1127,14 +1141,182 @@ class PresidentController extends ChangeNotifier {
             ),
             (route) => false);
       } else {
+        ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'something went wrong');
       }
     } catch (e) {
+      ProgressDialog.hide(context);
       print(e);
     }
     notifyListeners();
   }
 
+  List<Map<String, dynamic>> mothlyCollections = [];
+  addMonthlyCollection(String id) {
+    var map = <String, dynamic>{};
+    map['memeberid'] = id;
+    map['amount'] = monthlyCollectionAmount;
+    map['status'] = 'no';
+    mothlyCollections.add(map);
+  }
+
+  List<Map<String, dynamic>> festvalfund = [];
+  addFestivalFund(String id) {
+    var map = <String, dynamic>{};
+    map['memeberid'] = id;
+    map['amount'] = festivalfundamount;
+    map['status'] = 'no';
+    mothlyCollections.add(map);
+  }
+
+  Future transferFestivalFund(BuildContext context) async {
+    ProgressDialog.show(context: context, status: 'Please wait');
+    DateTime today = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['presidentid'] = presidentid;
+    map['date'] = date;
+    map['memberdata'] = festvalfund.toString(); // ab.toString();
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentAddfestivalfund, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'added successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Already added')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Already added');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  String medicalAidAmount = '0';
+  setMedicalaidAmount(value) {
+    medicalAidAmount = value;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> medicalaid = [];
+  addMedicalAidAmount(String id) {
+    var map = <String, dynamic>{};
+    map['memeberid'] = id;
+    map['amount'] = medicalAidAmount;
+    map['status'] = 'no';
+    medicalaid.add(map);
+  }
+
+  Future addMedicalAid(BuildContext context) async {
+    DateTime today = DateTime.now();
+    ProgressDialog.show(context: context, status: 'Please wait');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['presidentid'] = presidentid;
+    map['date'] = date;
+    map['memberdata'] = medicalaid.toString(); // ab.toString();
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentAddmedicalaid, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'added successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Already added')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Already added');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  String sessFundAmount = '0';
+  setsessFundAmount(value) {
+    sessFundAmount = value;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> sessFund = [];
+  addSessFund(String id) {
+    var map = <String, dynamic>{};
+    map['memeberid'] = id;
+    map['amount'] = sessFundAmount;
+    map['status'] = 'no';
+    sessFund.add(map);
+  }
+
+  Future sendSessFund(BuildContext context) async {
+    DateTime today = DateTime.now();
+    ProgressDialog.show(context: context, status: 'Please wait');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['presidentid'] = presidentid;
+    map['date'] = date;
+    map['memberdata'] = sessFund.toString(); // ab.toString();
+    try {
+      http.Response response =
+          await http.post(AuthLinks.presidentinsertsessfund, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'added successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Already added')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Already added');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const PresidentHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+//
   Future viewGrant() async {
     var map = <String, dynamic>{};
     map['passbookno'] = passbookno;

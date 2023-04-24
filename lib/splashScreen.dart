@@ -3,10 +3,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:sacco_management/authentication/views/authentication.dart';
-import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
 import 'package:sacco_management/unit/views/unitHome.dart';
@@ -31,10 +31,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.white),
+      ),
       body: Container(
+        color: Colors.white,
         height: double.maxFinite,
         width: double.maxFinite,
-        color: primaryColor,
+        // color: primaryColor,
         child: Center(
           child: Lottie.asset('assets/splash.json', height: 150),
         ),

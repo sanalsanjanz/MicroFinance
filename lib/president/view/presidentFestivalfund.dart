@@ -49,7 +49,7 @@ class PresiderntFestivalFund extends StatelessWidget {
                                   Expanded(
                                     child: TextField(
                                       onChanged: (va) {
-                                        // value.setSavingsAmount(va);
+                                        value.setfestivalfundamount(va);
                                       },
                                       // controller: amoutController,
                                       keyboardType: TextInputType.number,
@@ -67,8 +67,7 @@ class PresiderntFestivalFund extends StatelessWidget {
                                         backgroundColor: primaryColor),
                                     child: const Text("Add"),
                                     onPressed: () async {
-                                      await value
-                                          .demoaddSavings(data['memberid']);
+                                      value.addFestivalFund(data['memberid']);
                                     },
                                   )
                                 ],
@@ -82,9 +81,9 @@ class PresiderntFestivalFund extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor),
                       onPressed: () async {
-                        await value.addfestivalfund(context);
+                        await value.transferFestivalFund(context);
                       },
-                      child: const Text('SAVE FESTIVAL FUND'),
+                      child: const Text('ADD FESTIVAL FUND'),
                     ),
                     const Divider(
                       color: Colors.transparent,

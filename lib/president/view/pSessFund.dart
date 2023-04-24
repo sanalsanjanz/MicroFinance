@@ -51,7 +51,7 @@ class PSessFund extends StatelessWidget {
                                     Expanded(
                                         child: TextField(
                                       onChanged: (va) {
-                                        value.setSavingsAmount(va);
+                                        value.setsessFundAmount(va);
                                       },
                                       // controller: amoutController,
                                       keyboardType: TextInputType.number,
@@ -61,28 +61,21 @@ class PSessFund extends StatelessWidget {
                                     CupertinoButton(
                                       child: const Text("Add"),
                                       onPressed: () async {
-                                        await value
-                                            .demoaddSavings(data['memberid']);
+                                        value.addSessFund(data['memberid']);
                                       },
                                     )
                                   ],
                                 ),
                               ),
                             );
-
-                            /* ListTile(
-                          trailing: Row(
-                            children: const [
-                              TextField(),
-                            ],
-                          ),
-                          title: Text(data['membername']),
-                        ); */
                           },
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          value.sessFund != []
+                              ? await value.sendSessFund(context)
+                              : '';
                           // value.addsambhadyam(context);
                         },
                         child: const Text('SAVE SESS'),

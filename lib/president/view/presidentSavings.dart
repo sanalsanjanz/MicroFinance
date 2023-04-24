@@ -60,8 +60,7 @@ class UnitSavings extends StatelessWidget {
                                   CupertinoButton(
                                     child: const Text("Add"),
                                     onPressed: () async {
-                                      await value
-                                          .demoaddSavings(data['memberid']);
+                                      await value.addSavings(data['memberid']);
                                     },
                                   )
                                 ],
@@ -81,13 +80,15 @@ class UnitSavings extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 45,
+                      height: 40,
                       width: MediaQuery.of(context).size.width / 2,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor),
-                        onPressed: () {
-                          value.addsambhadyam(context);
+                        onPressed: () async {
+                          value.savingsdata != []
+                              ? await value.addsambhadyam(context)
+                              : '';
                         },
                         child: const Text('SAVE'),
                       ),

@@ -92,7 +92,15 @@ class AuthLinks {
   /* transferinsurance */
   static var presidentTransferinsurance =
       Uri.parse('${baseUrl}President/transferinsurance');
+  static var presidentaddmonthlycollection =
+      Uri.parse('${baseUrl}President/monthlycollection');
   static var presunitpay = Uri.parse('${baseUrl}President/payunit');
+  static var presidentAddfestivalfund =
+      Uri.parse('${baseUrl}President/festivalfund');
+  static var presidentAddmedicalaid =
+      Uri.parse('${baseUrl}President/addmedicalaid');
+  static var presidentinsertsessfund =
+      Uri.parse('${baseUrl}President/insertsessfund');
   static var presidentPaymedicalaid =
       Uri.parse('${baseUrl}President/paymedicalaid');
   static var transfersessfundpresident =
