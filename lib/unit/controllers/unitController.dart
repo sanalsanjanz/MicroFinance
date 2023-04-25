@@ -993,6 +993,83 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<DropDownValueModel> income = [];
+  List<DropDownValueModel> expense = [];
+  Future getAllUnitAccountingHead() async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetaccountinghead, body: map);
+      if (response.body.contains('expensedata') ||
+          response.body.contains('incomedata')) {
+        var data = jsonDecode(response.body);
+        if (response.body.contains('expensedata')) {
+          var length = data[0]['expensedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            expense.add(DropDownValueModel(
+                name: data[0]['expensedata'][i]['head'],
+                value: data[0]['expensedata'][i]['head']));
+          }
+          notifyListeners();
+        } else if (response.body.contains('incomedata')) {
+          var length = data[1]['incomedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            income.add(DropDownValueModel(
+                name: data[1]['incomedata'][i]['head'],
+                value: data[1]['incomedata'][i]['head']));
+          }
+          notifyListeners();
+        }
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future addUnitAccountingHead(
+      BuildContext context, String? type, String? accountinghead) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookNo;
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitAddaccountinghead, body: map);
+      if (response.body.contains('Accounting head added')) {
+        Fluttertoast.showToast(msg: 'successfully added');
+        await getAllUnitAccountingHead();
+        ProgressDialog.hide(context);
+        /*  Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false); */
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
   Future logout(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences
