@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
 import 'package:sacco_management/unit/views/unitAccountingHead.dart';
+import 'package:sacco_management/unit/views/unitAddShgLoan.dart';
 import 'package:sacco_management/unit/views/unitBankBalancePay.dart';
 import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
@@ -14,6 +15,7 @@ import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitInsuranceTransfer.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
+import 'package:sacco_management/unit/views/unitRegisterNonMember.dart';
 import 'package:sacco_management/unit/views/unitSavings.dart';
 import 'package:sacco_management/unit/views/unitSendMessages.dart';
 import 'package:sacco_management/unit/views/unitSessfund.dart';
@@ -37,6 +39,27 @@ class _UnitHomeState extends State<UnitHome> {
     height: 5,
     color: Colors.transparent,
   );
+  Widget controlBuilder(
+    context,
+    details,
+  ) {
+    return Column(
+      children: [
+        OutlinedButton(
+            onPressed: () {
+              currentStep == 0
+                  ? Navigator.of(context).push(MaterialPageRoute(
+                      builder: (cv) => const UnitAddShgLoan()))
+                  : '';
+            },
+            child: const Text('Add Loan')),
+        OutlinedButton(onPressed: () {}, child: const Text('Show Borrowers')),
+      ],
+    );
+  }
+
+  bool viewLoan = false;
+  int currentStep = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,15 +167,52 @@ class _UnitHomeState extends State<UnitHome> {
                       option: true),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const UnitRegisterNonMember(),
+                          ),
+                        );
+                      },
                       image: 'assets/adduser.png',
                       title: 'NON MEMBER',
                       option: false),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () {
+                        setState(() {
+                          viewLoan = !viewLoan;
+                        });
+                      },
                       image: 'assets/loan.png',
                       title: 'UNIT LOAN',
                       option: true),
                   trasnsDivider,
+                  Visibility(
+                    visible: viewLoan,
+                    child: Stepper(
+                        controlsBuilder: controlBuilder,
+                        currentStep: currentStep,
+                        onStepTapped: (value) {
+                          setState(() {
+                            currentStep = value;
+                          });
+                        },
+                        steps: const [
+                          Step(
+                            title: Text('SHG LOAN'),
+                            content: Text(''),
+                          ),
+                          Step(
+                            title: Text('INDIVIDUAL LOAN'),
+                            content: Text(''),
+                          ),
+                          Step(
+                            title: Text('NON-MEMBER LOAN'),
+                            content: Text(''),
+                          ),
+                        ]),
+                  ),
                   DrawerItem(
                       image: 'assets/reporticon.png',
                       title: 'REPORT',

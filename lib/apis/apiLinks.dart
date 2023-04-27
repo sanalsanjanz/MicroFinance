@@ -42,6 +42,8 @@ class AuthLinks {
   //Unit
 
   static var getUnitdata = Uri.parse('${baseUrl}Unit/unitdata');
+  static var unitGetpresidentlist =
+      Uri.parse('${baseUrl}Unit/getpresidentlist');
   static var unitAddaccountinghead =
       Uri.parse('${baseUrl}Unit/addaccountinghead');
   static var unitGetaccountinghead =

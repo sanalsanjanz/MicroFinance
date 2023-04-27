@@ -185,6 +185,7 @@ class UnitControll extends ChangeNotifier {
   }
 
   List<DropDownValueModel> shglist = [];
+  List<DropDownValueModel> presidentList = [];
 
   Future getallSHG({required BuildContext context, int? opt = 1}) async {
     var map = <String, dynamic>{};
@@ -210,6 +211,30 @@ class UnitControll extends ChangeNotifier {
           notifyListeners();
         }
         return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future getAllPresident({required BuildContext context}) async {
+    try {
+      http.Response response = await http.get(AuthLinks.unitGetpresidentlist);
+      if (response.body.contains('shg')) {
+        var data = jsonDecode(response.body);
+
+        var length = data[0]['shg'].length;
+        for (int i = 0; i < length; i++) {
+          // print(data[0]['memberdata'][i]);
+          presidentList.add(DropDownValueModel(
+              name: data[0]['shg'][i]['unit_name'],
+              value: data[0]['shg'][i]['president_id']));
+        }
+        notifyListeners();
       } else {
         var data = [];
         return data;
@@ -948,6 +973,42 @@ class UnitControll extends ChangeNotifier {
       Fluttertoast.showToast(msg: e.toString());
     }
     ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  unitRegisterNonMemeber(BuildContext context,
+      {required String number,
+      required String mailid,
+      required String shg}) async {
+    ProgressDialog.show(context: context, status: 'Adding Member');
+    var map = <String, dynamic>{};
+    map['phone'] = number;
+    map['mail'] = mailid;
+    map['group'] = 'Non Shg Member';
+    map['shg'] = shg;
+    map['unit'] = unitId;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.pAddExternalMember, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: "Added Member");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains("Already registered")) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: "This Number Already Registered");
+      } else {
+        Fluttertoast.showToast(msg: "Something went wrong");
+        ProgressDialog.hide(context);
+      }
+    } catch (e) {
+      print(e);
+      ProgressDialog.hide(context);
+    }
     notifyListeners();
   }
 
