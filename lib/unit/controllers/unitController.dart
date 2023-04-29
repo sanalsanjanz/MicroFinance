@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
 import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/unit/views/unitHome.dart';
@@ -1140,6 +1141,99 @@ class UnitControll extends ChangeNotifier {
               builder: (ctx) => const SplashScreen(),
             ),
             (route) => false));
+    notifyListeners();
+  }
+
+  /* Future giveShreyasloan(
+    String id,
+    String membername,
+    BuildContext context,
+    String loanamount,
+    String membername,
+    String membername,
+    String membername,
+  ) async {
+    DateTime today = DateTime.now();
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['date'] = date;
+    map['amount'] = loanamount;
+    map['loanid'] = id;
+    map['penality'] = period;
+    map['unitpassbookno'] = interest;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitLoanshgPay, body: map);
+      if (response.body.contains('Success')) {
+        Fluttertoast.showToast(msg: 'Loan added successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Already added')) {
+        Fluttertoast.showToast(msg: 'Loan already added');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  } */
+  Future addUnitLoantoSHG(
+    BuildContext context,
+    String loanamount,
+    String period,
+    String shgpassbookno,
+  ) async {
+    DateTime today = DateTime.now();
+
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date = formatter.format(today);
+    var map = <String, dynamic>{};
+    map['date'] = date;
+    map['amount'] = loanamount;
+    map['period'] = period;
+    map['shgpassbookno'] = shgpassbookno;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitloanshgdetails, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Loan added successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to add');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
     notifyListeners();
   }
 }

@@ -48,8 +48,11 @@ class _UnitHomeState extends State<UnitHome> {
         OutlinedButton(
             onPressed: () {
               currentStep == 0
-                  ? Navigator.of(context).push(MaterialPageRoute(
-                      builder: (cv) => const UnitAddShgLoan()))
+                  ? Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (cv) => const UnitAddShgLoan(),
+                      ),
+                    )
                   : '';
             },
             child: const Text('Add Loan')),
