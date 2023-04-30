@@ -222,6 +222,31 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getUnitBorrowersList(
+      {required BuildContext context, required String type}) async {
+    var map = <String, dynamic>{};
+
+    map['unitpassbookno'] = passbookNo; // password;
+    map['type'] = type; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitLoansHGBorrowers, body: map);
+      if (response.body.contains('shgdata')) {
+        // List list = response.body as List;
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
   Future getAllPresident({required BuildContext context}) async {
     try {
       http.Response response = await http.get(AuthLinks.unitGetpresidentlist);
@@ -257,6 +282,30 @@ class UnitControll extends ChangeNotifier {
       http.Response response =
           await http.post(AuthLinks.unitTrackshgsambadhyam, body: map);
       if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future unitLoanShgBorrowers(
+      {required BuildContext context, required String shgpassbookno}) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgpassbookno; // password;
+    map['unitpassbookno'] = passbookNo; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitLoanShgBorrowers, body: map);
+      if (response.body.contains('shgdata')) {
         var data = jsonDecode(response.body);
 
         return data;
@@ -1144,38 +1193,32 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
-  /* Future giveShreyasloan(
+  Future payUnitShgLoan(
     String id,
-    String membername,
     BuildContext context,
     String loanamount,
-    String membername,
-    String membername,
-    String membername,
+    String penality,
+    String date,
   ) async {
-    DateTime today = DateTime.now();
-
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String date = formatter.format(today);
     var map = <String, dynamic>{};
     map['date'] = date;
     map['amount'] = loanamount;
     map['loanid'] = id;
-    map['penality'] = period;
-    map['unitpassbookno'] = interest;
+    map['penality'] = penality;
+    map['unitpassbookno'] = passbookNo;
 
     try {
       http.Response response =
           await http.post(AuthLinks.unitLoanshgPay, body: map);
-      if (response.body.contains('Success')) {
-        Fluttertoast.showToast(msg: 'Loan added successfully');
+      if (response.body.contains('Loan Payment done')) {
+        Fluttertoast.showToast(msg: 'Loan Paid successfully');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const UnitHome(),
             ),
             (route) => false);
-      } else if (response.body.contains('Already added')) {
-        Fluttertoast.showToast(msg: 'Loan already added');
+      } else if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(msg: 'Failed to Pay');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const UnitHome(),
@@ -1188,7 +1231,8 @@ class UnitControll extends ChangeNotifier {
       print(e);
     }
     notifyListeners();
-  } */
+  }
+
   Future addUnitLoantoSHG(
     BuildContext context,
     String loanamount,
@@ -1221,6 +1265,45 @@ class UnitControll extends ChangeNotifier {
       } else if (response.body.contains('Failed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed to add');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future closeUnitLoantoSHG(
+    BuildContext context,
+    String loanid,
+  ) async {
+    var map = <String, dynamic>{};
+    map['loanid'] = loanid;
+    map['type'] = 'CLOSE';
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitloanindborrowersdetails, body: map);
+      if (response.body.contains('Loan Closed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Loan Closed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Loan Payment not Completed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to Close');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (ctx) => const UnitHome(),

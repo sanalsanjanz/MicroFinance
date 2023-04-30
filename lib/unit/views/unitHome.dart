@@ -13,6 +13,7 @@ import 'package:sacco_management/unit/views/unitExpense.dart';
 import 'package:sacco_management/unit/views/unitGrants.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitInsuranceTransfer.dart';
+import 'package:sacco_management/unit/views/unitLoanShgBorrowers.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
 import 'package:sacco_management/unit/views/unitRegisterNonMember.dart';
@@ -56,7 +57,17 @@ class _UnitHomeState extends State<UnitHome> {
                   : '';
             },
             child: const Text('Add Loan')),
-        OutlinedButton(onPressed: () {}, child: const Text('Show Borrowers')),
+        OutlinedButton(
+            onPressed: () {
+              currentStep == 0
+                  ? Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (cv) => const UnitShgLoanBorrowers(),
+                      ),
+                    )
+                  : '';
+            },
+            child: const Text('Show Borrowers')),
       ],
     );
   }
