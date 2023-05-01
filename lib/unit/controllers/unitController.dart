@@ -186,6 +186,8 @@ class UnitControll extends ChangeNotifier {
   }
 
   List<DropDownValueModel> shglist = [];
+  List<DropDownValueModel> shgAllMemberList = [];
+  List<DropDownValueModel> shgMemberList = [];
   List<DropDownValueModel> presidentList = [];
 
   Future getallSHG({required BuildContext context, int? opt = 1}) async {
@@ -216,6 +218,63 @@ class UnitControll extends ChangeNotifier {
         var data = [];
         return data;
       }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future getAllSHGMembers() async {
+    var map = <String, dynamic>{};
+
+    // map['passbookno'] = passbookNo; // password;
+    map['unitid'] = unitId; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetAllshgMember, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        var length = data[0]['message'].length;
+        if (length != 0) {
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            shgAllMemberList.add(
+              DropDownValueModel(
+                name: data[0]['message'][i]['member_name'],
+                value: data[0]['message'][i]['passbook_no'],
+              ),
+            );
+          }
+        }
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future getSHGMembers({required String shgpassbook}) async {
+    var map = <String, dynamic>{};
+
+    map['shgpassbookno'] = shgpassbook; // password;
+    map['unitpassbookno'] = passbookNo; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetshgMember, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        var length = data[0]['message'].length;
+        if (length != 0) {
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            shgMemberList.add(DropDownValueModel(
+                name: data[0]['message'][i]['member_name'],
+                value: data[0]['message'][i]['passbook_no']));
+          }
+        }
+      } else {}
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
@@ -972,6 +1031,52 @@ class UnitControll extends ChangeNotifier {
             ),
             (route) => false);
         Fluttertoast.showToast(msg: 'Failed to pay');
+      } else {}
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future addUnitIndLoan(
+      {required BuildContext context,
+      required String amount,
+      required String period,
+      required String memberpassbookno,
+      required String shgpassbookno,
+      required String date}) async {
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Adding Loan...');
+
+    map['period'] = period;
+    map['amount'] = amount;
+    map['memberpassbookno'] = memberpassbookno;
+    map['shgpassbookno'] = shgpassbookno;
+    map['unitpassbookno'] = passbookNo;
+    map['date'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitloanindAdd, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed to Add');
       } else {}
     } catch (e) {
       ProgressDialog.hide(context);

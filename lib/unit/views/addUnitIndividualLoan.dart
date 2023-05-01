@@ -4,34 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
+import 'package:sacco_management/unit/views/unitHome.dart';
 
-class UnitAddShgLoan extends StatefulWidget {
-  const UnitAddShgLoan({super.key});
-
+class AddUnitIndividualLoan extends StatefulWidget {
+  AddUnitIndividualLoan({super.key, required this.shgpassbook});
+  String shgpassbook;
   @override
-  State<UnitAddShgLoan> createState() => _UnitAddShgLoanState();
+  State<AddUnitIndividualLoan> createState() => _AddUnitIndividualLoanState();
 }
 
-class _UnitAddShgLoanState extends State<UnitAddShgLoan> {
+class _AddUnitIndividualLoanState extends State<AddUnitIndividualLoan> {
   @override
   void initState() {
     super.initState();
     Provider.of<UnitControll>(context, listen: false)
-        .getallSHG(context: context, opt: 2);
+        .getSHGMembers(shgpassbook: widget.shgpassbook);
   }
 
   TextEditingController loanAmountController = TextEditingController();
   TextEditingController loanPeriodController = TextEditingController();
   TextEditingController loanInterestController = TextEditingController();
   TextEditingController loanPaymentDateController = TextEditingController();
-  String shgPassbook = '';
+  String memberpassbookno = '';
   @override
   Widget build(BuildContext context) {
     Widget spacer = const Center(child: Text(':    '));
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (ctx) => const UnitHome(),
+                  ),
+                  (route) => false);
+            },
+            icon: const Icon(Icons.arrow_back)),
         backgroundColor: primaryUnitColor,
-        title: const Text('Unit Loan to SGH'),
+        title: const Text('Unit Loan to Individuals'),
       ),
       body: Column(
         children: [
@@ -44,9 +54,9 @@ class _UnitAddShgLoanState extends State<UnitAddShgLoan> {
                     builder: (context, myType, child) {
                       return DropDownTextField(
                           onChanged: (value) {
-                            shgPassbook = value.value;
+                            memberpassbookno = value.value;
                           },
-                          dropDownList: myType.shglist);
+                          dropDownList: myType.shgMemberList);
                     },
                   ),
                   const Divider(),
@@ -59,7 +69,8 @@ class _UnitAddShgLoanState extends State<UnitAddShgLoan> {
                         controller: loanAmountController,
                         //onChanged: (value) => val.setshgloanamt(value),
                         decoration: const InputDecoration(
-                            suffixIcon: Icon(Icons.currency_exchange_outlined)),
+                          suffixIcon: Icon(Icons.currency_exchange_outlined),
+                        ),
                       ))
                     ],
                   ),
@@ -83,7 +94,6 @@ class _UnitAddShgLoanState extends State<UnitAddShgLoan> {
                       Expanded(
                           child: TextField(
                         readOnly: true,
-
                         controller: loanInterestController,
                         //onChanged: (value) => val.setshgloaninterest(value),
                         decoration: const InputDecoration(
@@ -112,11 +122,18 @@ class _UnitAddShgLoanState extends State<UnitAddShgLoan> {
                       return CupertinoButton(
                           child: const Text('GIVE LOAN'),
                           onPressed: () async {
-                            await val.addUnitLoantoSHG(
+                            await val.addUnitIndLoan(
+                                context: context,
+                                amount: loanAmountController.text,
+                                period: loanPeriodController.text,
+                                memberpassbookno: memberpassbookno,
+                                shgpassbookno: widget.shgpassbook,
+                                date: loanPaymentDateController.text);
+                            /*  await val.addUnitLoantoSHG(
                                 context,
                                 loanAmountController.text,
                                 loanPeriodController.text,
-                                shgPassbook);
+                                shgPassbook); */
                           });
                     },
                   ),
