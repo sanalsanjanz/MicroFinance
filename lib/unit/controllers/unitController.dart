@@ -296,6 +296,12 @@ class UnitControll extends ChangeNotifier {
         var data = jsonDecode(response.body);
 
         return data;
+      }
+      if (response.body.contains('memberdata')) {
+        // List list = response.body as List;
+        var data = jsonDecode(response.body);
+
+        return data;
       } else {
         var data = [];
         return data;
@@ -1398,6 +1404,111 @@ class UnitControll extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.unitloanindborrowersdetails, body: map);
+      if (response.body.contains('Loan Closed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Loan Closed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Loan Payment not Completed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to Close');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future closeUnitLoantoIndividuals(
+    BuildContext context,
+    String memeberpassbook,
+  ) async {
+    var map = <String, dynamic>{};
+    map['memberpassbookno'] = memeberpassbook;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitloanindborrowers, body: map);
+      if (response.body.contains('memberdata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future payUnitIndividualLoan(
+    String id,
+    BuildContext context,
+    String loanamount,
+    String penality,
+    String date,
+  ) async {
+    var map = <String, dynamic>{};
+    map['date'] = date;
+    map['amount'] = loanamount;
+    map['loanid'] = id;
+    map['penality'] = penality;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitLoanIndPay, body: map);
+      if (response.body.contains('Loan Payment done')) {
+        Fluttertoast.showToast(msg: 'Loan Paid successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(msg: 'Failed to Pay');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future closeUnitIndLoan(
+    BuildContext context,
+    String loanid,
+  ) async {
+    var map = <String, dynamic>{};
+    map['loanid'] = loanid;
+    map['type'] = 'CLOSE';
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitcloseindLoan, body: map);
       if (response.body.contains('Loan Closed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Loan Closed');

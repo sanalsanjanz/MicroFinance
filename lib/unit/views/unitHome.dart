@@ -18,6 +18,7 @@ import 'package:sacco_management/unit/views/unitLoanShgBorrowers.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
 import 'package:sacco_management/unit/views/unitRegisterNonMember.dart';
+import 'package:sacco_management/unit/views/unitIndBorrowers.dart';
 import 'package:sacco_management/unit/views/unitSavings.dart';
 import 'package:sacco_management/unit/views/unitSendMessages.dart';
 import 'package:sacco_management/unit/views/unitSessfund.dart';
@@ -72,7 +73,13 @@ class _UnitHomeState extends State<UnitHome> {
                         builder: (cv) => const UnitShgLoanBorrowers(),
                       ),
                     )
-                  : '';
+                  : currentStep == 1
+                      ? Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (cv) => const UnitIndLoanBorrowers(),
+                          ),
+                        )
+                      : '';
             },
             child: const Text('Show Borrowers')),
       ],

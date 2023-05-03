@@ -132,7 +132,7 @@ class _UnitShgLoanBorrowDetailsState extends State<UnitShgLoanBorrowDetails> {
                                                                   icon: Icon(Icons
                                                                       .calendar_today),
                                                                   labelText:
-                                                                      "From Date"),
+                                                                      "Choose Date"),
                                                               readOnly: true,
                                                               onTap: () async {
                                                                 DateTime? pickedDate = await showDatePicker(
