@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
 import 'package:sacco_management/unit/views/unitAccountingHead.dart';
+import 'package:sacco_management/unit/views/unitAddExternalLoan.dart';
 import 'package:sacco_management/unit/views/unitAddShgLoan.dart';
 import 'package:sacco_management/unit/views/unitBankBalancePay.dart';
 import 'package:sacco_management/unit/views/unitBankLinkage.dart';
@@ -62,7 +63,13 @@ class _UnitHomeState extends State<UnitHome> {
                             builder: (cv) => const UnitIndividualLoan(),
                           ),
                         )
-                      : '';
+                      : currentStep == 2
+                          ? Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (cv) => const UnitAddExternalLoan(),
+                              ),
+                            )
+                          : '';
             },
             child: const Text('Add Loan')),
         OutlinedButton(
@@ -136,6 +143,42 @@ class _UnitHomeState extends State<UnitHome> {
                 children: [
                   DrawerItem(
                       onTap: () {
+                        setState(() {
+                          viewLoan = !viewLoan;
+                        });
+                      },
+                      image: 'assets/loan.png',
+                      title: 'UNIT LOAN',
+                      option: true),
+                  trasnsDivider,
+                  Visibility(
+                    visible: viewLoan,
+                    child: Stepper(
+                        controlsBuilder: controlBuilder,
+                        currentStep: currentStep,
+                        onStepTapped: (value) {
+                          setState(() {
+                            currentStep = value;
+                          });
+                        },
+                        steps: const [
+                          Step(
+                            title: Text('SHG LOAN'),
+                            content: Text(''),
+                          ),
+                          Step(
+                            title: Text('INDIVIDUAL LOAN'),
+                            content: Text(''),
+                          ),
+                          Step(
+                            title: Text('NON-MEMBER LOAN'),
+                            content: Text(''),
+                          ),
+                        ]),
+                  ),
+                  // trasnsDivider,
+                  DrawerItem(
+                      onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (ctx) => const UnitUnitSavings(),
@@ -206,41 +249,6 @@ class _UnitHomeState extends State<UnitHome> {
                       title: 'NON MEMBER',
                       option: false),
                   trasnsDivider,
-                  DrawerItem(
-                      onTap: () {
-                        setState(() {
-                          viewLoan = !viewLoan;
-                        });
-                      },
-                      image: 'assets/loan.png',
-                      title: 'UNIT LOAN',
-                      option: true),
-                  trasnsDivider,
-                  Visibility(
-                    visible: viewLoan,
-                    child: Stepper(
-                        controlsBuilder: controlBuilder,
-                        currentStep: currentStep,
-                        onStepTapped: (value) {
-                          setState(() {
-                            currentStep = value;
-                          });
-                        },
-                        steps: const [
-                          Step(
-                            title: Text('SHG LOAN'),
-                            content: Text(''),
-                          ),
-                          Step(
-                            title: Text('INDIVIDUAL LOAN'),
-                            content: Text(''),
-                          ),
-                          Step(
-                            title: Text('NON-MEMBER LOAN'),
-                            content: Text(''),
-                          ),
-                        ]),
-                  ),
                   DrawerItem(
                       image: 'assets/reporticon.png',
                       title: 'REPORT',

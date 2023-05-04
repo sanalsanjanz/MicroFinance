@@ -1093,6 +1093,69 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future addUnitExternalLoan(
+      {required BuildContext context,
+      required String amount,
+      required String period,
+      required String interest,
+      required String id,
+      required String status,
+      required String date}) async {
+    DateTime today = DateTime.now();
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String date1 = formatter.format(today);
+    var map = <String, dynamic>{};
+    ProgressDialog.show(context: context, status: 'Adding Loan...');
+    map['unitid'] = unitId;
+    map['date'] = date1;
+    map['amount'] = amount;
+    map['period'] = period;
+    map['interest'] = interest;
+    map['id'] = id;
+    map['status'] = status;
+    map['pdate'] = date;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitAddExternaLoan, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed to Add');
+      } else if (response.body
+          .contains('Loan Amount is higher than Sambadhyam')) {
+        ProgressDialog.hide(context);
+
+        Fluttertoast.showToast(msg: 'Insufficient Balance');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Failed to Add');
+      } else {}
+    } catch (e) {
+      ProgressDialog.hide(context);
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
   Future unitsendBankInterestrPayment(
       {required BuildContext context,
       required String bank,
@@ -1453,6 +1516,26 @@ class UnitControll extends ChangeNotifier {
     } catch (e) {
       ProgressDialog.hide(context);
       print(e);
+    }
+    notifyListeners();
+  }
+
+  Future getExternalMember() async {
+    var map = <String, dynamic>{};
+    map['unitid'] = unitId;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetExternalMember, body: map);
+      if (response.body.contains('memberdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
     notifyListeners();
   }
