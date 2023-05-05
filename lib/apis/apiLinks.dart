@@ -42,6 +42,14 @@ class AuthLinks {
   //Unit
 
   static var getUnitdata = Uri.parse('${baseUrl}Unit/unitdata');
+  static var unitCloseExternalLoan =
+      Uri.parse('${baseUrl}Unit/externalloanindborrowersdetails');
+  static var unitExternalLoanPay =
+      Uri.parse('${baseUrl}Unit/externalloanindpay');
+  static var unitExternalLoanBorrowDeatails =
+      Uri.parse('${baseUrl}Unit/externalloanindborrowers');
+  static var unitGetExternalLoanBorrowers =
+      Uri.parse('${baseUrl}Unit/external_loan_borrowers');
   static var unitAddExternaLoan = Uri.parse('${baseUrl}Unit/external_loan');
   static var unitGetExternalMember =
       Uri.parse('${baseUrl}Unit/getexternalmember');

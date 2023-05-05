@@ -11,6 +11,7 @@ import 'package:sacco_management/unit/views/unitAddShgLoan.dart';
 import 'package:sacco_management/unit/views/unitBankBalancePay.dart';
 import 'package:sacco_management/unit/views/unitBankLinkage.dart';
 import 'package:sacco_management/unit/views/unitExpense.dart';
+import 'package:sacco_management/unit/views/unitExternalLoanBorrowers.dart';
 import 'package:sacco_management/unit/views/unitGrants.dart';
 import 'package:sacco_management/unit/views/unitIncome.dart';
 import 'package:sacco_management/unit/views/unitIndividualLoan.dart';
@@ -86,7 +87,14 @@ class _UnitHomeState extends State<UnitHome> {
                             builder: (cv) => const UnitIndLoanBorrowers(),
                           ),
                         )
-                      : '';
+                      : currentStep == 2
+                          ? Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (cv) =>
+                                    const UnitExternalLoanBorrowers(),
+                              ),
+                            )
+                          : '';
             },
             child: const Text('Show Borrowers')),
       ],

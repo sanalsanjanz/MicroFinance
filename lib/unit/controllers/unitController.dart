@@ -312,6 +312,31 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getExternalLoanBorrowers({required BuildContext context}) async {
+    var map = <String, dynamic>{};
+
+    map['unit'] = unitId; // password;
+    // map['type'] = type; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetExternalLoanBorrowers, body: map);
+
+      if (response.body.contains('memberdata')) {
+        // List list = response.body as List;
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
   Future getAllPresident({required BuildContext context}) async {
     try {
       http.Response response = await http.get(AuthLinks.unitGetpresidentlist);
@@ -371,6 +396,30 @@ class UnitControll extends ChangeNotifier {
       http.Response response =
           await http.post(AuthLinks.unitLoanShgBorrowers, body: map);
       if (response.body.contains('shgdata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  Future unitExternalLoanBorrowersDetails(
+      {required BuildContext context, required String memberid}) async {
+    var map = <String, dynamic>{};
+
+    map['memberid'] = memberid; // password;
+    map['unitid'] = unitId; // password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitExternalLoanBorrowDeatails, body: map);
+      if (response.body.contains('memberdata')) {
         var data = jsonDecode(response.body);
 
         return data;
@@ -1145,7 +1194,6 @@ class UnitControll extends ChangeNotifier {
               builder: (ctx) => const UnitHome(),
             ),
             (route) => false);
-        Fluttertoast.showToast(msg: 'Failed to Add');
       } else {}
     } catch (e) {
       ProgressDialog.hide(context);
@@ -1407,6 +1455,46 @@ class UnitControll extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future payUnitExternalLoan(
+    String id,
+    BuildContext context,
+    String loanamount,
+    String penality,
+    String date,
+  ) async {
+    var map = <String, dynamic>{};
+    map['date'] = date;
+    map['amount'] = loanamount;
+    map['loanid'] = id;
+    map['penality'] = penality;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitExternalLoanPay, body: map);
+      if (response.body.contains('Success')) {
+        Fluttertoast.showToast(msg: 'Loan Paid successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Failed')) {
+        Fluttertoast.showToast(msg: 'Failed to Pay');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
   Future addUnitLoantoSHG(
     BuildContext context,
     String loanamount,
@@ -1467,6 +1555,44 @@ class UnitControll extends ChangeNotifier {
     try {
       http.Response response =
           await http.post(AuthLinks.unitloanindborrowersdetails, body: map);
+      if (response.body.contains('Loan Closed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Loan Closed');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Loan Payment not Completed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to Close');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future closeUnitExternalLoan(
+    BuildContext context,
+    String loanid,
+  ) async {
+    var map = <String, dynamic>{};
+    map['loanid'] = loanid;
+    map['type'] = 'CLOSE';
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitCloseExternalLoan, body: map);
       if (response.body.contains('Loan Closed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Loan Closed');
