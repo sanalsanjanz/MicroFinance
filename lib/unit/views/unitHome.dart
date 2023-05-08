@@ -19,6 +19,7 @@ import 'package:sacco_management/unit/views/unitInsuranceTransfer.dart';
 import 'package:sacco_management/unit/views/unitLoanShgBorrowers.dart';
 import 'package:sacco_management/unit/views/unitMedicalAid.dart';
 import 'package:sacco_management/unit/views/unitMessages.dart';
+import 'package:sacco_management/unit/views/unitProfitPay.dart';
 import 'package:sacco_management/unit/views/unitRegisterNonMember.dart';
 import 'package:sacco_management/unit/views/unitIndBorrowers.dart';
 import 'package:sacco_management/unit/views/unitSavings.dart';
@@ -263,17 +264,56 @@ class _UnitHomeState extends State<UnitHome> {
                       option: false),
                   trasnsDivider,
                   DrawerItem(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => const UnitPayProfit(),
+                          ),
+                        );
+                      },
                       image: 'assets/profit.png',
                       title: 'PROFIT',
                       option: true),
                   trasnsDivider,
-                  DrawerItem(
+                  /*  DrawerItem(
                       onTap: () async {
-                        await value.logout(context);
+                        //await value.logout(context);
+                        showBottomSheet(
+                          context: context,
+                          builder: (context) => Container(
+                            // color: primaryUnitColor,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('Do you want to Logout ?'),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('NO'),
+                                    ),
+                                    const VerticalDivider(),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await value.logout(context);
+                                      },
+                                      child: const Text('YES'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        );
                       },
                       image: 'assets/logout.png',
                       title: 'LOGOUT',
-                      option: false),
+                      option: false), */
                   trasnsDivider,
                 ],
               ))
@@ -318,8 +358,47 @@ class _UnitHomeState extends State<UnitHome> {
             ],
           ),
           PopupMenuButton(
-            itemBuilder: (context) =>
-                [const PopupMenuItem(child: Text('Update Password'))],
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: const Text('Logout'),
+                onTap: () {
+                  showBottomSheet(
+                    context: context,
+                    builder: (context) => Container(
+                      // color: primaryUnitColor,
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('Do you want to Logout ?'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('NO'),
+                              ),
+                              const VerticalDivider(),
+                              TextButton(
+                                onPressed: () async {
+                                  await Provider.of<UnitControll>(context,
+                                          listen: false)
+                                      .logout(context);
+                                },
+                                child: const Text('YES'),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              )
+            ],
           ),
         ],
         systemOverlayStyle:

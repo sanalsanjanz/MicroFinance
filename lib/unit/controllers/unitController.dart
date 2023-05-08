@@ -574,7 +574,7 @@ class UnitControll extends ChangeNotifier {
 
   Future unitViewGrants({required BuildContext context}) async {
     var map = <String, dynamic>{};
-    map['unitpassbookno'] = '701'; //passbookNo;
+    map['unitpassbookno'] = passbookNo;
     try {
       http.Response response =
           await http.post(AuthLinks.unitViewGrants, body: map);
@@ -585,6 +585,24 @@ class UnitControll extends ChangeNotifier {
         var data = [];
         return data;
       }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    notifyListeners();
+  }
+
+  var profitAmount = '0';
+  Future getProfitAmount() async {
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = passbookNo;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitGetProfitAmount, body: map);
+      if (response.body.contains('profit')) {
+        var data = jsonDecode(response.body);
+        profitAmount = data[0]['profit'].toString();
+        notifyListeners();
+      } else {}
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
@@ -1701,6 +1719,47 @@ class UnitControll extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'something went wrong');
       }
     } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future unitpayProfitoRegion(
+    BuildContext context,
+    String loanamount,
+    String date,
+  ) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['date'] = date;
+    map['amount'] = loanamount;
+    map['unitpassbookno'] = passbookNo;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.unitPayProfitRegion, body: map);
+      if (response.body.contains('Yearly Profit paid to Region')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Paid Successfully');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else if (response.body.contains('Amount exceeds Sambadhyam')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to Pay');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const UnitHome(),
+            ),
+            (route) => false);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
       print(e);
     }
     notifyListeners();

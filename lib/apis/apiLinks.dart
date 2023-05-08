@@ -42,6 +42,8 @@ class AuthLinks {
   //Unit
 
   static var getUnitdata = Uri.parse('${baseUrl}Unit/unitdata');
+  static var unitPayProfitRegion = Uri.parse('${baseUrl}Unit/payregiondetails');
+  static var unitGetProfitAmount = Uri.parse('${baseUrl}Unit/payregion');
   static var unitCloseExternalLoan =
       Uri.parse('${baseUrl}Unit/externalloanindborrowersdetails');
   static var unitExternalLoanPay =
