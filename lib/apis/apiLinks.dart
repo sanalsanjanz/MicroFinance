@@ -3,8 +3,14 @@
 class AuthLinks {
   static String baseUrl =
       'http://kapstone.in/kapstone/shreyas/index.php?micro/';
+
+  //regional
+
+  static var regionGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+
   //Register
   static var memberlogin = Uri.parse('${baseUrl}Register/signinmemb');
+  static var signinRegional = Uri.parse('${baseUrl}Register/signinregion');
   static var getPresidentConfig =
       Uri.parse('${baseUrl}Register/getPresidentConfig');
   static var getallunits = Uri.parse('${baseUrl}Register/getallunits');

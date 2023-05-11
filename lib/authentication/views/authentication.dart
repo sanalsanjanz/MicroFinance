@@ -98,6 +98,7 @@ class _AutheticationState extends State<Authetication> {
                       ),
                       const SizedBox(height: 10),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CustomChoiceChip(
                             label: 'Unit',
@@ -106,27 +107,43 @@ class _AutheticationState extends State<Authetication> {
                               value.setexisting();
                               value.chooseUnit();
                             },
-                          )
+                          ),
+                          CustomChoiceChip(
+                            label: 'Regional',
+                            isSelected: value.regional,
+                            onSelected: (values) {
+                              value.setexisting();
+                              value.chooseRegional();
+                            },
+                          ),
+                          CustomChoiceChip(
+                            label: 'Head',
+                            isSelected: value.head,
+                            onSelected: (values) {
+                              value.setexisting();
+                              value.chooseHead();
+                            },
+                          ),
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Text(
-                        value.unit
+                        value.unit || value.regional || value.head
                             ? 'Fill the login form'
                             : 'Are you an existing user ?',
                         style: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       Visibility(
-                        visible: !value.unit,
+                        visible: !value.unit && !value.head && !value.regional,
                         child: const SizedBox(
                           height: 20,
                         ),
                       ),
                       Visibility(
-                        visible: !value.unit,
+                        visible: !value.unit && !value.head && !value.regional,
                         child: Row(
                           children: [
                             CustomChoiceChip(
@@ -285,12 +302,15 @@ class _AutheticationState extends State<Authetication> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Visibility(
-                            visible:
-                                (value.member || value.shg || value.unit) &&
-                                        (value.newuser || value.existingUser) &&
-                                        value.agree
-                                    ? true
-                                    : false,
+                            visible: (value.member ||
+                                        value.shg ||
+                                        value.unit ||
+                                        value.regional ||
+                                        value.head) &&
+                                    (value.newuser || value.existingUser) &&
+                                    value.agree
+                                ? true
+                                : false,
                             child: value.newuser
                                 ? SizedBox(
                                     height: 45,
@@ -301,11 +321,11 @@ class _AutheticationState extends State<Authetication> {
                                         backgroundColor: Colors.blueGrey,
                                         shape: const StadiumBorder(),
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         value.shg
-                                            ? value.signuppresident(
+                                            ? await value.signuppresident(
                                                 context: context)
-                                            : value.signupMember(context);
+                                            : await value.signupMember(context);
                                       },
                                       child: const Text('Signup'),
                                     ),
@@ -318,12 +338,17 @@ class _AutheticationState extends State<Authetication> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.blueGrey,
                                           shape: const StadiumBorder()),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         value.member
-                                            ? value.login(context)
+                                            ? await value.login(context)
                                             : value.shg
-                                                ? value.loginpresident(context)
-                                                : value.signinunit(context);
+                                                ? await value
+                                                    .loginpresident(context)
+                                                : value.regional
+                                                    ? await value
+                                                        .singinRegional(context)
+                                                    : await value
+                                                        .signinunit(context);
                                       },
                                       child: const Text('Login'),
                                     ),

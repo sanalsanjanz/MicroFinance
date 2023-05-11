@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/authentication/controller/authController.dart';
 import 'package:sacco_management/member/controllers/memberConfigController.dart';
 import 'package:sacco_management/president/controller/presidentConfigController.dart';
+import 'package:sacco_management/regional/controller/regionalController.dart';
 import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/unit/controllers/unitController.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthController()),
+        ChangeNotifierProvider(create: (context) => RegionalController()),
         ChangeNotifierProvider(create: (context) => MemberHomeController()),
         ChangeNotifierProvider(create: (context) => MemberLoanController()),
         ChangeNotifierProvider(create: (context) => PresidentController()),

@@ -10,6 +10,7 @@ import 'package:sacco_management/apis/apiLinks.dart';
 import 'package:sacco_management/authentication/views/authentication.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
+import 'package:sacco_management/regional/view/regionalHome.dart';
 import 'package:sacco_management/unit/views/unitHome.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class AuthController extends ChangeNotifier {
 
   bool agree = true;
   bool shg = false;
+
   bool unit = false;
   bool member = false;
   bool existingUser = false;
@@ -32,6 +34,8 @@ class AuthController extends ChangeNotifier {
   String phone = '';
   String password = '';
   String place = '';
+  bool regional = false;
+  bool head = false;
   setsuername(value) {
     username = value;
     notifyListeners();
@@ -78,6 +82,8 @@ class AuthController extends ChangeNotifier {
     shg = true;
     unit = false;
     member = false;
+    head = false;
+    regional = false;
     notifyListeners();
   }
 
@@ -85,6 +91,8 @@ class AuthController extends ChangeNotifier {
     shg = false;
     member = true;
     unit = false;
+    regional = false;
+    head = false;
     notifyListeners();
   }
 
@@ -92,6 +100,26 @@ class AuthController extends ChangeNotifier {
     shg = false;
     member = false;
     unit = true;
+    head = false;
+    regional = false;
+    notifyListeners();
+  }
+
+  chooseRegional() {
+    shg = false;
+    member = false;
+    unit = false;
+    head = false;
+    regional = true;
+    notifyListeners();
+  }
+
+  chooseHead() {
+    shg = false;
+    member = false;
+    unit = false;
+    head = true;
+    regional = false;
     notifyListeners();
   }
 
@@ -113,6 +141,39 @@ class AuthController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Success');
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (ctx) => const MemberHome()),
+            (route) => false);
+      } else if (response.body.contains('invalid password')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Incorrect password');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+  }
+
+  Future singinRegional(BuildContext context) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['mobile'] = phone;
+    map['password'] = password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.signinRegional, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        userStatus('reginal');
+        List<dynamic> data = await jsonDecode(response.body);
+        // await saveLogin(data);
+        // print(response.body);
+        await saveRegionalLogin(value: data);
+        Fluttertoast.showToast(msg: 'Success');
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (ctx) => const RegionalHome()),
             (route) => false);
       } else if (response.body.contains('invalid password')) {
         ProgressDialog.hide(context);
@@ -261,6 +322,25 @@ class AuthController extends ChangeNotifier {
         'ppassbookNo', value[1]['logdata']['passbook_no'].toString());
     sharedPreferences.setString(
         'pmessagecount', value[3]['messagecount'].toString());
+    notifyListeners();
+  }
+
+  Future saveRegionalLogin({required List<dynamic> value}) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    // presidentid = value[1]['logdata']['presidentid'].toString();
+    sharedPreferences.setString(
+        'regionId', value[1]['logdata']['region_id'].toString());
+    sharedPreferences.setString(
+        'rpassword', value[1]['logdata']['password'].toString());
+    sharedPreferences.setString(
+        'rname', value[1]['logdata']['region'].toString());
+    sharedPreferences.setString(
+        'rphno', value[1]['logdata']['ph_no'].toString());
+    sharedPreferences.setString(
+        'rpassbookNo', value[1]['logdata']['passbook_no'].toString());
+    sharedPreferences.setString(
+        'rmessagecount', value[3]['messagecount'].toString());
     notifyListeners();
   }
 
