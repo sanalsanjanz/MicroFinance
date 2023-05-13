@@ -7,6 +7,8 @@ class AuthLinks {
   //regional
 
   static var regionalGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+  static var regionalIndMedicalAid =
+      Uri.parse('${baseUrl}Region/medicalaidindividual');
   static var regionalTransferMedicalAid =
       Uri.parse('${baseUrl}Region/medicalaidtransfer');
   static var regionalViewMedicalAid =
