@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
 import 'package:sacco_management/regional/view/regionMessaageView.dart';
+import 'package:sacco_management/regional/view/regionalViewGrant.dart';
 
 class RegionalHome extends StatefulWidget {
   const RegionalHome({super.key});
@@ -76,47 +77,78 @@ class _RegionalHomeState extends State<RegionalHome> {
             SystemUiOverlayStyle(statusBarColor: primaryRegionColor),
         backgroundColor: primaryRegionColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<RegionalController>(builder: (context, val, child) {
-          return Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.home),
-                      const VerticalDivider(),
-                      Text(
-                        val.regionalName,
-                        style: titleblack,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 200,
+      body: Consumer<RegionalController>(builder: (context, val, child) {
+        return Column(
+          children: [
+            Card(
+              color: const Color.fromARGB(64, 8, 130, 149),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Row(
                   children: [
-                    Card(
-                      child: Column(
-                        children: const [
-                          Image(
-                            image: AssetImage('assets/bank.png'),
-                            height: 80,
-                          )
-                        ],
-                      ),
+                    const Icon(
+                      Icons.home,
+                      color: Colors.white,
+                    ),
+                    const VerticalDivider(),
+                    Text(
+                      val.regionalName,
+                      style: title,
                     )
                   ],
                 ),
-              )
-            ],
-          );
-        }),
-      ),
+              ),
+            ),
+            SizedBox(
+              height: 200,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctc) => const RegionalViewGrant(),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 2,
+                        // elevation: 5,
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              const Image(
+                                color: Colors.black,
+                                image: AssetImage('assets/bank.png'),
+                                height: 80,
+                              ),
+                              const Divider(),
+                              Text(
+                                'GRANT',
+                                style: titleblack,
+                              ),
+                              const Spacer(),
+                              const Text(
+                                'View grant details',
+                                style: TextStyle(
+                                    color: Colors.black87, letterSpacing: 2),
+                              ),
+                              const Divider(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }

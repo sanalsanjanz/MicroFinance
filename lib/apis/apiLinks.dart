@@ -6,7 +6,13 @@ class AuthLinks {
 
   //regional
 
-  static var regionGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+  static var regionalGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+  static var regionalTranferGrant = Uri.parse('${baseUrl}Region/transfergrant');
+  static var regionalViewGrand = Uri.parse('${baseUrl}Region/viewgrant');
+  static var regionalTranferGrandToUnit =
+      Uri.parse('${baseUrl}Region/transfergrantunit');
+  static var regionalTransferGrand =
+      Uri.parse('${baseUrl}Region/transfergrant');
 
   //Register
   static var memberlogin = Uri.parse('${baseUrl}Register/signinmemb');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
@@ -37,13 +38,15 @@ class RegionalMessagesView extends StatelessWidget {
                 },
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: Text('waiting'),
-              );
+              return Center(
+                  child: SpinKitFadingCircle(
+                color: primaryColor,
+              ));
             } else {
-              return const Center(
-                child: Text('loading'),
-              );
+              return Center(
+                  child: SpinKitFadingCircle(
+                color: primaryColor,
+              ));
             }
           },
         );
