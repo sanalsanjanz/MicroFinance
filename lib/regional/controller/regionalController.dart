@@ -62,6 +62,22 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future viewMedicalAid() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalViewMedicalAid, body: map);
+
+      if (response.body.contains('sdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
   List<DropDownValueModel> unitList = [];
 
   Future getUnits(BuildContext context, String grantid) async {
@@ -100,7 +116,7 @@ class RegionalController extends ChangeNotifier {
     required String transferdate,
     required String unitpassbookno,
   }) async {
-    ProgressDialog.show(context: context, status: 'Adding MoM Record');
+    ProgressDialog.show(context: context, status: 'Please wait');
 
     var map = <String, dynamic>{};
     map['grantid'] = grantid;
@@ -123,6 +139,41 @@ class RegionalController extends ChangeNotifier {
             (route) => false);
         Fluttertoast.showToast(msg: 'Grant Transfered');
       } else if (response.body.contains('Grant transfer failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to tranfer');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+        var data = [];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future transferMedicalAid({
+    required BuildContext context,
+    required String mid,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['mid'] = mid;
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalTransferMedicalAid, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+      } else if (response.body.contains('Failed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed to tranfer');
       } else {
