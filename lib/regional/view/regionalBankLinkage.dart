@@ -25,11 +25,13 @@ class RegionalBankLinkage extends StatelessWidget {
                 child: Text("Add"),
               )
             ])),
-        body: const TabBarView(
-          physics: BouncingScrollPhysics(),
+        body: TabBarView(
+          physics: const BouncingScrollPhysics(),
           children: [
-            RegionalPayBankLinkage(),
-            RegionalAddBankLinkage(),
+            const RegionalPayBankLinkage(),
+            RegionalAddBankLinkage(
+              grantid: '',
+            ),
           ],
         ),
       ),

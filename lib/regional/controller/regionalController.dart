@@ -123,6 +123,34 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<DropDownValueModel> regionalUnitList = [];
+
+  Future regionalGetUnits() async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalGetUnits, body: map);
+      if (response.body.contains('bnkdata')) {
+        var data = jsonDecode(response.body);
+        var length = data[0]['bnkdata'].length;
+        for (int i = 0; i < length; i++) {
+          regionalUnitList.add(
+            DropDownValueModel(
+              name: data[0]['bnkdata'][i]['unit'],
+              value: data[0]['bnkdata'][i]['passbook_no'],
+            ),
+          );
+        }
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+
+    notifyListeners();
+  }
+
   Future transferGrant({
     required BuildContext context,
     required String grantid,
@@ -267,6 +295,47 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Failed to tranfer');
       } else if (response.body
           .contains('There is no bank linkage from unit to pay the center')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'There is no bank linkage from unit');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future regionalAddBankLinkage({
+    required BuildContext context,
+    required String amount,
+    required String unitPassbook,
+    required String period,
+    required String pdate,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+    map['date'] = pdate;
+    map['period'] = period;
+    map['unitpassbookno'] = unitPassbook;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddBankLinkage, body: map);
+      if (response.body.contains('Added bank Linkage for the Unit')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added');
+      } else if (response.body.contains('Insufficient Bank Linkage')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Insufficient Fund');
+      } else if (response.body.contains('Failed to add bank linkage')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'There is no bank linkage from unit');
       } else {
