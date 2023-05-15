@@ -36,20 +36,5 @@ class MemberBankLoan extends StatelessWidget {
         ),
       ),
     );
-
-    /*   Scaffold(
-        appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.contacts), text: "Tab 1"),
-              Tab(icon: Icon(Icons.camera_alt), text: "Tab 2")
-            ],
-          ),
-          automaticallyImplyLeading: false,
-          title: const Text('Loans'),
-          centerTitle: true,
-          backgroundColor: primaryColor,
-        ),
-        body: ); */
   }
 }

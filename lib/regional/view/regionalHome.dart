@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
 import 'package:sacco_management/regional/view/regionMedicalAidView.dart';
+import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
 
@@ -194,7 +195,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctc) => const RegionalViewGrant(),
+                          builder: (ctx) => const RegionalBankLinkage(),
                         ),
                       );
                     },

@@ -78,6 +78,22 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future viewBankLinkage() async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalViewBankLinkage, body: map);
+
+      if (response.body.contains('bnkdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
   List<DropDownValueModel> unitList = [];
 
   Future getUnits(BuildContext context, String grantid) async {
@@ -215,6 +231,44 @@ class RegionalController extends ChangeNotifier {
       } else if (response.body.contains('Failed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed to tranfer');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future payBankLinkage(
+      {required BuildContext context,
+      required String loanid,
+      required String date}) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['loanid'] = loanid;
+    map['date'] = date;
+    map['regionpassbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalPayBankLinkage, body: map);
+      if (response.body.contains('Added bank Linkage Payment')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added');
+      } else if (response.body.contains('Failed to add bank linkage Payment')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to tranfer');
+      } else if (response.body
+          .contains('There is no bank linkage from unit to pay the center')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'There is no bank linkage from unit');
       } else {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Something went wrong');
