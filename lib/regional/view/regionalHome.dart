@@ -6,6 +6,7 @@ import 'package:sacco_management/regional/controller/regionalController.dart';
 import 'package:sacco_management/regional/view/regionMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
+import 'package:sacco_management/regional/view/regionalSessFund.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
 
 class RegionalHome extends StatefulWidget {
@@ -209,7 +210,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctc) => const RegionalViewGrant(),
+                          builder: (ctc) => const RegionalSessFund(),
                         ),
                       );
                     },
