@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
-import 'package:sacco_management/regional/view/regionMedicalAidView.dart';
+import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
 import 'package:sacco_management/regional/view/regionalSessFund.dart';

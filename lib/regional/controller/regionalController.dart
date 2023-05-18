@@ -126,6 +126,23 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getSessPayInfo() async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalPaySessFundTransfer, body: map);
+
+      if (response.body.contains('datas')) {
+        var data = jsonDecode(response.body);
+        sessAmount = data[0]['totalamt'].toString();
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
   List<DropDownValueModel> unitList = [];
 
   Future getUnits(BuildContext context, String grantid) async {
@@ -156,7 +173,7 @@ class RegionalController extends ChangeNotifier {
   }
 
   List<DropDownValueModel> regionalUnitList = [];
-
+  var sessAmount = '0';
   Future regionalGetUnits() async {
     var map = <String, dynamic>{};
     map['regionpassbookno'] = passbookno;
@@ -446,6 +463,42 @@ class RegionalController extends ChangeNotifier {
             (route) => false);
         Fluttertoast.showToast(msg: 'Transfered');
       } else if (response.body.contains('SESS Fund transfer failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future trasnferPayment({
+    required BuildContext context,
+    required String amount,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalTransferPayment, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Transfered');
+        sessAmount = '0';
+      } else if (response.body
+          .contains('No sess fund is transfer to center!!')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed');
       } else {

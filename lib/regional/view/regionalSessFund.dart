@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sacco_management/constants/styles.dart';
+import 'package:sacco_management/regional/view/regionalPaySessFund.dart';
 import 'package:sacco_management/regional/view/regionalSessTransferToCenter.dart';
 import 'package:sacco_management/regional/view/regionalViewSessFund.dart';
 
@@ -30,8 +31,8 @@ class RegionalSessFund extends StatelessWidget {
         body: TabBarView(
           physics: const BouncingScrollPhysics(),
           children: [
-            RegionalViewSessFund(),
-            RegionalSessTransferToCenter(),
+            const RegionalViewSessFund(),
+            const RegionalPaySessFund(),
             RegionalSessTransferToCenter(),
           ],
         ),
