@@ -7,6 +7,11 @@ class AuthLinks {
   //regional
 
   static var regionalGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+  static var regionalAddExpense = Uri.parse('${baseUrl}Region/addexpense');
+  static var regionalAddOtherIncome =
+      Uri.parse('${baseUrl}Region/addotherincome');
+  static var regionalGetAccountingHead =
+      Uri.parse('${baseUrl}Region/getaccountinghead');
   static var regionalTransferPayment =
       Uri.parse('${baseUrl}Region/transferpayment');
   static var regionalPaySessFundTransfer =

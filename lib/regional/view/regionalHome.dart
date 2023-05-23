@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
+import 'package:sacco_management/regional/view/regionalIcome.dart';
 import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
 import 'package:sacco_management/regional/view/regionalSessFund.dart';
+import 'package:sacco_management/regional/view/regionalExpense.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
 
 class RegionalHome extends StatefulWidget {
@@ -228,7 +230,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctc) => const RegionalViewGrant(),
+                          builder: (ctc) => const RegionalIncome(),
                         ),
                       );
                     },
@@ -242,7 +244,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctc) => const RegionalViewGrant(),
+                          builder: (ctc) => RegionalExpense(),
                         ),
                       );
                     },

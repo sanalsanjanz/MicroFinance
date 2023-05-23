@@ -511,4 +511,132 @@ class RegionalController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future addOtherIncome({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String type,
+    required String accountinghead,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+    map['date'] = date;
+    map['regionpassbookno'] = passbookno;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddOtherIncome, body: map);
+      if (response.body.contains('Income added')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Income added');
+        sessAmount = '0';
+      } else if (response.body.contains('Income adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  List<DropDownValueModel> income = [];
+  List<DropDownValueModel> expense = [];
+  Future getAccountingHead(String type) async {
+    var map = <String, dynamic>{};
+
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalGetAccountingHead, body: map);
+      if (response.body.contains('expensedata') ||
+          response.body.contains('incomedata')) {
+        var data = jsonDecode(response.body);
+        if (type == 'expense') {
+          var length = data[0]['expensedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            expense.add(DropDownValueModel(
+                name: data[0]['expensedata'][i]['head'],
+                value: data[0]['expensedata'][i]['head']));
+          }
+          notifyListeners();
+        } else if (type == 'income') {
+          var length = data[1]['incomedata'].length;
+          for (int i = 0; i < length; i++) {
+            // print(data[0]['memberdata'][i]);
+            income.add(DropDownValueModel(
+                name: data[1]['incomedata'][i]['head'],
+                value: data[1]['incomedata'][i]['head']));
+          }
+          notifyListeners();
+        }
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    notifyListeners();
+  }
+
+  Future addExpense({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String reason,
+    required String accountinghead,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['accountinghead'] = accountinghead;
+    map['reason'] = reason;
+    map['date'] = date;
+    map['passbookno'] = passbookno;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddExpense, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Income added');
+        sessAmount = '0';
+      } else if (response.body.contains('Income adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
