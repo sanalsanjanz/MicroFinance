@@ -11,6 +11,7 @@ import 'package:sacco_management/regional/view/regionalMessaageView.dart';
 import 'package:sacco_management/regional/view/regionalSessFund.dart';
 import 'package:sacco_management/regional/view/regionalExpense.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
+import 'package:sacco_management/regional/view/regionalViewUnits.dart';
 
 class RegionalHome extends StatefulWidget {
   const RegionalHome({super.key});
@@ -71,7 +72,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryRegionColor,
-                          shape: const StadiumBorder(),
+                          // shape: const StadiumBorder(),
                         ),
                         onPressed: () {},
                         child: const Text('New Password'),
@@ -85,7 +86,6 @@ class _RegionalHomeState extends State<RegionalHome> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryRegionColor,
-                          shape: const StadiumBorder(),
                         ),
                         onPressed: () {},
                         child: const Text('Logout'),
@@ -107,7 +107,15 @@ class _RegionalHomeState extends State<RegionalHome> {
                 },
                 title: 'Add Unit'),
             DrawerItem(
-                icon: Icons.home_work, onTap: () {}, title: 'Show Units'),
+                icon: Icons.home_work,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const RegionalViewUnits(),
+                    ),
+                  );
+                },
+                title: 'Show Units'),
             DrawerItem(
                 icon: Icons.account_balance,
                 onTap: () {},
@@ -177,23 +185,28 @@ class _RegionalHomeState extends State<RegionalHome> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              color: const Color.fromARGB(64, 8, 130, 149),
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Text(
+                      val.regionalName.toUpperCase(),
+                      style: titleblack,
+                    ),
+                  ) /*  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    /*   const Icon(
                       Icons.home,
                       color: Colors.white,
-                    ),
-                    const VerticalDivider(),
+                    ), */
+                    /*    const VerticalDivider(), */
                     Text(
                       val.regionalName,
                       style: title,
                     )
                   ],
-                ),
-              ),
+                ), */
+                  ),
             ),
             Row(
               children: [

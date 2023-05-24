@@ -174,7 +174,7 @@ class RegionalController extends ChangeNotifier {
 
   List<DropDownValueModel> regionalUnitList = [];
   var sessAmount = '0';
-  Future regionalGetUnits() async {
+  Future regionalGetUnits({int? option = 1}) async {
     var map = <String, dynamic>{};
     map['regionpassbookno'] = passbookno;
 
@@ -183,14 +183,18 @@ class RegionalController extends ChangeNotifier {
           await http.post(AuthLinks.regionalGetUnits, body: map);
       if (response.body.contains('bnkdata')) {
         var data = jsonDecode(response.body);
-        var length = data[0]['bnkdata'].length;
-        for (int i = 0; i < length; i++) {
-          regionalUnitList.add(
-            DropDownValueModel(
-              name: data[0]['bnkdata'][i]['unit'],
-              value: data[0]['bnkdata'][i]['passbook_no'],
-            ),
-          );
+        if (option == 1) {
+          var length = data[0]['bnkdata'].length;
+          for (int i = 0; i < length; i++) {
+            regionalUnitList.add(
+              DropDownValueModel(
+                name: data[0]['bnkdata'][i]['unit'],
+                value: data[0]['bnkdata'][i]['passbook_no'],
+              ),
+            );
+          }
+        } else {
+          return data;
         }
       } else {}
     } catch (e) {
