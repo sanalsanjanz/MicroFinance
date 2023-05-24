@@ -559,7 +559,7 @@ class RegionalController extends ChangeNotifier {
 
   List<DropDownValueModel> income = [];
   List<DropDownValueModel> expense = [];
-  Future getAccountingHead(String type) async {
+  Future getAccountingHead(String? type) async {
     var map = <String, dynamic>{};
 
     map['passbookno'] = passbookno;
@@ -569,24 +569,28 @@ class RegionalController extends ChangeNotifier {
       if (response.body.contains('expensedata') ||
           response.body.contains('incomedata')) {
         var data = jsonDecode(response.body);
-        if (type == 'expense') {
-          var length = data[0]['expensedata'].length;
-          for (int i = 0; i < length; i++) {
-            // print(data[0]['memberdata'][i]);
-            expense.add(DropDownValueModel(
-                name: data[0]['expensedata'][i]['head'],
-                value: data[0]['expensedata'][i]['head']));
+        if (type != '') {
+          if (type == 'expense') {
+            var length = data[0]['expensedata'].length;
+            for (int i = 0; i < length; i++) {
+              // print(data[0]['memberdata'][i]);
+              expense.add(DropDownValueModel(
+                  name: data[0]['expensedata'][i]['head'],
+                  value: data[0]['expensedata'][i]['head']));
+            }
+            notifyListeners();
+          } else if (type == 'income') {
+            var length = data[1]['incomedata'].length;
+            for (int i = 0; i < length; i++) {
+              // print(data[0]['memberdata'][i]);
+              income.add(DropDownValueModel(
+                  name: data[1]['incomedata'][i]['head'],
+                  value: data[1]['incomedata'][i]['head']));
+            }
+            notifyListeners();
           }
-          notifyListeners();
-        } else if (type == 'income') {
-          var length = data[1]['incomedata'].length;
-          for (int i = 0; i < length; i++) {
-            // print(data[0]['memberdata'][i]);
-            income.add(DropDownValueModel(
-                name: data[1]['incomedata'][i]['head'],
-                value: data[1]['incomedata'][i]['head']));
-          }
-          notifyListeners();
+        } else {
+          return data;
         }
 
         return data;
@@ -680,6 +684,37 @@ class RegionalController extends ChangeNotifier {
       print(e);
     }
     ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future addAccountingHead(
+      BuildContext context, String? type, String? accountinghead) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddAccountingHead, body: map);
+      if (response.body.contains('Accounting head added')) {
+        Fluttertoast.showToast(msg: 'successfully added');
+        await getAccountingHead('');
+        ProgressDialog.hide(context);
+        /*  Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false); */
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      print(e);
+    }
     notifyListeners();
   }
 }

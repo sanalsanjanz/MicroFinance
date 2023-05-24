@@ -7,15 +7,15 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/president/controller/presidenthomecontroll.dart';
 
-class MemberAddAccountingHead extends StatefulWidget {
-  const MemberAddAccountingHead({super.key});
+class PresidentAccountingHead extends StatefulWidget {
+  const PresidentAccountingHead({super.key});
 
   @override
-  State<MemberAddAccountingHead> createState() =>
-      _MemberAddAccountingHeadState();
+  State<PresidentAccountingHead> createState() =>
+      _PresidentAccountingHeadState();
 }
 
-class _MemberAddAccountingHeadState extends State<MemberAddAccountingHead> {
+class _PresidentAccountingHeadState extends State<PresidentAccountingHead> {
   bool income = false;
   bool expense = false;
   TextEditingController accountinghead = TextEditingController();

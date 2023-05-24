@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
+import 'package:sacco_management/regional/view/regionalAccountingHead.dart';
 import 'package:sacco_management/regional/view/regionalAddUnit.dart';
 import 'package:sacco_management/regional/view/regionalIcome.dart';
 import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
@@ -118,7 +119,13 @@ class _RegionalHomeState extends State<RegionalHome> {
                 title: 'Show Units'),
             DrawerItem(
                 icon: Icons.account_balance,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const RegionalAccountingHead(),
+                    ),
+                  );
+                },
                 title: 'Accounting Head'),
             DrawerItem(
                 icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),

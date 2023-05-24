@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sacco_management/constants/styles.dart';
-import 'package:sacco_management/president/view/memberAddAccountingHead.dart';
+import 'package:sacco_management/president/view/presidentAddAccountingHead.dart';
 import 'package:sacco_management/president/view/presidentProfit.dart';
 import 'package:sacco_management/president/view/presidentShgPayments.dart';
 import 'package:sacco_management/president/view/presidentUnitLoans.dart';
@@ -31,7 +31,7 @@ class _PresientExploreState extends State<PresientExplore> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => const MemberAddAccountingHead(),
+                      builder: (ctx) => const PresidentAccountingHead(),
                     ),
                   );
                 },
