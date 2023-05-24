@@ -639,4 +639,43 @@ class RegionalController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future regionalAddUnit({
+    required BuildContext context,
+    required String mobile,
+    required String password,
+    required String unitname,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Adding $unitname');
+    var map = <String, dynamic>{};
+    map['unitname'] = unitname;
+    map['password'] = password;
+    map['mobile'] = mobile;
+    map['passbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddUnit, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added new unit $unitname');
+        sessAmount = '0';
+      } else if (response.body.contains('Income adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }

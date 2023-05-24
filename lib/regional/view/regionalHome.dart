@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/constants/styles.dart';
 import 'package:sacco_management/regional/controller/regionalController.dart';
+import 'package:sacco_management/regional/view/regionalAddUnit.dart';
 import 'package:sacco_management/regional/view/regionalIcome.dart';
 import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
@@ -30,11 +31,97 @@ class _RegionalHomeState extends State<RegionalHome> {
     return Scaffold(
       drawer: Drawer(
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           children: [
             DrawerHeader(
-                child: Container(
-              color: primaryRegionColor,
-            ))
+              decoration: BoxDecoration(color: primaryRegionColor),
+              child: Container(
+                color: primaryRegionColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CircleAvatar(
+                      child: Image(
+                        image: AssetImage('assets/shield.png'),
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.transparent,
+                    ),
+                    Consumer<RegionalController>(
+                      builder: (context, value, child) {
+                        return Text(
+                          value.regionalName.toUpperCase(),
+                          style: title,
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Tooltip(
+                      message: 'update password',
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryRegionColor,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {},
+                        child: const Text('New Password'),
+                      ),
+                    ),
+                  ),
+                  const VerticalDivider(width: 8),
+                  Expanded(
+                    child: Tooltip(
+                      message: 'logout from account',
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryRegionColor,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {},
+                        child: const Text('Logout'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            DrawerItem(
+                icon: Icons.add_home_work_sharp,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => RegionalAddUnit(),
+                    ),
+                  );
+                },
+                title: 'Add Unit'),
+            DrawerItem(
+                icon: Icons.home_work, onTap: () {}, title: 'Show Units'),
+            DrawerItem(
+                icon: Icons.account_balance,
+                onTap: () {},
+                title: 'Accounting Head'),
+            DrawerItem(
+                icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
+            DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
+            DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
+            DrawerItem(
+                icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),
+            /*   DrawerItem(
+                icon: Icons.add_home_work_sharp,
+                onTap: () {},
+                title: 'Add Unit'), */
           ],
         ),
       ),
@@ -244,7 +331,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctc) => RegionalExpense(),
+                          builder: (ctc) => const RegionalExpense(),
                         ),
                       );
                     },
@@ -258,6 +345,37 @@ class _RegionalHomeState extends State<RegionalHome> {
           ],
         );
       }),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  DrawerItem(
+      {super.key,
+      required this.icon,
+      required this.onTap,
+      required this.title});
+  String title;
+  IconData icon;
+  void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: GestureDetector(
+        onTap: onTap,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: primaryRegionColor,
+            child: Icon(
+              icon,
+              color: Colors.white,
+            ),
+          ),
+          title: Text(title),
+          trailing: const Icon(Icons.arrow_forward_sharp),
+        ),
+      ),
     );
   }
 }
