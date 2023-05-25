@@ -9,6 +9,7 @@ import 'package:sacco_management/regional/view/regionalIcome.dart';
 import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
+import 'package:sacco_management/regional/view/regionalProjects.dart';
 import 'package:sacco_management/regional/view/regionalSessFund.dart';
 import 'package:sacco_management/regional/view/regionalExpense.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
@@ -128,7 +129,15 @@ class _RegionalHomeState extends State<RegionalHome> {
                 },
                 title: 'Accounting Head'),
             DrawerItem(
-                icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
+                icon: Icons.document_scanner,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const RegionalProject(),
+                    ),
+                  );
+                },
+                title: 'Projects'),
             DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
             DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
             DrawerItem(

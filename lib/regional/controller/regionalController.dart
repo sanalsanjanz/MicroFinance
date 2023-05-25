@@ -673,7 +673,7 @@ class RegionalController extends ChangeNotifier {
             (route) => false);
         Fluttertoast.showToast(msg: 'Added new unit $unitname');
         sessAmount = '0';
-      } else if (response.body.contains('Income adding failed')) {
+      } else if (response.body.contains('Failed to add')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed');
       } else {
@@ -715,6 +715,67 @@ class RegionalController extends ChangeNotifier {
       ProgressDialog.hide(context);
       print(e);
     }
+    notifyListeners();
+  }
+
+  Future regionalAddProject({
+    required BuildContext context,
+    required String projectname,
+    required String fundingagency,
+    required String estimate,
+    required String area,
+    required String purpose,
+    required String duration,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Adding $projectname');
+    var map = <String, dynamic>{};
+    map['projectname'] = projectname;
+    map['passbookno'] = passbookno;
+    map['fundingagency'] = fundingagency;
+    map['estimate'] = estimate;
+    map['area'] = area;
+    map['purpose'] = purpose;
+    map['duration'] = duration;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddProject, body: map);
+      if (response.body.contains('Project added')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Added new project $projectname');
+        sessAmount = '0';
+      } else if (response.body.contains('failed to add')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future viewProjects() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalViewProject, body: map);
+
+      if (response.body.contains('projectdata')) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {}
+    } catch (e) {}
     notifyListeners();
   }
 }
