@@ -899,4 +899,41 @@ class RegionalController extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future transferInsurance({
+    required BuildContext context,
+    required String amount,
+    required String date,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+    map['amount'] = amount;
+    map['date'] = date;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalAddInsurance, body: map);
+      if (response.body.contains('Tranfer amount sucessfull')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Insurance added');
+        sessAmount = '0';
+      } else if (response.body.contains('There is no tranfer amount')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Nothing to transfer');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
