@@ -6,6 +6,7 @@ import 'package:sacco_management/regional/controller/regionalController.dart';
 import 'package:sacco_management/regional/view/regionalAccountingHead.dart';
 import 'package:sacco_management/regional/view/regionalAddUnit.dart';
 import 'package:sacco_management/regional/view/regionalIcome.dart';
+import 'package:sacco_management/regional/view/regionalInsurance.dart';
 import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
 import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
@@ -138,7 +139,16 @@ class _RegionalHomeState extends State<RegionalHome> {
                   );
                 },
                 title: 'Projects'),
-            DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
+            DrawerItem(
+                icon: Icons.security,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const RegionalInsurance(),
+                    ),
+                  );
+                },
+                title: 'Insurance'),
             DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
             DrawerItem(
                 icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),

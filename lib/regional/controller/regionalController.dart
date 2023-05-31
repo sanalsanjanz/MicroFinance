@@ -245,7 +245,7 @@ class RegionalController extends ChangeNotifier {
         return data;
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -278,7 +278,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -355,7 +355,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -396,7 +396,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -430,7 +430,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -474,7 +474,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -510,7 +510,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -551,7 +551,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -573,7 +573,7 @@ class RegionalController extends ChangeNotifier {
           if (type == 'expense') {
             var length = data[0]['expensedata'].length;
             for (int i = 0; i < length; i++) {
-              // print(data[0]['memberdata'][i]);
+              // //print(data[0]['memberdata'][i]);
               expense.add(DropDownValueModel(
                   name: data[0]['expensedata'][i]['head'],
                   value: data[0]['expensedata'][i]['head']));
@@ -582,7 +582,7 @@ class RegionalController extends ChangeNotifier {
           } else if (type == 'income') {
             var length = data[1]['incomedata'].length;
             for (int i = 0; i < length; i++) {
-              // print(data[0]['memberdata'][i]);
+              // //print(data[0]['memberdata'][i]);
               income.add(DropDownValueModel(
                   name: data[1]['incomedata'][i]['head'],
                   value: data[1]['incomedata'][i]['head']));
@@ -602,7 +602,7 @@ class RegionalController extends ChangeNotifier {
         return data;
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     notifyListeners();
   }
@@ -642,7 +642,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -681,7 +681,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -713,7 +713,7 @@ class RegionalController extends ChangeNotifier {
       }
     } catch (e) {
       ProgressDialog.hide(context);
-      print(e);
+      //print(e);
     }
     notifyListeners();
   }
@@ -757,7 +757,7 @@ class RegionalController extends ChangeNotifier {
         Fluttertoast.showToast(msg: 'Something went wrong');
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
     ProgressDialog.hide(context);
     notifyListeners();
@@ -776,6 +776,127 @@ class RegionalController extends ChangeNotifier {
         return data;
       } else {}
     } catch (e) {}
+    notifyListeners();
+  }
+
+  Future submitIncome({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String type,
+    required String projectid,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['projectid'] = projectid;
+    map['type'] = type;
+    map['date'] = date;
+    map['passbookno'] = passbookno;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSubmitIncome, body: map);
+      if (response.body.contains('Income added')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Income added');
+        sessAmount = '0';
+      } else if (response.body.contains('Income adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future submitExpense({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String type,
+    required String projectid,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['projectid'] = projectid;
+    map['type'] = type;
+    map['date'] = date;
+    map['passbookno'] = passbookno;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSubmitExpense, body: map);
+      if (response.body.contains('Expense added')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Expense added');
+        sessAmount = '0';
+      } else if (response.body.contains('Expense adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future searchProject({required String projectid}) async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['projectid'] = projectid;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSearchProject, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  String insurance = '0';
+  Future getInsurance() async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalGetInsurance, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        insurance = data[0]['sum'].toString();
+        notifyListeners();
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+
     notifyListeners();
   }
 }
