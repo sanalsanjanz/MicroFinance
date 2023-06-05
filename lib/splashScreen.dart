@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:lottie/lottie.dart';
+import 'package:sacco_management/admin/view/adminHome.dart';
 import 'package:sacco_management/authentication/views/authentication.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
@@ -73,7 +74,11 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           MaterialPageRoute(builder: (ctx) => const RegionalHome()),
           (route) => false);
-    } else if (user == 'head') {
+    } else if (user == 'admin') {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (ctx) => const AdminHome()),
+          (route) => false);
     } else {
       Navigator.pushAndRemoveUntil(
           context,

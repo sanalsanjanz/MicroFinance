@@ -4,6 +4,8 @@ class AuthLinks {
   static String baseUrl =
       'http://kapstone.in/kapstone/shreyas/index.php?micro/';
   //admin
+  static var adminAddGrant = Uri.parse('${baseUrl}Admin/addgrant');
+  static var adminAllRegions = Uri.parse('${baseUrl}Admin/getallregion');
   static var adminAddMedicalAid =
       Uri.parse('${baseUrl}Admin/addmedicalaidindividual');
 

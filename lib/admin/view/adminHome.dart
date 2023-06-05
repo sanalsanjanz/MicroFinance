@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/admin/controller/adminController.dart';
+import 'package:sacco_management/admin/view/adminAddGrant.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/constants/styles.dart';
 
@@ -249,7 +250,13 @@ class _AdminHomeState extends State<AdminHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const AdminAddGrant(),
+                        ),
+                      );
+                    },
                     description: 'View grant details ',
                     heading: 'GRANT',
                     image: 'assets/grantshow.png',
