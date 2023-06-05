@@ -3,11 +3,17 @@
 class AuthLinks {
   static String baseUrl =
       'http://kapstone.in/kapstone/shreyas/index.php?micro/';
+  //admin
+  static var adminAddMedicalAid =
+      Uri.parse('${baseUrl}Admin/addmedicalaidindividual');
 
   //regional
-
+//message pending
   static var regionalGetMessages = Uri.parse('${baseUrl}Region/regiondata');
   static var regionalGetInsurance = Uri.parse('${baseUrl}Region/insurance');
+  static var regionalPayCenter = Uri.parse('${baseUrl}Region/paycenter');
+  static var regionalPayCenterView =
+      Uri.parse('${baseUrl}Region/paycenterview');
   static var regionalAddInsurance = Uri.parse('${baseUrl}Region/addinsurance');
   static var regionalSearchProject =
       Uri.parse('${baseUrl}Region/searchproject');
@@ -56,6 +62,7 @@ class AuthLinks {
 
   //Register
   static var memberlogin = Uri.parse('${baseUrl}Register/signinmemb');
+  static var signinAdmin = Uri.parse('${baseUrl}Register/signinadmin');
   static var signinRegional = Uri.parse('${baseUrl}Register/signinregion');
   static var getPresidentConfig =
       Uri.parse('${baseUrl}Register/getPresidentConfig');

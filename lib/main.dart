@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sacco_management/admin/controller/adminController.dart';
 import 'package:sacco_management/authentication/controller/authController.dart';
 import 'package:sacco_management/member/controllers/memberConfigController.dart';
 import 'package:sacco_management/president/controller/presidentConfigController.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PresidentController()),
         ChangeNotifierProvider(create: (context) => MemberConfigController()),
         ChangeNotifierProvider(create: (context) => UnitControll()),
-        // ChangeNotifierProvider(create: (context) => ),
+        ChangeNotifierProvider(create: (context) => AdminController()),
+
         ChangeNotifierProvider(
             create: (context) => PresidentConfigController()),
         // ChangeNotifierProvider(create: (context) => UnitControll()),

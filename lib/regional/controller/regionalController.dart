@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
 import 'package:sacco_management/regional/view/regionalHome.dart';
+import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -900,6 +901,28 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  String profit = '0';
+  String profitPercentage = '0';
+  Future getProfit() async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalPayCenterView, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        profit = data[4]['profitamt'].toString();
+        profitPercentage = data[2]['profit'].toString();
+        notifyListeners();
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+
+    notifyListeners();
+  }
+
   Future transferInsurance({
     required BuildContext context,
     required String amount,
@@ -935,5 +958,57 @@ class RegionalController extends ChangeNotifier {
     }
     ProgressDialog.hide(context);
     notifyListeners();
+  }
+
+  Future transferProfit({
+    required BuildContext context,
+    required String amount,
+    required String date,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = passbookno;
+    map['amount'] = amount;
+    map['date'] = date;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalPayCenter, body: map);
+      if (response.body.contains('Yearly profit paid to center')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Profit added');
+        sessAmount = '0';
+      } else if (response.body
+          .contains('Already given Yearly Profit for this year')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Already Paid');
+      } else if (response.body.contains('Amount exceeds Sambadhyam')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Amount exceeds Sambadhyam');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    Fluttertoast.showToast(msg: 'Yahooo !!!');
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (ctx) => const SplashScreen(),
+        ),
+        (route) => false);
   }
 }

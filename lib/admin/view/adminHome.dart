@@ -1,34 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sacco_management/admin/controller/adminController.dart';
+import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/constants/styles.dart';
-import 'package:sacco_management/regional/controller/regionalController.dart';
-import 'package:sacco_management/regional/view/regionalAccountingHead.dart';
-import 'package:sacco_management/regional/view/regionalAddUnit.dart';
-import 'package:sacco_management/regional/view/regionalIcome.dart';
-import 'package:sacco_management/regional/view/regionalInsurance.dart';
-import 'package:sacco_management/regional/view/regionalMedicalAidView.dart';
-import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
-import 'package:sacco_management/regional/view/regionalMessaageView.dart';
-import 'package:sacco_management/regional/view/regionalProfit.dart';
-import 'package:sacco_management/regional/view/regionalProjects.dart';
-import 'package:sacco_management/regional/view/regionalSessFund.dart';
-import 'package:sacco_management/regional/view/regionalExpense.dart';
-import 'package:sacco_management/regional/view/regionalViewGrant.dart';
-import 'package:sacco_management/regional/view/regionalViewUnits.dart';
 
-class RegionalHome extends StatefulWidget {
-  const RegionalHome({super.key});
+class AdminHome extends StatefulWidget {
+  const AdminHome({super.key});
 
   @override
-  State<RegionalHome> createState() => _RegionalHomeState();
+  State<AdminHome> createState() => _AdminHomeState();
 }
 
-class _RegionalHomeState extends State<RegionalHome> {
+class _AdminHomeState extends State<AdminHome> {
   @override
   void initState() {
     super.initState();
-    Provider.of<RegionalController>(context, listen: false).getsaved();
+    Provider.of<AdminController>(context, listen: false).getSavedInformation();
   }
 
   @override
@@ -39,9 +27,9 @@ class _RegionalHomeState extends State<RegionalHome> {
           physics: const BouncingScrollPhysics(),
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: primaryRegionColor),
+              decoration: BoxDecoration(color: primaryAdminColor),
               child: Container(
-                color: primaryRegionColor,
+                color: primaryAdminColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -54,10 +42,10 @@ class _RegionalHomeState extends State<RegionalHome> {
                     const Divider(
                       color: Colors.transparent,
                     ),
-                    Consumer<RegionalController>(
+                    Consumer<AdminController>(
                       builder: (context, value, child) {
                         return Text(
-                          value.regionalName.toUpperCase(),
+                          value.name.toString().toUpperCase(),
                           style: title,
                         );
                       },
@@ -75,7 +63,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                       message: 'update password',
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryRegionColor,
+                          backgroundColor: primaryAdminColor,
                           // shape: const StadiumBorder(),
                         ),
                         onPressed: () {},
@@ -89,7 +77,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                       message: 'logout from account',
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryRegionColor,
+                          backgroundColor: primaryAdminColor,
                         ),
                         onPressed: () {},
                         child: const Text('Logout'),
@@ -102,65 +90,20 @@ class _RegionalHomeState extends State<RegionalHome> {
             const Divider(),
             DrawerItem(
                 icon: Icons.add_home_work_sharp,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => RegionalAddUnit(),
-                    ),
-                  );
-                },
+                onTap: () {},
                 title: 'Add Unit'),
             DrawerItem(
-                icon: Icons.home_work,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const RegionalViewUnits(),
-                    ),
-                  );
-                },
-                title: 'Show Units'),
+                icon: Icons.home_work, onTap: () {}, title: 'Show Units'),
             DrawerItem(
                 icon: Icons.account_balance,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const RegionalAccountingHead(),
-                    ),
-                  );
-                },
+                onTap: () {},
                 title: 'Accounting Head'),
             DrawerItem(
-                icon: Icons.document_scanner,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const RegionalProject(),
-                    ),
-                  );
-                },
-                title: 'Projects'),
-            DrawerItem(
-                icon: Icons.security,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const RegionalInsurance(),
-                    ),
-                  );
-                },
-                title: 'Insurance'),
+                icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
+            DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
             // DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
             DrawerItem(
-                icon: Icons.savings_rounded,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => const RegionalProfit(),
-                    ),
-                  );
-                },
-                title: 'Profit'),
+                icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),
             /*   DrawerItem(
                 icon: Icons.add_home_work_sharp,
                 onTap: () {},
@@ -169,19 +112,13 @@ class _RegionalHomeState extends State<RegionalHome> {
         ),
       ),
       appBar: AppBar(
-        actions: [
+        /*   actions: [
           Stack(
             children: [
               Align(
                 alignment: Alignment.center,
                 child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => const RegionalMessagesView(),
-                      ),
-                    );
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.message),
                 ),
               ),
@@ -192,9 +129,9 @@ class _RegionalHomeState extends State<RegionalHome> {
                 child: CircleAvatar(
                   backgroundColor: Colors.red,
                   radius: 10,
-                  child: Consumer<RegionalController>(
+                  child: Consumer<AdminController>(
                     builder: (context, myType, child) {
-                      return Text(myType.messagecount);
+                      return const Text('');
                     },
                   ),
                 ),
@@ -205,14 +142,14 @@ class _RegionalHomeState extends State<RegionalHome> {
             width: 8,
           )
           // const VerticalDivider(),
-        ],
-        title: const Text('Regional'),
+        ], */
+        title: const Text('Admin'),
         // centerTitle: true,
         systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: primaryRegionColor),
-        backgroundColor: primaryRegionColor,
+            SystemUiOverlayStyle(statusBarColor: primaryAdminColor),
+        backgroundColor: primaryAdminColor,
       ),
-      body: Consumer<RegionalController>(builder: (context, val, child) {
+      body: Consumer<AdminController>(builder: (context, val, child) {
         return ListView(
           physics: const BouncingScrollPhysics(),
           children: [
@@ -227,11 +164,11 @@ class _RegionalHomeState extends State<RegionalHome> {
                     children: [
                       Center(
                         child: Text(
-                          val.regionalName.toUpperCase(),
+                          val.name.toString().toUpperCase(),
                           style: titleblack,
                         ),
                       ),
-                      Consumer<RegionalController>(
+                      Consumer<AdminController>(
                         builder: (context, value, child) {
                           return Tooltip(
                             message: 'Logout',
@@ -260,7 +197,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                                             const VerticalDivider(),
                                             TextButton(
                                               onPressed: () async {
-                                                await value.logout(context);
+                                                //await value.logout(context);
                                               },
                                               child: const Text('YES'),
                                             ),
@@ -301,7 +238,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => const RegionalMedicalAidView(),
+                          builder: (ctx) => AdminMedicalAid(),
                         ),
                       );
                     },
@@ -312,13 +249,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctc) => const RegionalViewGrant(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     description: 'View grant details ',
                     heading: 'GRANT',
                     image: 'assets/grantshow.png',
@@ -381,13 +312,7 @@ class _RegionalHomeState extends State<RegionalHome> {
               children: [
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => const RegionalBankLinkage(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     description: 'View banklinkage ',
                     heading: 'BANK LINKAGE',
                     image: 'assets/pay.png',
@@ -395,13 +320,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctc) => const RegionalSessFund(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     description: 'View SESS fund',
                     heading: 'SESS FUND',
                     image: 'assets/study.png',
@@ -413,13 +332,7 @@ class _RegionalHomeState extends State<RegionalHome> {
               children: [
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctc) => const RegionalIncome(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     description: 'View income ',
                     heading: 'INCOME',
                     image: 'assets/income.png',
@@ -427,13 +340,7 @@ class _RegionalHomeState extends State<RegionalHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctc) => const RegionalExpense(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     description: 'View expense ',
                     heading: 'EXPENSE',
                     image: 'assets/expenseicon.png',
@@ -465,7 +372,7 @@ class DrawerItem extends StatelessWidget {
         onTap: onTap,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: primaryRegionColor,
+            backgroundColor: primaryAdminColor,
             child: Icon(
               icon,
               color: Colors.white,

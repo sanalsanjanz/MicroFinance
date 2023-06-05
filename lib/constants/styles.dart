@@ -5,6 +5,8 @@ Color primaryColor = const Color(0xff89DFC5);
 Color shadeprimaryColor = const Color.fromARGB(150, 137, 223, 197);
 Color primaryRegionColor = const Color(0xff088395);
 Color? shadedRegionColor = Colors.blueGrey[100];
+Color primaryAdminColor = const Color(0xffA7727D);
+Color shadeAdminColor = const Color.fromARGB(255, 165, 122, 131);
 
 Color primaryUnitColor = const Color(0xff7798ce);
 Color shadeUnitColor = const Color.fromARGB(255, 151, 188, 247);

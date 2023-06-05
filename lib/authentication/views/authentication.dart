@@ -339,16 +339,20 @@ class _AutheticationState extends State<Authetication> {
                                           backgroundColor: Colors.blueGrey,
                                           shape: const StadiumBorder()),
                                       onPressed: () async {
-                                        value.member
-                                            ? await value.login(context)
-                                            : value.shg
-                                                ? await value
-                                                    .loginpresident(context)
-                                                : value.regional
+                                        value.head
+                                            ? value.singinAdmin(context)
+                                            : value.member
+                                                ? await value.login(context)
+                                                : value.shg
                                                     ? await value
-                                                        .singinRegional(context)
-                                                    : await value
-                                                        .signinunit(context);
+                                                        .loginpresident(context)
+                                                    : value.regional
+                                                        ? await value
+                                                            .singinRegional(
+                                                                context)
+                                                        : await value
+                                                            .signinunit(
+                                                                context);
                                       },
                                       child: const Text('Login'),
                                     ),

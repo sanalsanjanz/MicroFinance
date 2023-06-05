@@ -6,6 +6,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart ' as http;
+import 'package:sacco_management/admin/view/adminHome.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
 import 'package:sacco_management/authentication/views/authentication.dart';
 import 'package:sacco_management/member/views/memberHome.dart';
@@ -188,6 +189,38 @@ class AuthController extends ChangeNotifier {
     ProgressDialog.hide(context);
   }
 
+  Future singinAdmin(BuildContext context) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['mobile'] = phone;
+    map['password'] = password;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.signinAdmin, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        userStatus('admin');
+        List<dynamic> data = await jsonDecode(response.body);
+
+        await saveAdminLogin(value: data).then((value) => Navigator.of(context)
+            .pushAndRemoveUntil(
+                MaterialPageRoute(builder: (ctx) => const AdminHome()),
+                (route) => false));
+        Fluttertoast.showToast(msg: 'Success');
+      } else if (response.body.contains('invalid password')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Incorrect password');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      }
+    } catch (e) {
+      print(e);
+    }
+    ProgressDialog.hide(context);
+  }
+
   Future loginpresident(BuildContext context) async {
     ProgressDialog.show(context: context, status: 'Please Wait');
     var map = <String, dynamic>{};
@@ -341,6 +374,22 @@ class AuthController extends ChangeNotifier {
         'rpassbookNo', value[1]['logdata']['passbook_no'].toString());
     sharedPreferences.setString(
         'rmessagecount', value[3]['messagecount'].toString());
+    notifyListeners();
+  }
+
+  Future saveAdminLogin({required List<dynamic> value}) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    // presidentid = value[1]['logdata']['presidentid'].toString();
+    sharedPreferences.setString(
+        'adminId', value[1]['logdata']['admin_id'].toString());
+    sharedPreferences.setString(
+        'adminPassword', value[1]['logdata']['password'].toString());
+    sharedPreferences.setString(
+        'adminName', value[1]['logdata']['admin_name'].toString());
+    sharedPreferences.setString(
+        'adminPhone', value[1]['logdata']['ph_no'].toString());
+
     notifyListeners();
   }
 
