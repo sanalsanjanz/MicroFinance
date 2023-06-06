@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/admin/controller/adminController.dart';
+import 'package:sacco_management/admin/view/adminAddBankLinkage.dart';
 import 'package:sacco_management/admin/view/adminAddGrant.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -319,7 +320,13 @@ class _AdminHomeState extends State<AdminHome> {
               children: [
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => AdminBankLinkage(),
+                        ),
+                      );
+                    },
                     description: 'View banklinkage ',
                     heading: 'BANK LINKAGE',
                     image: 'assets/pay.png',

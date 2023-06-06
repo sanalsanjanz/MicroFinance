@@ -122,4 +122,45 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future addBankLinkage({
+    required BuildContext context,
+    required String regionpassbookno,
+    required String period,
+    required String date,
+    required String amount,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+
+    map['regionpassbookno'] = regionpassbookno;
+    map['period'] = period;
+    map['amount'] = amount;
+    map['adminid'] = id;
+    map['date'] = date;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminAddBankLinkage, body: map);
+      if (response.body.contains('Added bank Linkage for the Region')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Bank Linkage Added');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to add');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
