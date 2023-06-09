@@ -9,6 +9,8 @@ import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/admin/view/adminSessFund.dart';
 import 'package:sacco_management/constants/styles.dart';
 
+import 'adminAddExpense.dart';
+
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
 
@@ -357,7 +359,8 @@ class _AdminHomeState extends State<AdminHome> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (ctx) => const AdminAddIncome()),
+                          builder: (ctx) => const AdminAddIncome(),
+                        ),
                       );
                     },
                     description: 'View income ',
@@ -367,7 +370,13 @@ class _AdminHomeState extends State<AdminHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const AdminAddExpense(),
+                        ),
+                      );
+                    },
                     description: 'View expense ',
                     heading: 'EXPENSE',
                     image: 'assets/expenseicon.png',

@@ -305,4 +305,44 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future addExpense({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String reason,
+    required String accountinghead,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['accountinghead'] = accountinghead;
+    map['reason'] = reason;
+    map['date'] = date;
+    map['adminid'] = id;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminAddExpense, body: map);
+      if (response.body.contains('Expense is added successfully')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Expense added');
+      } else if (response.body.contains('Failed to add Expense')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }

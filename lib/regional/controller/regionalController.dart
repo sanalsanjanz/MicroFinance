@@ -633,9 +633,9 @@ class RegionalController extends ChangeNotifier {
               builder: (ctx) => const RegionalHome(),
             ),
             (route) => false);
-        Fluttertoast.showToast(msg: 'Income added');
+        Fluttertoast.showToast(msg: 'Expense added');
         sessAmount = '0';
-      } else if (response.body.contains('Income adding failed')) {
+      } else if (response.body.contains('Failed')) {
         ProgressDialog.hide(context);
         Fluttertoast.showToast(msg: 'Failed');
       } else {
