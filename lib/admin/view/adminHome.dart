@@ -5,6 +5,7 @@ import 'package:sacco_management/admin/controller/adminController.dart';
 import 'package:sacco_management/admin/view/adminAddBankLinkage.dart';
 import 'package:sacco_management/admin/view/adminAddGrant.dart';
 import 'package:sacco_management/admin/view/adminAddIncome.dart';
+import 'package:sacco_management/admin/view/adminAddRegional.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/admin/view/adminSessFund.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -40,9 +41,12 @@ class _AdminHomeState extends State<AdminHome> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const CircleAvatar(
-                      child: Image(
-                        image: AssetImage('assets/shield.png'),
+                    const Flexible(
+                      child: CircleAvatar(
+                        radius: 40,
+                        child: Image(
+                          image: AssetImage('assets/head_ic.png'),
+                        ),
                       ),
                     ),
                     const Divider(
@@ -95,19 +99,29 @@ class _AdminHomeState extends State<AdminHome> {
             ),
             const Divider(),
             DrawerItem(
+                icon: Icons.home_work_rounded,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => AdminAddRegional(),
+                    ),
+                  );
+                },
+                title: 'Add Regional'),
+            DrawerItem(
                 icon: Icons.add_home_work_sharp,
                 onTap: () {},
                 title: 'Add Unit'),
             DrawerItem(
-                icon: Icons.home_work, onTap: () {}, title: 'Show Units'),
+                icon: Icons.home_work, onTap: () {}, title: 'Regional List'),
             DrawerItem(
                 icon: Icons.account_balance,
                 onTap: () {},
                 title: 'Accounting Head'),
-            DrawerItem(
-                icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
+            // DrawerItem(
+            // icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
             DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
-            // DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
+            DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
             DrawerItem(
                 icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),
             /*   DrawerItem(

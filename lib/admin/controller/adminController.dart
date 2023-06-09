@@ -345,4 +345,42 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future addRegional({
+    required BuildContext context,
+    required String name,
+    required String number,
+    required String password,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['regionname'] = name;
+    map['mobile'] = number;
+    map['password'] = password;
+    map['adminid'] = id;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminAddRegional, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: '$name added');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to add $name');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
