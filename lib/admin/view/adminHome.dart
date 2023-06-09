@@ -6,6 +6,7 @@ import 'package:sacco_management/admin/view/adminAddBankLinkage.dart';
 import 'package:sacco_management/admin/view/adminAddGrant.dart';
 import 'package:sacco_management/admin/view/adminAddIncome.dart';
 import 'package:sacco_management/admin/view/adminAddRegional.dart';
+import 'package:sacco_management/admin/view/adminAddUnit.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/admin/view/adminSessFund.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -110,7 +111,13 @@ class _AdminHomeState extends State<AdminHome> {
                 title: 'Add Regional'),
             DrawerItem(
                 icon: Icons.add_home_work_sharp,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminAddUnit(),
+                    ),
+                  );
+                },
                 title: 'Add Unit'),
             DrawerItem(
                 icon: Icons.home_work, onTap: () {}, title: 'Regional List'),
