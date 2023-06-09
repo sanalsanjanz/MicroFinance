@@ -5,6 +5,7 @@ import 'package:sacco_management/admin/controller/adminController.dart';
 import 'package:sacco_management/admin/view/adminAddBankLinkage.dart';
 import 'package:sacco_management/admin/view/adminAddGrant.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
+import 'package:sacco_management/admin/view/adminSessFund.dart';
 import 'package:sacco_management/constants/styles.dart';
 
 class AdminHome extends StatefulWidget {
@@ -334,7 +335,13 @@ class _AdminHomeState extends State<AdminHome> {
                 ),
                 Expanded(
                   child: RegionHomeCard(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const AdminSessFundTransfer(),
+                        ),
+                      );
+                    },
                     description: 'View SESS fund',
                     heading: 'SESS FUND',
                     image: 'assets/study.png',
