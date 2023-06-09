@@ -219,4 +219,90 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  List<DropDownValueModel> income = [];
+  List<DropDownValueModel> expense = [];
+  Future getAccountingHead(String? type) async {
+    try {
+      http.Response response = await http.get(AuthLinks.adminGetAccountingHead);
+      if (response.body.contains('expensedata') ||
+          response.body.contains('incomedata')) {
+        var data = jsonDecode(response.body);
+        if (type != '') {
+          if (type == 'expense') {
+            var length = data[0]['expensedata'].length;
+            for (int i = 0; i < length; i++) {
+              // //print(data[0]['memberdata'][i]);
+              expense.add(DropDownValueModel(
+                  name: data[0]['expensedata'][i]['head'],
+                  value: data[0]['expensedata'][i]['head']));
+            }
+            notifyListeners();
+          } else if (type == 'income') {
+            var length = data[1]['incomedata'].length;
+            for (int i = 0; i < length; i++) {
+              // //print(data[0]['memberdata'][i]);
+              income.add(DropDownValueModel(
+                  name: data[1]['incomedata'][i]['head'],
+                  value: data[1]['incomedata'][i]['head']));
+            }
+            notifyListeners();
+          }
+        } else {
+          return data;
+        }
+
+        return data;
+        // return result;
+      } else {
+        var data = [
+          {'message': 'no datas'}
+        ];
+        return data;
+      }
+    } catch (e) {
+      //print(e);
+    }
+    notifyListeners();
+  }
+
+  Future addOtherIncome({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String type,
+    required String accountinghead,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+    map['date'] = date;
+    map['adminid'] = id;
+    map['amount'] = amount;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminAddIncome, body: map);
+      if (response.body.contains('Income added')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Income added');
+      } else if (response.body.contains('Income adding failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
