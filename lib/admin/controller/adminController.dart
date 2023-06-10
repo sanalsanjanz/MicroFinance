@@ -459,4 +459,58 @@ class AdminController extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  String insurance = '0';
+  Future getInsurance() async {
+    try {
+      http.Response response = await http.get(AuthLinks.adminAddInsurance);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        insurance = data[0]['amount'].toString();
+        notifyListeners();
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  Future transferInsurance({
+    required BuildContext context,
+    required String amount,
+    required String date,
+    required String cname,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['cname'] = cname;
+    map['amount'] = amount;
+    map['date'] = date;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminTransferInsurance, body: map);
+      if (response.body.contains('Transfer sucessfully')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Insurance added');
+//sessAmount = '0';
+      } else if (response.body.contains('Failed to transfer')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Nothing to transfer');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }

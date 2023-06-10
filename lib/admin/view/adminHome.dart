@@ -14,6 +14,7 @@ import 'package:sacco_management/constants/styles.dart';
 
 import 'adminAddAccountingHead.dart';
 import 'adminAddExpense.dart';
+import 'adminAddInsurance.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -143,7 +144,16 @@ class _AdminHomeState extends State<AdminHome> {
                 title: 'Accounting Head'),
             // DrawerItem(
             // icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
-            DrawerItem(icon: Icons.security, onTap: () {}, title: 'Insurance'),
+            DrawerItem(
+                icon: Icons.security,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminAddInsurance(),
+                    ),
+                  );
+                },
+                title: 'Insurance'),
             DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
             DrawerItem(
                 icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),
