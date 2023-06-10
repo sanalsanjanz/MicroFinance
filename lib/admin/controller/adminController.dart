@@ -79,6 +79,7 @@ class AdminController extends ChangeNotifier {
               value: data[0]['regiondata'][i]['passbook_no']));
         }
         notifyListeners();
+        return data;
       } else {}
     } catch (e) {}
     notifyListeners();
@@ -421,6 +422,41 @@ class AdminController extends ChangeNotifier {
       //print(e);
     }
     ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future addAccountingHead(
+      BuildContext context, String? type, String? accountinghead) async {
+    ProgressDialog.show(context: context, status: 'Please Wait');
+    var map = <String, dynamic>{};
+    map['accountinghead'] = accountinghead;
+    map['type'] = type;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminAddAccountingHead, body: map);
+      if (response.body.contains('Accounting head added')) {
+        Fluttertoast.showToast(msg: 'successfully added');
+        await getAccountingHead('');
+        ProgressDialog.hide(context);
+        /*  Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const SplashScreen(),
+            ),
+            (route) => false); */
+      } else if (response.body
+          .contains('Already added this accounting head before')) {
+        Fluttertoast.showToast(msg: 'Already exist');
+
+        ProgressDialog.hide(context);
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'something went wrong');
+      }
+    } catch (e) {
+      ProgressDialog.hide(context);
+      //print(e);
+    }
     notifyListeners();
   }
 }

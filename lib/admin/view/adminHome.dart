@@ -9,8 +9,10 @@ import 'package:sacco_management/admin/view/adminAddRegional.dart';
 import 'package:sacco_management/admin/view/adminAddUnit.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
 import 'package:sacco_management/admin/view/adminSessFund.dart';
+import 'package:sacco_management/admin/view/adminViewAllRegionals.dart';
 import 'package:sacco_management/constants/styles.dart';
 
+import 'adminAddAccountingHead.dart';
 import 'adminAddExpense.dart';
 
 class AdminHome extends StatefulWidget {
@@ -120,10 +122,24 @@ class _AdminHomeState extends State<AdminHome> {
                 },
                 title: 'Add Unit'),
             DrawerItem(
-                icon: Icons.home_work, onTap: () {}, title: 'Regional List'),
+                icon: Icons.home_work,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminViewRegionalList(),
+                    ),
+                  );
+                },
+                title: 'Regional List'),
             DrawerItem(
                 icon: Icons.account_balance,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminAddAccountingHead(),
+                    ),
+                  );
+                },
                 title: 'Accounting Head'),
             // DrawerItem(
             // icon: Icons.document_scanner, onTap: () {}, title: 'Projects'),
