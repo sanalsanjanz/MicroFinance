@@ -85,6 +85,30 @@ class AdminController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getAllUnits() async {
+    try {
+      http.Response response = await http.get(AuthLinks.adminGetAllUnits);
+      if (response.body.contains('unitdata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
+  Future getAllShg() async {
+    try {
+      http.Response response = await http.get(AuthLinks.adminGetAllShg);
+      if (response.body.contains('shgdata')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
   int sessAmount = 0;
   Future getSessDetails() async {
     try {

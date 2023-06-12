@@ -8,6 +8,7 @@ import 'package:sacco_management/admin/view/adminAddIncome.dart';
 import 'package:sacco_management/admin/view/adminAddRegional.dart';
 import 'package:sacco_management/admin/view/adminAddUnit.dart';
 import 'package:sacco_management/admin/view/adminMedicalAid.dart';
+import 'package:sacco_management/admin/view/adminSendMessages.dart';
 import 'package:sacco_management/admin/view/adminSessFund.dart';
 import 'package:sacco_management/admin/view/adminViewAllRegionals.dart';
 import 'package:sacco_management/constants/styles.dart';
@@ -154,7 +155,16 @@ class _AdminHomeState extends State<AdminHome> {
                   );
                 },
                 title: 'Insurance'),
-            DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
+            DrawerItem(
+                icon: Icons.send,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminSendMessages(),
+                    ),
+                  );
+                },
+                title: 'Send Message'),
             DrawerItem(
                 icon: Icons.savings_rounded, onTap: () {}, title: 'Profit'),
             /*   DrawerItem(
