@@ -537,4 +537,190 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  Future sendToAllShg({
+    required BuildContext context,
+    required String message,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToAllShg, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendToShg({
+    required BuildContext context,
+    required String message,
+    required String shgpassbookno,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+    map['shgpassbookno'] = shgpassbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToShg, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendToAllUnit({
+    required BuildContext context,
+    required String message,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToAllUnits, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendToUnit({
+    required BuildContext context,
+    required String message,
+    required String unitpassbookno,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+    map['unitpassbookno'] = unitpassbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToUnit, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendToAllRegional({
+    required BuildContext context,
+    required String message,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToAllRegional, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendToRegional({
+    required BuildContext context,
+    required String message,
+    required String regionpassbookno,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['message'] = message;
+    map['regionpassbookno'] = regionpassbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminSendToRegional, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'sent');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }

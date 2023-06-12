@@ -82,11 +82,11 @@ class _AdminHomeState extends State<AdminHome> {
                           // shape: const StadiumBorder(),
                         ),
                         onPressed: () {},
-                        child: const Text('New Password'),
+                        child: const Text('Update Password'),
                       ),
                     ),
                   ),
-                  const VerticalDivider(width: 8),
+                  /* const VerticalDivider(width: 8),
                   Expanded(
                     child: Tooltip(
                       message: 'logout from account',
@@ -98,7 +98,7 @@ class _AdminHomeState extends State<AdminHome> {
                         child: const Text('Logout'),
                       ),
                     ),
-                  ),
+                  ), */
                 ],
               ),
             ),

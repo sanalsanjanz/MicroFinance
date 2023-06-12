@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/admin/controller/adminController.dart';
+import 'package:sacco_management/admin/view/adminIndividualMessage.dart';
 import 'package:sacco_management/constants/styles.dart';
 
 class AdminUnitChat extends StatelessWidget {
@@ -11,9 +12,18 @@ class AdminUnitChat extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const Card(
+          Card(
             child: ListTile(
-              title: Center(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => AdminIndividualMessage(
+                      type: 'UNITALL',
+                    ),
+                  ),
+                );
+              },
+              title: const Center(
                 child: Text('Send To All Units'),
               ),
             ),
@@ -31,6 +41,17 @@ class AdminUnitChat extends StatelessWidget {
                             var data = snapshot.data[0]['unitdata'][index];
                             return Card(
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => AdminIndividualMessage(
+                                        type: 'UNITIND',
+                                        passbookNo: data['passbook_no'],
+                                        name: data['unit'],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 leading: CircleAvatar(
                                   backgroundColor: primaryColor,
                                   child: Text((index + 1).toString()),

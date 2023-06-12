@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sacco_management/admin/controller/adminController.dart';
+import 'package:sacco_management/admin/view/adminIndividualMessage.dart';
 import 'package:sacco_management/constants/styles.dart';
 
 class AdminSHGChat extends StatelessWidget {
@@ -11,9 +12,18 @@ class AdminSHGChat extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const Card(
+          Card(
             child: ListTile(
-              title: Center(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => AdminIndividualMessage(
+                      type: 'SHGALL',
+                    ),
+                  ),
+                );
+              },
+              title: const Center(
                 child: Text('Send To All SHG'),
               ),
             ),
@@ -31,6 +41,17 @@ class AdminSHGChat extends StatelessWidget {
                             var data = snapshot.data[0]['shgdata'][index];
                             return Card(
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => AdminIndividualMessage(
+                                        type: 'SHGIND',
+                                        passbookNo: data['passbook_no'],
+                                        name: data['unit_name'],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 leading: CircleAvatar(
                                   backgroundColor: primaryColor,
                                   child: Text((index + 1).toString()),

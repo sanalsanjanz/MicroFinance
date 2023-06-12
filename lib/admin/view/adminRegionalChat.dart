@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sacco_management/admin/controller/adminController.dart';
 import 'package:sacco_management/constants/styles.dart';
 
+import 'adminIndividualMessage.dart';
+
 class AdminRegionalChat extends StatelessWidget {
   const AdminRegionalChat({super.key});
 
@@ -11,9 +13,18 @@ class AdminRegionalChat extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const Card(
+          Card(
             child: ListTile(
-              title: Center(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => AdminIndividualMessage(
+                      type: 'REGALL',
+                    ),
+                  ),
+                );
+              },
+              title: const Center(
                 child: Text('Send To All Regionals'),
               ),
             ),
@@ -31,6 +42,17 @@ class AdminRegionalChat extends StatelessWidget {
                             var data = snapshot.data[0]['regiondata'][index];
                             return Card(
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => AdminIndividualMessage(
+                                        type: 'REGIND',
+                                        passbookNo: data['passbook_no'],
+                                        name: data['region'],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 leading: CircleAvatar(
                                   backgroundColor: primaryColor,
                                   child: Text((index + 1).toString()),
