@@ -723,4 +723,57 @@ class AdminController extends ChangeNotifier {
     ProgressDialog.hide(context);
     notifyListeners();
   }
+
+  var profit = '0';
+  Future getProfit({
+    required String regionpassbookno,
+  }) async {
+    var map = <String, dynamic>{};
+    map['regionpassbookno'] = regionpassbookno;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminGetRegionalProfit, body: map);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        profit = data[1]['profit'];
+      } else {}
+    } catch (e) {
+      //print(e);
+    }
+    notifyListeners();
+  }
+
+  Future updateProfit({
+    required BuildContext context,
+    required String profits,
+    required String regionpassbookno,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['profit'] = profits;
+    map['regionpassbookno'] = regionpassbookno;
+    map['adminid'] = id;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminChangeProfit, body: map);
+      if (response.body.contains('Profit Updated')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'updated');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to update profit');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
 }
