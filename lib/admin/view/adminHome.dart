@@ -17,6 +17,7 @@ import 'adminAddAccountingHead.dart';
 import 'adminAddExpense.dart';
 import 'adminAddInsurance.dart';
 import 'adminProfit.dart';
+import 'adminUpdatePassword.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -82,7 +83,13 @@ class _AdminHomeState extends State<AdminHome> {
                           backgroundColor: primaryAdminColor,
                           // shape: const StadiumBorder(),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => AdminupdatePassword(),
+                            ),
+                          );
+                        },
                         child: const Text('Update Password'),
                       ),
                     ),
@@ -269,7 +276,7 @@ class _AdminHomeState extends State<AdminHome> {
                                             const VerticalDivider(),
                                             TextButton(
                                               onPressed: () async {
-                                                //await value.logout(context);
+                                                await value.logout(context);
                                               },
                                               child: const Text('YES'),
                                             ),

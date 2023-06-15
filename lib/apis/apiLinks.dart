@@ -5,6 +5,7 @@ class AuthLinks {
       'http://kapstone.in/kapstone/shreyas/index.php?micro/';
   //admin
   static var adminAddGrant = Uri.parse('${baseUrl}Admin/addgrant');
+  static var adminUpdatePassword = Uri.parse('${baseUrl}Admin/changepassword');
   static var adminChangeProfit =
       Uri.parse('${baseUrl}Admin/changeregionprofit');
   static var adminGetRegionalProfit = Uri.parse('${baseUrl}Admin/regionprofit');

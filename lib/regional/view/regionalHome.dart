@@ -83,19 +83,6 @@ class _RegionalHomeState extends State<RegionalHome> {
                       ),
                     ),
                   ),
-                  const VerticalDivider(width: 8),
-                  Expanded(
-                    child: Tooltip(
-                      message: 'logout from account',
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryRegionColor,
-                        ),
-                        onPressed: () {},
-                        child: const Text('Logout'),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
+import 'package:sacco_management/splashScreen.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -775,5 +775,50 @@ class AdminController extends ChangeNotifier {
     }
     ProgressDialog.hide(context);
     notifyListeners();
+  }
+
+  Future updatePassword({
+    required BuildContext context,
+    required String newpassword,
+  }) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['npass'] = newpassword;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.adminUpdatePassword, body: map);
+      if (response.body
+          .contains('You have successfully changed your password!!!!')) {
+        ProgressDialog.hide(context);
+        sharedPreferences.setString('adminPassword', newpassword);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const AdminHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'password changed');
+        notifyListeners();
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed to update');
+      }
+    } catch (e) {
+      //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    Fluttertoast.showToast(msg: 'Yahooo !!!');
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (ctx) => const SplashScreen(),
+        ),
+        (route) => false);
   }
 }

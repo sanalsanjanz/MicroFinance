@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:sacco_management/admin/view/adminRegionalChat.dart';
 import 'package:sacco_management/constants/styles.dart';
-import 'package:sacco_management/regional/view/regionalAddBankLinkage.dart';
-import 'package:sacco_management/regional/view/regionalPayBankLinkage.dart';
 
 import 'adminShgChat.dart';
 import 'adminUnitChat.dart';
@@ -23,13 +21,13 @@ class AdminSendMessages extends StatelessWidget {
             backgroundColor: primaryAdminColor,
             bottom: const TabBar(indicatorColor: Colors.white, tabs: [
               Tab(
-                child: Text("Regional"),
+                child: Text("Regionals"),
               ),
               Tab(
-                child: Text("Unit"),
+                child: Text("Units"),
               ),
               Tab(
-                child: Text("SHG"),
+                child: Text("Groups"),
               ),
             ])),
         body: const TabBarView(
