@@ -41,6 +41,15 @@ class AuthLinks {
   //regional
 //message pending
   static var regionalGetMessages = Uri.parse('${baseUrl}Region/regiondata');
+  static var regionalSendMsgAllUnits =
+      Uri.parse('${baseUrl}Region/sendmessageunitall');
+  static var regionalSendMsgUnit =
+      Uri.parse('${baseUrl}Region/sendmessageunit');
+  static var regionalSendMsgToShg =
+      Uri.parse('${baseUrl}Region/sendmessageshg');
+  static var regionalSendMessagesAllSHG =
+      Uri.parse('${baseUrl}Region/sendmessageshgall');
+  static var regionalGetAllShg = Uri.parse('${baseUrl}Region/getallshg');
   static var regionalGetInsurance = Uri.parse('${baseUrl}Region/insurance');
   static var regionalPayCenter = Uri.parse('${baseUrl}Region/paycenter');
   static var regionalPayCenterView =

@@ -285,6 +285,21 @@ class RegionalController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future getAllShg() async {
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalGetAllShg, body: map);
+      if (response.body.contains('unit_name')) {
+        var data = jsonDecode(response.body);
+
+        return data;
+      } else {}
+    } catch (e) {}
+    notifyListeners();
+  }
+
   Future addIndMedicalAid({
     required BuildContext context,
     required String name,
@@ -996,6 +1011,148 @@ class RegionalController extends ChangeNotifier {
       }
     } catch (e) {
       //print(e);
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendMessageToAllShg({
+    required BuildContext context,
+    required String message,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending...');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSendMessagesAllSHG, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Sent');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendMessageToShg({
+    required BuildContext context,
+    required String message,
+    required String passbookNumber,
+    required String name,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending to $name');
+    var map = <String, dynamic>{};
+    map['shgpassbookno'] = passbookNumber;
+    map['regionpassbookno'] = passbookno;
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSendMsgToShg, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Sent');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendMessageToAllUnit({
+    required BuildContext context,
+    required String message,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending');
+    var map = <String, dynamic>{};
+    map['passbookno'] = passbookno;
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSendMsgAllUnits, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Sent');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    }
+    ProgressDialog.hide(context);
+    notifyListeners();
+  }
+
+  Future sendMessageToUnit({
+    required BuildContext context,
+    required String message,
+    required String passbookNumber,
+    required String name,
+  }) async {
+    ProgressDialog.show(context: context, status: 'Sending to $name');
+    var map = <String, dynamic>{};
+    map['unitpassbookno'] = passbookNumber;
+    map['regionpassbookno'] = passbookno;
+    map['message'] = message;
+
+    try {
+      http.Response response =
+          await http.post(AuthLinks.regionalSendMsgUnit, body: map);
+      if (response.body.contains('Success')) {
+        ProgressDialog.hide(context);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const RegionalHome(),
+            ),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Sent');
+      } else if (response.body.contains('Failed')) {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Failed');
+      } else {
+        ProgressDialog.hide(context);
+        Fluttertoast.showToast(msg: 'Something went wrong');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
     ProgressDialog.hide(context);
     notifyListeners();

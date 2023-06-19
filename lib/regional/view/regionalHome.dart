@@ -12,6 +12,7 @@ import 'package:sacco_management/regional/view/regionalBankLinkage.dart';
 import 'package:sacco_management/regional/view/regionalMessaageView.dart';
 import 'package:sacco_management/regional/view/regionalProfit.dart';
 import 'package:sacco_management/regional/view/regionalProjects.dart';
+import 'package:sacco_management/regional/view/regionalSendMessage.dart';
 import 'package:sacco_management/regional/view/regionalSessFund.dart';
 import 'package:sacco_management/regional/view/regionalExpense.dart';
 import 'package:sacco_management/regional/view/regionalViewGrant.dart';
@@ -137,7 +138,16 @@ class _RegionalHomeState extends State<RegionalHome> {
                   );
                 },
                 title: 'Insurance'),
-            // DrawerItem(icon: Icons.send, onTap: () {}, title: 'Send Message'),
+            DrawerItem(
+                icon: Icons.send,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => const RegionalSendMessage(),
+                    ),
+                  );
+                },
+                title: 'Send Message'),
             DrawerItem(
                 icon: Icons.savings_rounded,
                 onTap: () {
