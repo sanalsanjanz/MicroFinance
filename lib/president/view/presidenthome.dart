@@ -34,7 +34,7 @@ class _PresidentHomeState extends State<PresidentHome> {
   @override
   void initState() {
     super.initState();
-    Provider.of<PresidentController>(context, listen: false).getDataa(context);
+    Provider.of<PresidentController>(context, listen: false).getsaved();
     Provider.of<PresidentConfigController>(context, listen: false)
         .getPresidentConfig();
   }

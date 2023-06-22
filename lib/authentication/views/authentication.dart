@@ -76,7 +76,18 @@ class _AutheticationState extends State<Authetication> {
                         height: 20,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          CustomChoiceChip(
+                            label: 'Member',
+                            isSelected: value.member,
+                            onSelected: (values) {
+                              value.chooseMember();
+                            },
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * .06,
+                          ),
                           CustomChoiceChip(
                             label: 'Group',
                             isSelected: value.shg,
@@ -84,16 +95,6 @@ class _AutheticationState extends State<Authetication> {
                               value.chooseShg();
                             },
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * .06,
-                          ),
-                          CustomChoiceChip(
-                            label: 'Member',
-                            isSelected: value.member,
-                            onSelected: (values) {
-                              value.chooseMember();
-                            },
-                          )
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -340,7 +341,7 @@ class _AutheticationState extends State<Authetication> {
                                           shape: const StadiumBorder()),
                                       onPressed: () async {
                                         value.head
-                                            ? value.singinAdmin(context)
+                                            ? value.signinAdmin(context)
                                             : value.member
                                                 ? await value.login(context)
                                                 : value.shg
@@ -348,7 +349,7 @@ class _AutheticationState extends State<Authetication> {
                                                         .loginpresident(context)
                                                     : value.regional
                                                         ? await value
-                                                            .singinRegional(
+                                                            .signinRegional(
                                                                 context)
                                                         : await value
                                                             .signinunit(

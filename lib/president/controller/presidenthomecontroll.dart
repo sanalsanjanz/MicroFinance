@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:sacco_management/apis/apiLinks.dart';
-import 'package:sacco_management/authentication/controller/authController.dart';
 import 'package:sacco_management/president/view/presidenthome.dart';
 import 'package:sacco_management/splashScreen.dart';
 import 'package:sacco_management/widgets/progressDialog.dart';
@@ -121,9 +119,7 @@ class PresidentController extends ChangeNotifier {
           await http.post(AuthLinks.signinpresident, body: map);
       if (response.body.contains('Success')) {
         var data = jsonDecode(response.body);
-        await Provider.of<AuthController>(context, listen: false)
-            .savePresidentDetails(value: data)
-            .then((value) => getsaved());
+
         return data;
         // return result;
       } else if (response.body.contains('invalid password')) {

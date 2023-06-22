@@ -156,7 +156,7 @@ class AuthController extends ChangeNotifier {
     ProgressDialog.hide(context);
   }
 
-  Future singinRegional(BuildContext context) async {
+  Future signinRegional(BuildContext context) async {
     ProgressDialog.show(context: context, status: 'Please Wait');
     var map = <String, dynamic>{};
     map['mobile'] = phone;
@@ -189,7 +189,7 @@ class AuthController extends ChangeNotifier {
     ProgressDialog.hide(context);
   }
 
-  Future singinAdmin(BuildContext context) async {
+  Future signinAdmin(BuildContext context) async {
     ProgressDialog.show(context: context, status: 'Please Wait');
     var map = <String, dynamic>{};
     map['mobile'] = phone;
